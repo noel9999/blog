@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[My Octopress Blog]]></title>
+  <link href="http://yoursite.com/atom.xml" rel="self"/>
+  <link href="http://yoursite.com/"/>
+  <updated>2014-07-03T14:09:45+08:00</updated>
+  <id>http://yoursite.com/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[First-article]]></title>
+    <link href="http://yoursite.com/blog/2014/07/03/first-article/"/>
+    <updated>2014-07-03T12:36:53+08:00</updated>
+    <id>http://yoursite.com/blog/2014/07/03/first-article</id>
+    <content type="html"><![CDATA[<h1>My First Article using Octopress</h1>
+
+<hr />
+
+<p><strong><em>星期四猴子去考試</em></strong></p>
+
+<p><code>怡婷老師生日大快樂～！</code></p>
+
+<p><img src="../images/o0640064012326561387.jpg" alt="pic" /></p>
+]]></content>
+  </entry>
+  
+</feed>
