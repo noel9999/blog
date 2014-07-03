@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
-  <link href="http://yoursite.com/atom.xml" rel="self"/>
-  <link href="http://yoursite.com/"/>
-  <updated>2014-07-03T14:40:53+08:00</updated>
-  <id>http://yoursite.com/</id>
+  <title><![CDATA[Noel Saga]]></title>
+  <link href="http://noelsaga.herokuapp.com/atom.xml" rel="self"/>
+  <link href="http://noelsaga.herokuapp.com/"/>
+  <updated>2014-07-03T16:17:19+08:00</updated>
+  <id>http://noelsaga.herokuapp.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Noel]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[First-article]]></title>
-    <link href="http://yoursite.com/blog/2014/07/03/first-article/"/>
+    <link href="http://noelsaga.herokuapp.com/blog/2014/07/03/first-article/"/>
     <updated>2014-07-03T12:36:53+08:00</updated>
-    <id>http://yoursite.com/blog/2014/07/03/first-article</id>
+    <id>http://noelsaga.herokuapp.com/blog/2014/07/03/first-article</id>
     <content type="html"><![CDATA[<h1>My First Article using Octopress</h1>
 
 <hr />
@@ -29,11 +29,6 @@
 <p><img src="../images/o0640064012326561387.jpg" alt="pic" /></p>
 
 <p><img src="https://www.dropbox.com/s/7dmw5dxhy4b06hv/BquucHmCUAAn7or.jpg" alt="image" /></p>
-]]></content>
-  </entry>
-  
-</feed>
-
 ]]></content>
   </entry>
   
