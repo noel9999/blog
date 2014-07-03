@@ -4,7 +4,11 @@
   <title><![CDATA[Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
+<<<<<<< HEAD
   <updated>2014-07-03T17:06:28+08:00</updated>
+=======
+  <updated>2014-07-03T16:17:19+08:00</updated>
+>>>>>>> parent of bd7cad0... add a new page ruby!
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
