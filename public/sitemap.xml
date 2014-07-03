@@ -11,33 +11,21 @@
   
   <url>
     <loc>http://noelsaga.herokuapp.com/</loc>
-<<<<<<< HEAD
-    <lastmod>2014-07-03T17:06:28+08:00</lastmod>
-=======
-    <lastmod>2014-07-03T16:17:19+08:00</lastmod>
->>>>>>> parent of bd7cad0... add a new page ruby!
+    <lastmod>2014-07-04T00:17:06+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://noelsaga.herokuapp.com/blog/archives/</loc>
-<<<<<<< HEAD
-    <lastmod>2014-07-03T17:06:28+08:00</lastmod>
-=======
-    <lastmod>2014-07-03T16:17:19+08:00</lastmod>
->>>>>>> parent of bd7cad0... add a new page ruby!
+    <lastmod>2014-07-04T00:17:06+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://noelsaga.herokuapp.com/posts/</loc>
-<<<<<<< HEAD
-    <lastmod>2014-07-03T17:06:28+08:00</lastmod>
-=======
-    <lastmod>2014-07-03T16:17:19+08:00</lastmod>
->>>>>>> parent of bd7cad0... add a new page ruby!
+    <lastmod>2014-07-04T00:17:06+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
