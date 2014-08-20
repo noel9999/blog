@@ -15,6 +15,7 @@ categories:
 第一次使用octopress架blog並且搭配佈署到heroku，參考[高見龍大大](http://blog.eddie.com.tw/2011/10/11/how-to-install-octopress-on-heroku/)的教學，其實架起來比想像的快很多，但是目前還是要習慣octopress的使用方式，跟搞熟heroku到底適不適合開分支合併回到master去，這樣版本控制才可以發揮他的作用阿，如果改錯了什麼，heroku起不來我辛苦寫的文章不就...！？
 
   接下來希望要來玩玩怎麼把theme改成我理想的樣子，雖然我css根本爛的可以，但是還是有東西可以給我練練了。還要試著把我本來在hackpad的文章一一搬過來，並且希望我可以持續乖乖的寫好blog...。嗯嗯，要做跟學習的事還是好多好多，但是過程是真的很有趣的，加油吧。
+<!-- more -->
   
 接下來下面讓我來試試markdown的特點吧。
 
@@ -37,17 +38,17 @@ puts "Awesome!"
 	printf("Hello World");
 	cout<<"Hello World";
 	System.out.println("Hello World");
-	<p>Hello World</p>
+	<p>Hello World</p>			
 
 * 1
 * 2
 * 3
 * 4
 * 5
-* 6
 
 
-{% codeblock 當年第一次寫php，現在看不知道在寫啥鬼 lang:php start:5 mark:5,15-25 %}
+
+{% codeblock 當年第一次寫php，現在看不知道在寫啥鬼 lang:php start:5 %}
 	public $date;
 	//public $startDay; 
 	public function __construct(){
@@ -97,3 +98,4 @@ puts "Awesome!"
 {% include_code modeltest lang:php php/modeltest.php %}
 
 
+* 6
