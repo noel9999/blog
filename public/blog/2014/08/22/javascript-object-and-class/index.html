@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Javascript Object and Class - Noel Saga</title>
+  <meta name="author" content="Noel">
+
+  
+  <meta name="description" content="Javascript Object and Class written Aug 22nd, 2014 in javascript &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;js也是個物件導向（object－oriented）的語言，但與我們傳統認知的C＋＋、 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://noelsaga.herokuapp.com/blog/2014/08/22/javascript-object-and-class">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Noel Saga" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Javascript Object and Class</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-08-22T00:08:21+08:00" pubdate data-updated="true">Aug 22<sup>nd</sup>, 2014</time>
+          
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/javascript/'>javascript</a>
+  
+</span>
+
+
+        </div>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;js也是個物件導向（object－oriented）的語言，但與我們傳統認知的C＋＋、Java的物件導向有所差異，但至少理念上還是一樣。物件會有所謂的成員也有人稱作屬性（property或attribute），指的是屬於該物件的某種數值或字串又或是其他的物件（ex: argument.length, event.data）。另外，物件也有方法（method，就是我們認知的function，ex: location.href(somefile.url) ），名稱上或許容易令人混淆，但大致來說一般的物件導向都是這麼稱呼與認知的。</p>
+
+<!-- more -->
+
+
+<h2>前言</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;js如我們所知是萬物皆物件的語言，但更進一步得講，其實<strong><em>並非所有萬物皆為物件</em></strong>，像是&#8221;foo&#8221;, 5, false等就不是物件，而是原始值，但我們依然可以對它們操作&#8221;foo&#8221;.length，難道它不是個物件嗎？其實這是js在我們使用原始值時會先幫我們把它進一步包裝成複合物件，等我們使用完後又會再釋放，當然我們在使用它的時候是感覺不到的，所以<strong><em>更正確的說法是，js裡所有的東西使用起來皆像物件！</em></strong></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般來說我們如果是 var myArray = []; 來宣告一個陣列物件，其實就隱含了我們做了var myArray = new Array();的用法而已，同理 var myObject = {} 也隱含了 var myObject = new Object()；而剛剛我們提到字串、數字、布林值不是物件而是原始值，但如果我們是用 var myString = new String(&ldquo;Godzilla&rdquo;)來產生字串的話，此時的myString就是物件了而非原始值了！！我們可以利用typeof 來判斷是否為物件，但function物件顯示的結果會是function而非object，但他依然是個物件唷！！如果想知道一物件是由誰所建構的則可以利用 constructor:</p>
+
+<figure class='code'><figcaption><span>範例一 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">myString</span> <span class="o">=</span> <span class="s1">&#39;godzilla&#39;</span>
+</span><span class='line'><span class="k">typeof</span> <span class="nx">myString</span><span class="p">;</span> <span class="c1">// string</span>
+</span><span class='line'><span class="nx">myString</span><span class="p">.</span><span class="nx">constructor</span><span class="p">;</span> <span class="c1">// String</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myStringObject</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">String</span><span class="p">(</span><span class="s1">&#39;godzilla&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="k">typeof</span> <span class="nx">myStringObject</span><span class="p">;</span> <span class="c1">// object  此時是物件而非原始值</span>
+</span><span class='line'><span class="nx">myStringObject</span><span class="p">.</span><span class="nx">constructor</span><span class="p">);</span> <span class="c1">// String</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myArray</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+</span><span class='line'><span class="k">typeof</span> <span class="nx">myArray</span> <span class="c1">// object</span>
+</span><span class='line'><span class="nx">myArray</span><span class="p">.</span><span class="nx">constructor</span> <span class="c1">// Array</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myArrayObject</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+</span><span class='line'><span class="k">typeof</span> <span class="nx">myArrayObject</span> <span class="c1">// object</span>
+</span><span class='line'><span class="nx">myArrayObject</span><span class="p">.</span><span class="nx">constructor</span> <span class="c1">// Array</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myFunction</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span> <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;haha&#39;</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'><span class="nx">tpyeof</span> <span class="nx">myFunction</span> <span class="c1">// function 注意</span>
+</span><span class='line'><span class="nx">myFunction</span><span class="p">.</span><span class="nx">constructor</span> <span class="c1">// Function</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myFunctionObject</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Function</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="s1">&#39;return name;&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="k">typeof</span> <span class="nx">myFunctionObject</span> <span class="c1">// function 注意</span>
+</span><span class='line'><span class="nx">myFunction</span><span class="p">.</span><span class="nx">constructor</span>  <span class="c1">// Function</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> 以上，大概是對js的物件基本介紹，這些有什麼用呢？其實個實際上並不能帶給你什麼酷炫的方式，但是對於觀念的釐清是很重要的！</p>
+
+<hr />
+
+<h2>自定類別</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;js並無class，所以js的物件定義方使是靠關鍵字<code>function</code>來實現，跟我們一般直接定義一個function很類似：</p>
+
+<figure class='code'><figcaption><span>範例二 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">godzilla</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">){</span> <span class="c1">// godzilla只是個單純的function</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">mySon</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Son</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span> <span class="c1">// 利用function Son建立物件</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;I am &#39;</span> <span class="o">+</span> <span class="nx">mySon</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+</span><span class='line'><span class="nx">mySon</span><span class="p">.</span><span class="nx">changeName</span><span class="p">(</span><span class="s1">&#39;zilla&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Here comes my new name: &#39;</span> <span class="o">+</span> <span class="nx">mySon</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//利用function來制定我們想要的物件</span>
+</span><span class='line'><span class="kd">function</span> <span class="nx">Son</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">changeName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">newName</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">newName</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nx">godzilla</span><span class="p">(</span><span class="s1">&#39;I am in a function rather than a object!&#39;</span><span class="p">,</span> <span class="s1">&#39;Noel&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">//輸出</span>
+</span><span class='line'><span class="c1">//I am in a function rather than a object! </span>
+</span><span class='line'><span class="c1">//Noel</span>
+</span><span class='line'><span class="c1">//zilla </span>
+</span><span class='line'>  <span class="err">利用</span><span class="nb">Object</span><span class="err">建構函式來產生物件</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">eva</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Object</span><span class="p">();</span>
+</span><span class='line'>  <span class="nx">eva</span><span class="p">.</span><span class="nx">pilot</span> <span class="o">=</span> <span class="s1">&#39;true four&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">eva</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;purple&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">eva</span><span class="p">.</span><span class="nx">changePilot</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">person</span><span class="p">){</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">pilot</span> <span class="o">=</span> <span class="nx">person</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="nx">eva</span><span class="p">.</span><span class="nx">pilot</span> <span class="c1">// true four</span>
+</span><span class='line'>  <span class="nx">eva</span><span class="p">.</span><span class="nx">color</span> <span class="c1">// purple</span>
+</span><span class='line'>  <span class="nx">eva</span><span class="p">.</span><span class="nx">changePilot</span><span class="p">(</span><span class="s1">&#39;zero&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">eva</span><span class="p">.</span><span class="nx">pilot</span> <span class="c1">// zero </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+        <hr class="divider-short"/>
+        
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/blog/2014/08/21/ruby-net-http/" title="Previous Post: RubyWay: Net::HTTP篇">&laquo; Previous: RubyWay: Net::HTTP篇</a>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2">
+  <div class="social-icon-list">
+    
+
+    
+
+    
+
+    
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4>Powered by <a href="http://octopress.org/">Octopress</a>. Designed by <a href="http://AdrianArtiles.com">Adrian Artiles</a>.</h4>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>
