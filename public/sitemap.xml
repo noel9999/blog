@@ -35,21 +35,21 @@
   
   <url>
     <loc>http://noelsaga.herokuapp.com/</loc>
-    <lastmod>2014-08-22T00:50:49+08:00</lastmod>
+    <lastmod>2014-08-22T02:10:18+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://noelsaga.herokuapp.com/blog/archives/</loc>
-    <lastmod>2014-08-22T00:50:49+08:00</lastmod>
+    <lastmod>2014-08-22T02:10:18+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://noelsaga.herokuapp.com/posts/</loc>
-    <lastmod>2014-08-22T00:50:49+08:00</lastmod>
+    <lastmod>2014-08-22T02:10:18+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

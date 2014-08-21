@@ -10,7 +10,8 @@ single: true
         <h1>{% if site.titlecase %}{{ page.title | titlecase }}{% else %}{{ page.title }}{% endif %}</h1>
         <div class="meta">
           written {% include post/date.html %}{% if updated %}{{ updated }}{% else %}{{ time }}{% endif %}
-          {% include post/categories.html %}
+          | {% include post/categories.html %} |
+          <span class="comments"><a href="{{page.url}}#disqus_thread">comments</a></span>
         </div>
         {{ content }}
 
