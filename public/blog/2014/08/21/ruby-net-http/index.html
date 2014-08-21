@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>RubyWay: Net::HTTP篇 - Noel Saga</title>
+  <meta name="author" content="Noel">
+
+  
+  <meta name="description" content="RubyWay: Net::HTTP篇 written Aug 21st, 2014 in ruby 前言 這算是比較抽象的一篇，目前我也不是很清楚他實際的作用與原理，但先記錄一下我所學到的部分與應用。 get_response 有時候我們會需要在程式裡發出一個request， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://noelsaga.herokuapp.com/blog/2014/08/21/ruby-net-http">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Noel Saga" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>RubyWay: Net::HTTP篇</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-08-21T23:53:47+08:00" pubdate data-updated="true">Aug 21<sup>st</sup>, 2014</time>
+          
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ruby/'>ruby</a>
+  
+</span>
+
+
+        </div>
+        <h2>前言</h2>
+
+<p>這算是比較抽象的一篇，目前我也不是很清楚他實際的作用與原理，但先記錄一下我所學到的部分與應用。</p>
+
+<h2>get_response</h2>
+
+<p> 有時候我們會需要在程式裡發出一個request，簡單的說就想像我們直接在瀏覽器裡輸入一串url，此時我們就可以利用Net::HTTP.get_response(<em>你要的uri</em>)，會回傳一個物件，而我們可以根據這個物件做我們想要的應用，看程式碼教學：</p>
+
+<!-- more -->
+
+
+<pre><code>require 'net/http'
+#方法一
+uri = URI.perse("example.com/bar/dosomething")  ＃先解析成uri物件比較方便
+response = Net::HTTP.get_response(uri) # 回傳物件就是我們要的東西，我們可以利用他做很多事
+
+#方法二
+http = Net::HTTP.new(uri.host,uri.port)
+response = http.request(Net::HTTP::Get.new(uri.request_uri))  #切記Get.new()的參數是request_uri不是uri
+
+Net::HTTP.get_print(uri)   #印出response.body
+
+
+response.code       # 回傳http狀態碼
+response.body       # 回傳整個body內容，通常是編碼過不是人能看的東西
+response.message    # 回傳HTTP狀態碼代表訊息 ex："Moved Permanently" 
+response.uri        # 回傳呼叫它的uri物件
+
+#uri物件也是個很方便的東西裡面常見的功能有
+
+uri.request_uri     # 回傳你的request ex: /bar/dosomething
+uri.host            # 回傳domain
+uri.path            # 同request_uri
+uri.scheme          # 回傳使用的傳輸協定
+uri.query           # 回傳querysting
+uri.port            # 回傳使用的port
+
+#query_string處理
+params = { :limit =&gt; 10, :page =&gt; 3 }
+uri.query = URI.encode_www_form(params)
+</code></pre>
+
+<p>應用範例：預留一個版位顯示response.body的結果，利用Net::HTTP對某伺服器發送一個請求，並且把回傳的結果存入memcache以利用來顯示到預留的版位上。嗯嗯，聽起來有點像是ajax的概念，只是由伺服器端坐的而且他是同步的&hellip;</p>
+
+<pre><code>response = Net::HTTP.get_response(URI.parse("http://foobar.header.com/api"))
+if response.code.to_i == 200
+  $memcached.set("header-html", response.body, 0)
+end
+
+某一處的VIEW顯現出來
+
+&lt;%= raw $memcached.get("header-html").to_s.force_encode("utf8") %&gt;
+</code></pre>
+
+<hr />
+
+<h2>post_form</h2>
+
+<p>同理，有get方法就會有post方法，post方法一般用在傳送伺服器的的資料量大或是比較需要顧慮到安全時會用的！直接看教學範例：</p>
+
+<pre><code>require "net/http"
+
+uri = URI.parse("http://example.com/foo/search")
+
+#方法一
+response = Net::HTTP.post_form(uri, {"data" =&gt; "My data blah blah", "per_page" =&gt; "50"})
+
+#方法二
+http = Net::HTTP.new(uri.host, uri.port)
+request = Net::HTTP::Post.new(uri.request_uri)
+request.set_form_date({"data" =&gt; "My data blah blah", "per_page" =&gt; "50"})
+response = http.request(request)
+</code></pre>
+
+<h2>REST methods</h2>
+
+<p>有寫過rails的人相信都對RESTful不陌生，所以直接看範例吧！</p>
+
+<pre><code>require "net/http"
+
+uri = URI.parse("http://api.noelsaga.net/")
+
+http = Net::HTTP.new(uri.host, uri.port) #
+
+#Get : 通常是讀取單一筆資料如show
+response = http.request(Net::HTTP::Get.new("/post/1"))
+
+#Post: 通常是用來建立資料
+request = (Net::HTTP::Post.new("/post/1"))
+request.set_form_date({:tile =&gt; "Monday", :content =&gt; "I'm wanna go home..."})
+response = http.request(request)
+
+#Put : 通常是用來更新一筆資料
+request = (Net::HTTP::Put.new("/post/1"))
+request.set_form_date({:tile =&gt; "Tuesday"})
+response = http.request(request)
+
+#Delete: 嗯嗯，字面意思很清楚了
+request = (Net::HTTP::Delete.new("/post/1"))
+response = http.request(request)
+</code></pre>
+
+<h2>SSL/HTTPS request with PEM certificate</h2>
+
+<p>如果是需要pem認證時，可以這麼做，此處直接使用Peter Cooper提供的範例</p>
+
+<pre><code>require "net/https"
+require "uri"
+
+uri = URI.parse("https://secure.com/")
+pem = File.read("/path/to/my.pem")
+http = Net::HTTP.new(uri.host, uri.port)
+http.use_ssl = true
+http.cert = OpenSSL::X509::Certificate.new(pem)  # 根據pem檔案建立認證
+http.key = OpenSSL::PKey::RSA.new(pem)            # 根據pem檔案建立認證
+http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+request = Net::HTTP::Get.new(uri.request_uri)
+</code></pre>
+
+<h2>Post傳檔部分 （從缺中）</h2>
+
+<p><a href="http://www.rubyinside.com/nethttp-cheat-sheet-2940.html">參考Peter Cooper文章</a></p>
+
+
+        <hr class="divider-short"/>
+        
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/blog/2014/07/09/javascript-cookies/" title="Previous Post: cookies練習，使用javascript">&laquo; Previous: cookies練習，使用javascript</a>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2">
+  <div class="social-icon-list">
+    
+
+    
+
+    
+
+    
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4>Powered by <a href="http://octopress.org/">Octopress</a>. Designed by <a href="http://AdrianArtiles.com">Adrian Artiles</a>.</h4>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>
