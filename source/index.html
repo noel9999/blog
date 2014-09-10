@@ -18,6 +18,15 @@ layout: default
 
     <div class="article-list">
       <div class="container">
+
+    <aside class="sidebar">
+      {% if site.blog_index_asides.size %}
+        {% include_array blog_index_asides %}
+      {% else %}
+        {% include_array default_asides %}
+      {% endif %}
+    </aside>
+    
         {% for post in site.posts %}
           {% assign content = post.content %}
           <div class="row">
@@ -28,6 +37,7 @@ layout: default
         {% endfor %}
       </div>
     </div>
+
 
     <hr class="divider-short"/>
 
