@@ -13,7 +13,15 @@ title: All Posts
   </div>
 
   <div class="article-list">
+
     <div class="container">
+      <aside class="sidebar">
+        {% if site.blog_index_asides.size %}
+          {% include_array blog_index_asides %}
+        {% else %}
+          {% include_array default_asides %}
+        {% endif %}
+      </aside>
       {% for post in site.posts reverse %}
       {% assign content = post.content %}
       <div class="row">
@@ -25,3 +33,15 @@ title: All Posts
     </div>
   </div>
 </div>
+<style>
+  .article-list{
+    position: relative;
+  }
+  .container{
+    margin: 0px -100px 0px 0px;
+  }
+  .sidebar{
+    position: absolute;
+    right: 0;
+  }
+</style>
