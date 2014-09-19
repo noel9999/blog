@@ -16,17 +16,17 @@ layout: default
       </div>
     </div>
 
+
+
     <div class="article-list">
       <div class="container">
-
-    <aside class="sidebar">
-      {% if site.blog_index_asides.size %}
-        {% include_array blog_index_asides %}
-      {% else %}
-        {% include_array default_asides %}
-      {% endif %}
-    </aside>
-    
+        <aside class="sidebar">
+          {% if site.blog_index_asides.size %}
+            {% include_array blog_index_asides %}
+          {% else %}
+            {% include_array default_asides %}
+          {% endif %}
+        </aside>
         {% for post in site.posts %}
           {% assign content = post.content %}
           <div class="row">
@@ -39,6 +39,7 @@ layout: default
     </div>
 
 
+
     <hr class="divider-short"/>
 
     <div class="archive-link">
@@ -46,6 +47,15 @@ layout: default
     </div>
   </div>
 </div>
+<style>
+  .article-list{
+    position: relative;
+  }
+  .sidebar{
+    position: absolute;
+    left: 0;
+  }
+</style>
 <script>
   $('.her-row').css('height',37);
 </script>
