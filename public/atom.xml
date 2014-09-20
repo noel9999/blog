@@ -4,7 +4,7 @@
   <title><![CDATA[Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2014-09-20T03:22:12+08:00</updated>
+  <updated>2014-09-21T01:51:54+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ticket_to_ride]]></title>
+    <link href="http://noelsaga.herokuapp.com/blog/2014/09/21/ticket-to-ride/"/>
+    <updated>2014-09-21T01:49:08+08:00</updated>
+    <id>http://noelsaga.herokuapp.com/blog/2014/09/21/ticket-to-ride</id>
+    <content type="html"><![CDATA[<p><em>She got a ticket to ride&hellip;</em></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Javascript Function]]></title>
