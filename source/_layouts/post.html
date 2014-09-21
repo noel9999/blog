@@ -5,6 +5,13 @@ single: true
 
 <article role="article" class="full-single-article">
   <div class="container">
+    <aside class="sidebar">
+      {% if site.blog_index_asides.size %}
+        {% include_array blog_index_asides %}
+      {% else %}
+        {% include_array default_asides %}
+      {% endif %}
+    </aside>
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
         <h1>{% if site.titlecase %}{{ page.title | titlecase }}{% else %}{{ page.title }}{% endif %}</h1>
@@ -45,3 +52,21 @@ single: true
     </div>
   </div>
 </div>
+<style>
+ .article{
+  position: relative;
+ }
+ .container{
+  padding-right: 100px;
+ }
+ .sidebar{
+    position: absolute;
+    right: -271px;
+    width: 310px;
+    padding-left: 40px;
+    background-color: rgba(75,79,87,0.5);
+
+  }
+</style>
+<script src="{{ root_url }}/javascripts/sidebar.js"></script>
+
