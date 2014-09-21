@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2014-09-21T02:10:12+08:00</updated>
+  <updated>2014-09-21T15:27:59+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -33,61 +33,36 @@
 
 <h3>ruby內建迭代函式寫法</h3>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">find_all</span> <span class="k">do</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">n</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
-</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;h1&gt;結果 [2,4,6,8]&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:ruby %}
+[1,2,3,4,5,6,7,8,9].find_all do |n|
+  n%2 == 0
+end</p>
+
+<h1>結果 [2,4,6,8]</h1>
+
+<p>{% endcodeblock %}</p>
 
 <h3>傳統迴圈寫法:</h3>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">]</span>
-</span><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'><span class="k">for</span> <span class="n">n</span> <span class="k">in</span> <span class="n">array</span>
-</span><span class='line'>  <span class="n">result</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">n</span> <span class="k">if</span> <span class="n">n</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
-</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;h1&gt;result: [2,4,6,8]&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">result</span><span class="o">.</span><span class="n">clear</span> <span class="c1"># 洗白</span>
-</span><span class='line'><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span class='line'><span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">array</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">result</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">array</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="k">if</span> <span class="n">array</span><span class="o">[</span><span class="n">i</span><span class="o">]%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;h1&gt;result: [2,4,6,8]&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:ruby %}
+array = [1,2,3,4,5,6,7,8,9]
+result = []
+for n in array
+  result &lt;&lt; n if n%2 == 0
+end</p>
+
+<h1>result: [2,4,6,8]</h1>
+
+<p>result.clear # 洗白
+i = 0
+while(i&lt;array.length)
+  result &lt;&lt; array[i] if array[i]%2 == 0
+  i += 1
+end</p>
+
+<h1>result: [2,4,6,8]</h1>
+
+<p>{% endcodeblock %}</p>
 
 <br>
 
@@ -105,43 +80,26 @@
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map函式與each最大的不同是他會回傳一個新的陣列，而陣列的結果則是根據我們在程式區塊(block)裡所定義的來對原陣列做修改，其實這用途非常常見，像是我們有16名學生的原始成績，想幫他們做開根號在除以10後得到的加權成績:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">scores</span> <span class="o">=</span> <span class="o">[</span><span class="mi">68</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">79</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">34</span><span class="o">]</span>
-</span><span class='line'><span class="n">new_scores</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span>
-</span><span class='line'>  <span class="p">(</span><span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;h1&gt;scores: [68, 84, 92, 34, 79, 82, 80, 85, 80, 31, 25, 45, 46, 30, 42, 34]&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">new_scores</span><span class="p">:</span> <span class="o">[</span><span class="mi">82</span><span class="o">.</span><span class="mi">46</span><span class="p">,</span> <span class="mi">91</span><span class="o">.</span><span class="mi">65</span><span class="p">,</span> <span class="mi">95</span><span class="o">.</span><span class="mi">92</span><span class="p">,</span> <span class="mi">58</span><span class="o">.</span><span class="mi">31</span><span class="p">,</span> <span class="mi">88</span><span class="o">.</span><span class="mi">88</span><span class="p">,</span> <span class="mi">90</span><span class="o">.</span><span class="mi">55</span><span class="p">,</span> <span class="mi">89</span><span class="o">.</span><span class="mi">44</span><span class="p">,</span> <span class="mi">92</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span> <span class="mi">89</span><span class="o">.</span><span class="mi">44</span><span class="p">,</span> <span class="mi">55</span><span class="o">.</span><span class="mi">68</span><span class="p">,</span> <span class="mi">50</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">67</span><span class="o">.</span><span class="mi">08</span><span class="p">,</span> <span class="mi">67</span><span class="o">.</span><span class="mi">82</span><span class="p">,</span> <span class="mi">54</span><span class="o">.</span><span class="mi">77</span><span class="p">,</span> <span class="mi">64</span><span class="o">.</span><span class="mi">81</span><span class="p">,</span> <span class="mi">58</span><span class="o">.</span><span class="mi">31</span><span class="o">]&lt;</span><span class="sr">/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;array = [[1,2],[3,4],[5,6],[7,8]]</span>
-</span><span class='line'><span class="sr">array.map do |n|</span>
-</span><span class='line'><span class="sr">  n.lasy # 只要最後一個元素</span>
-</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="o">]&lt;</span><span class="sr">/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;t = Topic.scoped.map(&amp;amp;:name)</span>
-</span><span class='line'><span class="sr">t = Topic.scoped.pluck(:name)</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:ruby %}
+scores = [68, 84, 92, 34, 79, 82, 80, 85, 80, 31, 25, 45, 46, 30, 42, 34]
+new_scores = scores.map do |n|
+  (Math.sqrt(n)*10).round(2)
+end</p>
+
+<h1>scores: [68, 84, 92, 34, 79, 82, 80, 85, 80, 31, 25, 45, 46, 30, 42, 34]</h1>
+
+<h1>new_scores: [82.46, 91.65, 95.92, 58.31, 88.88, 90.55, 89.44, 92.2, 89.44, 55.68, 50.0, 67.08, 67.82, 54.77, 64.81, 58.31]</h1>
+
+<p>array = [[1,2],[3,4],[5,6],[7,8]]
+array.map do |n|
+  n.lasy # 只要最後一個元素
+end</p>
+
+<h1>[2,4,6,8]</h1>
+
+<p>t = Topic.scoped.map(&amp;:name)
+t = Topic.scoped.pluck(:name)
+{% endcodeblock %}</p>
 
 <br>
 
@@ -160,21 +118,14 @@
 <br>
 
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">reduce</span> <span class="k">do</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span><span class="n">value</span><span class="o">|</span>
-</span><span class='line'>   <span class="n">sum</span> <span class="o">+=</span> <span class="n">value</span>
-</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;h1&gt;45&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:ruby %}
+[1,2,3,4,5,6,7,8,9].reduce do |sum,value|
+   sum += value
+end</p>
+
+<h1>45</h1>
+
+<p>{% endcodeblock %}</p>
 
 <br>
 
@@ -184,15 +135,12 @@
 <br>
 
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">reduce</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span><span class="n">value</span><span class="o">|</span>
-</span><span class='line'>   <span class="n">sum</span> <span class="o">+=</span> <span class="n">value</span>
-</span><span class='line'> <span class="k">end</span>
-</span><span class='line'> <span class="c1"># 95</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:ruby %}
+[1,2,3,4,5,6,7,8,9].reduce(50) do |sum,value|
+   sum += value
+ end
+ # 95
+{% endcodeblock %}</p>
 
 <br> 
 
@@ -202,77 +150,50 @@
 <br>
 
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">sum</span> <span class="o">+=</span> <span class="n">n</span>
-</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;h1&gt;sum: 45&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="err">也可以這樣使用</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;[1,2,3,4,5,6,7,8,9].reduce(:+)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="mi">45</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;[1,2,3,4,5,6,7,8,9].reduce(10,:+)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="mi">55</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:ruby %}
+sum = 0
+[1,2,3,4,5,6,7,8,9].each do |n|
+  sum += n
+end</p>
+
+<h1>sum: 45</h1>
+
+<h1>也可以這樣使用</h1>
+
+<p>[1,2,3,4,5,6,7,8,9].reduce(:+)</p>
+
+<h1>45</h1>
+
+<p>[1,2,3,4,5,6,7,8,9].reduce(10,:+)</p>
+
+<h1>55</h1>
+
+<p>{% endcodeblock %}</p>
 
 <h3>模仿select功能</h3>
 
 <br>
 
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">reduce</span><span class="p">(</span><span class="o">[]</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">result</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">result</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">value</span> <span class="k">if</span> <span class="n">value</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="n">result</span>  <span class="c1"># 注意，這行如果不寫他會回傳nil，因為當1迭代進去時，不符合規則所以會回傳nil，這樣result下一次就會變成nil了而非[]</span>
-</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:ruby%}
+[1,2,3,4,5,6,7,8,9].reduce([]) do |result, value|
+  result &lt;&lt; value if value%2 == 0
+  result  # 注意，這行如果不寫他會回傳nil，因為當1迭代進去時，不符合規則所以會回傳nil，這樣result下一次就會變成nil了而非[]
+end</p>
+
+<p>{% endcodeblock %}</p>
 
 <h3>模仿map功能</h3>
 
 <br>
 
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">reduce</span><span class="p">()</span> <span class="k">do</span> <span class="o">|</span><span class="n">result</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">result</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span>
-</span><span class='line'>  <span class="n">result</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:ruby%}
+[1,2,3,4,5,6,7,8,9].reduce() do |result, value|
+  result &lt;&lt; Math.sqrt(value)/10
+  result<br/>
+end
+{% endcodeblock %}</p>
 ]]></content>
   </entry>
   

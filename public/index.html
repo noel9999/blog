@@ -517,16 +517,39 @@ in
   .article-list{
     position: relative;
   }
-  .container{
-    margin: 0px -100px 0px 0px;
-  }
   .sidebar{
     position: absolute;
-    right: 0;
+    right: -271px;
+    width: 310px;
+    padding-left: 40px;
+    background-color: rgba(75,79,87,0.5);
+
   }
 </style>
 <script>
   $('.her-row').css('height',37);
+  $('.sidebar').hover(
+    function(){
+      $(this).stop().animate(
+        {
+          right: '0',
+          backgroundColor: 'rgb(243,244,246)',
+          opacity: '1'
+        },
+        500
+      );
+    },
+    function(){
+      $(this).stop().animate(
+        {
+          right: '-271px',
+          backgroundColor: 'rgb(75,79,87)',
+          opacity: '0.5'
+        },
+        500
+      );
+    }
+  );
 </script>
     <footer id="footer" class="her-row">
   <div class="container">
