@@ -24,7 +24,7 @@ categories:
 
 ![pic](../images/o0640064012326561387.jpg)
 
-![image](http://blenderartists.org/forum/attachment.php?attachmentid=212851&stc=1&d=1358710824g)
+![image](http://blenderartists.org/forum/attachment.php?attachmentid=212851&stc=1&d=1358710824g =250)
 
 {% img right /images/o0640064012326561387.jpg 350 350 'image' 'images' %}
 

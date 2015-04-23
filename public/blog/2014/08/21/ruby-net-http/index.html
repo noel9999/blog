@@ -13,7 +13,7 @@
   <meta name="author" content="Noel">
 
   
-  <meta name="description" content="Recent Posts Javascript Function Ruby Methods Map Reduce Javascript Object and Class RubyWay: Net::HTTP篇 Cookies練習，使用javascript Recent Comments &hellip;">
+  <meta name="description" content="Recent Posts Javascript This 指標 Javascript Function Ruby Methods Map Reduce Javascript Object and Class RubyWay: Net::HTTP篇 Recent Comments &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -48,6 +48,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/09/21/javascript-this-zhi-biao/">Javascript This 指標</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/08/24/javascript-function/">Javascript Function</a>
       </li>
     
@@ -63,10 +67,6 @@
         <a href="/blog/2014/08/21/ruby-net-http/">RubyWay: Net::HTTP篇</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/07/09/javascript-cookies/">Cookies練習，使用javascript</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -75,7 +75,7 @@
 </section>
 <section>
 <h1>Categories</h1>
-<span class='categories_tag'> <a href='/blog/categories/javascript' style='font-size: 160.0%'>Javascript(2)</a>  <a href='/blog/categories/ruby' style='font-size: 160.0%'>Ruby(2)</a> </span>
+<span class='categories_tag'> <a href='/blog/categories/javascript' style='font-size: 160.0%'>Javascript(3)</a>  <a href='/blog/categories/ruby' style='font-size: 140.0%'>Ruby(2)</a> </span>
 </section>
 
 <section>
@@ -146,48 +146,91 @@ in
 <!-- more -->
 
 
-<pre><code>require 'net/http'
-#方法一
-uri = URI.perse("example.com/bar/dosomething")  ＃先解析成uri物件比較方便
-response = Net::HTTP.get_response(uri) # 回傳物件就是我們要的東西，我們可以利用他做很多事
+<figure class='code'><figcaption><span>使用講解:Get </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="nb">require</span> <span class="s1">&#39;net/http&#39;</span>
+</span><span class='line'>  <span class="c1">#方法一</span>
+</span><span class='line'>  <span class="n">uri</span> <span class="o">=</span> <span class="no">URI</span><span class="o">.</span><span class="n">perse</span><span class="p">(</span><span class="s2">&quot;example.com/bar/dosomething&quot;</span><span class="p">)</span>  <span class="err">＃先解析成</span><span class="n">uri</span><span class="err">物件比較方便</span>
+</span><span class='line'>  <span class="n">response</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">get_response</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span> <span class="c1"># 回傳物件就是我們要的東西，我們可以利用他做很多事</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">#方法二</span>
+</span><span class='line'>  <span class="n">http</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">uri</span><span class="o">.</span><span class="n">host</span><span class="p">,</span><span class="n">uri</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Get</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">uri</span><span class="o">.</span><span class="n">request_uri</span><span class="p">))</span>  <span class="c1">#切記Get.new()的參數是request_uri不是uri</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">get_print</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>   <span class="c1">#印出response.body</span>
+</span><span class='line'>  
+</span><span class='line'>  
+</span><span class='line'>  <span class="n">response</span><span class="o">.</span><span class="n">code</span>          <span class="c1"># 回傳http狀態碼</span>
+</span><span class='line'>  <span class="n">response</span><span class="o">.</span><span class="n">body</span>          <span class="c1"># 回傳整個body內容，通常是編碼過不是人能看的東西</span>
+</span><span class='line'>  <span class="n">response</span><span class="o">.</span><span class="n">message</span>   <span class="c1"># 回傳HTTP狀態碼代表訊息 ex：&quot;Moved Permanently&quot; </span>
+</span><span class='line'>  <span class="n">response</span><span class="o">.</span><span class="n">uri</span>       <span class="c1"># 回傳呼叫它的uri物件</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">#uri物件也是個很方便的東西裡面常見的功能有</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="n">uri</span><span class="o">.</span><span class="n">request_uri</span>    <span class="c1"># 回傳你的request ex: /bar/dosomething</span>
+</span><span class='line'>  <span class="n">uri</span><span class="o">.</span><span class="n">host</span>           <span class="c1"># 回傳domain</span>
+</span><span class='line'>  <span class="n">uri</span><span class="o">.</span><span class="n">path</span>           <span class="c1"># 同request_uri</span>
+</span><span class='line'>  <span class="n">uri</span><span class="o">.</span><span class="n">scheme</span>         <span class="c1"># 回傳使用的傳輸協定</span>
+</span><span class='line'>  <span class="n">uri</span><span class="o">.</span><span class="n">query</span>          <span class="c1"># 回傳querysting</span>
+</span><span class='line'>  <span class="n">uri</span><span class="o">.</span><span class="n">port</span>           <span class="c1"># 回傳使用的port</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">#query_string處理</span>
+</span><span class='line'>  <span class="n">params</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:limit</span> <span class="o">=&gt;</span> <span class="mi">10</span><span class="p">,</span> <span class="ss">:page</span> <span class="o">=&gt;</span> <span class="mi">3</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">uri</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="no">URI</span><span class="o">.</span><span class="n">encode_www_form</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
-#方法二
-http = Net::HTTP.new(uri.host,uri.port)
-response = http.request(Net::HTTP::Get.new(uri.request_uri))  #切記Get.new()的參數是request_uri不是uri
-
-Net::HTTP.get_print(uri)   #印出response.body
-
-
-response.code       # 回傳http狀態碼
-response.body       # 回傳整個body內容，通常是編碼過不是人能看的東西
-response.message    # 回傳HTTP狀態碼代表訊息 ex："Moved Permanently" 
-response.uri        # 回傳呼叫它的uri物件
-
-#uri物件也是個很方便的東西裡面常見的功能有
-
-uri.request_uri     # 回傳你的request ex: /bar/dosomething
-uri.host            # 回傳domain
-uri.path            # 同request_uri
-uri.scheme          # 回傳使用的傳輸協定
-uri.query           # 回傳querysting
-uri.port            # 回傳使用的port
-
-#query_string處理
-params = { :limit =&gt; 10, :page =&gt; 3 }
-uri.query = URI.encode_www_form(params)
-</code></pre>
 
 <p>應用範例：預留一個版位顯示response.body的結果，利用Net::HTTP對某伺服器發送一個請求，並且把回傳的結果存入memcache以利用來顯示到預留的版位上。嗯嗯，聽起來有點像是ajax的概念，只是由伺服器端坐的而且他是同步的&hellip;</p>
 
-<pre><code>response = Net::HTTP.get_response(URI.parse("http://foobar.header.com/api"))
-if response.code.to_i == 200
-  $memcached.set("header-html", response.body, 0)
-end
+<figure class='code'><figcaption><span>應用範例:Get </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="n">response</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">get_response</span><span class="p">(</span><span class="no">URI</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;http://foobar.header.com/api&quot;</span><span class="p">))</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">code</span><span class="o">.</span><span class="n">to_i</span> <span class="o">==</span> <span class="mi">200</span>
+</span><span class='line'>      <span class="vg">$memcached</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;header-html&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="err">某一處的</span><span class="no">VIEW</span><span class="err">顯現出來</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">&lt;%=</span> <span class="n">raw</span> <span class="vg">$memcached</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;header-html&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">force_encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span> <span class="o">%&gt;</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
 
-某一處的VIEW顯現出來
-
-&lt;%= raw $memcached.get("header-html").to_s.force_encode("utf8") %&gt;
-</code></pre>
 
 <hr />
 
@@ -195,64 +238,117 @@ end
 
 <p>同理，有get方法就會有post方法，post方法一般用在傳送伺服器的的資料量大或是比較需要顧慮到安全時會用的！直接看教學範例：</p>
 
-<pre><code>require "net/http"
+<figure class='code'><figcaption><span>使用範例:Post </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="nb">require</span> <span class="s2">&quot;net/http&quot;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="n">uri</span> <span class="o">=</span> <span class="no">URI</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;http://example.com/foo/search&quot;</span><span class="p">)</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">#方法一</span>
+</span><span class='line'>  <span class="n">response</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">post_form</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;My data blah blah&quot;</span><span class="p">,</span> <span class="s2">&quot;per_page&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;50&quot;</span><span class="p">})</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">#方法二</span>
+</span><span class='line'>  <span class="n">http</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">uri</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">uri</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Post</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">uri</span><span class="o">.</span><span class="n">request_uri</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">request</span><span class="o">.</span><span class="n">set_form_date</span><span class="p">({</span><span class="s2">&quot;data&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;My data blah blah&quot;</span><span class="p">,</span> <span class="s2">&quot;per_page&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;50&quot;</span><span class="p">})</span>
+</span><span class='line'>  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
-uri = URI.parse("http://example.com/foo/search")
-
-#方法一
-response = Net::HTTP.post_form(uri, {"data" =&gt; "My data blah blah", "per_page" =&gt; "50"})
-
-#方法二
-http = Net::HTTP.new(uri.host, uri.port)
-request = Net::HTTP::Post.new(uri.request_uri)
-request.set_form_date({"data" =&gt; "My data blah blah", "per_page" =&gt; "50"})
-response = http.request(request)
-</code></pre>
 
 <h2>REST methods</h2>
 
 <p>有寫過rails的人相信都對RESTful不陌生，所以直接看範例吧！</p>
 
-<pre><code>require "net/http"
+<figure class='code'><figcaption><span>使用範例:REST </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="nb">require</span> <span class="s2">&quot;net/http&quot;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="n">uri</span> <span class="o">=</span> <span class="no">URI</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;http://api.noelsaga.net/&quot;</span><span class="p">)</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="n">http</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">uri</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">uri</span><span class="o">.</span><span class="n">port</span><span class="p">)</span> <span class="c1">#</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">#Get : 通常是讀取單一筆資料如show</span>
+</span><span class='line'>  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Get</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;/post/1&quot;</span><span class="p">))</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">#Post: 通常是用來建立資料</span>
+</span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="p">(</span><span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Post</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;/post/1&quot;</span><span class="p">))</span>
+</span><span class='line'>  <span class="n">request</span><span class="o">.</span><span class="n">set_form_date</span><span class="p">({</span><span class="ss">:tile</span> <span class="o">=&gt;</span> <span class="s2">&quot;Monday&quot;</span><span class="p">,</span> <span class="ss">:content</span> <span class="o">=&gt;</span> <span class="s2">&quot;I&#39;m wanna go home...&quot;</span><span class="p">})</span>
+</span><span class='line'>  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">#Put : 通常是用來更新一筆資料</span>
+</span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="p">(</span><span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Put</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;/post/1&quot;</span><span class="p">))</span>
+</span><span class='line'>  <span class="n">request</span><span class="o">.</span><span class="n">set_form_date</span><span class="p">({</span><span class="ss">:tile</span> <span class="o">=&gt;</span> <span class="s2">&quot;Tuesday&quot;</span><span class="p">})</span>
+</span><span class='line'>  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">#Delete: 嗯嗯，字面意思很清楚了</span>
+</span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="p">(</span><span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Delete</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;/post/1&quot;</span><span class="p">))</span>
+</span><span class='line'>  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+</span><span class='line'>  
+</span></code></pre></td></tr></table></div></figure>
 
-uri = URI.parse("http://api.noelsaga.net/")
-
-http = Net::HTTP.new(uri.host, uri.port) #
-
-#Get : 通常是讀取單一筆資料如show
-response = http.request(Net::HTTP::Get.new("/post/1"))
-
-#Post: 通常是用來建立資料
-request = (Net::HTTP::Post.new("/post/1"))
-request.set_form_date({:tile =&gt; "Monday", :content =&gt; "I'm wanna go home..."})
-response = http.request(request)
-
-#Put : 通常是用來更新一筆資料
-request = (Net::HTTP::Put.new("/post/1"))
-request.set_form_date({:tile =&gt; "Tuesday"})
-response = http.request(request)
-
-#Delete: 嗯嗯，字面意思很清楚了
-request = (Net::HTTP::Delete.new("/post/1"))
-response = http.request(request)
-</code></pre>
 
 <h2>SSL/HTTPS request with PEM certificate</h2>
 
 <p>如果是需要pem認證時，可以這麼做，此處直接使用Peter Cooper提供的範例</p>
 
-<pre><code>require "net/https"
-require "uri"
+<figure class='code'><figcaption><span>使用範例:PEM certificate </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="nb">require</span> <span class="s2">&quot;net/https&quot;</span>
+</span><span class='line'>  <span class="nb">require</span> <span class="s2">&quot;uri&quot;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">uri</span> <span class="o">=</span> <span class="no">URI</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;https://secure.com/&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">pem</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;/path/to/my.pem&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">http</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">uri</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">uri</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">http</span><span class="o">.</span><span class="n">use_ssl</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="n">http</span><span class="o">.</span><span class="n">cert</span> <span class="o">=</span> <span class="no">OpenSSL</span><span class="o">::</span><span class="no">X509</span><span class="o">::</span><span class="no">Certificate</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">pem</span><span class="p">)</span>  <span class="c1"># 根據pem檔案建立認證</span>
+</span><span class='line'>  <span class="n">http</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="no">OpenSSL</span><span class="o">::</span><span class="no">PKey</span><span class="o">::</span><span class="no">RSA</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">pem</span><span class="p">)</span>           <span class="c1"># 根據pem檔案建立認證</span>
+</span><span class='line'>  <span class="n">http</span><span class="o">.</span><span class="n">verify_mode</span> <span class="o">=</span> <span class="no">OpenSSL</span><span class="o">::</span><span class="no">SSL</span><span class="o">::</span><span class="no">VERIFY_PEER</span>
+</span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Get</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">uri</span><span class="o">.</span><span class="n">request_uri</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
-uri = URI.parse("https://secure.com/")
-pem = File.read("/path/to/my.pem")
-http = Net::HTTP.new(uri.host, uri.port)
-http.use_ssl = true
-http.cert = OpenSSL::X509::Certificate.new(pem)  # 根據pem檔案建立認證
-http.key = OpenSSL::PKey::RSA.new(pem)            # 根據pem檔案建立認證
-http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-request = Net::HTTP::Get.new(uri.request_uri)
-</code></pre>
 
 <h2>Post傳檔部分 （從缺中）</h2>
 

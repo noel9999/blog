@@ -15,6 +15,7 @@ categories: ruby
  有時候我們會需要在程式裡發出一個request，簡單的說就想像我們直接在瀏覽器裡輸入一串url，此時我們就可以利用Net::HTTP.get_response(*你要的uri*)，會回傳一個物件，而我們可以根據這個物件做我們想要的應用，看程式碼教學：
  
 <!-- more -->
+{% codeblock lang:rb 使用講解:Get %}
 
 	require 'net/http'
 	#方法一
@@ -46,8 +47,10 @@ categories: ruby
 	params = { :limit => 10, :page => 3 }
 	uri.query = URI.encode_www_form(params)
 
-
+{% endcodeblock  %}
 應用範例：預留一個版位顯示response.body的結果，利用Net::HTTP對某伺服器發送一個請求，並且把回傳的結果存入memcache以利用來顯示到預留的版位上。嗯嗯，聽起來有點像是ajax的概念，只是由伺服器端坐的而且他是同步的...
+
+{% codeblock lang:rb 應用範例:Get %}
 
 	response = Net::HTTP.get_response(URI.parse("http://foobar.header.com/api"))
     if response.code.to_i == 200
@@ -57,11 +60,14 @@ categories: ruby
     某一處的VIEW顯現出來
     
     <%= raw $memcached.get("header-html").to_s.force_encode("utf8") %>
+    
+{% endcodeblock %}
 
 ---
 ## post_form
 
 同理，有get方法就會有post方法，post方法一般用在傳送伺服器的的資料量大或是比較需要顧慮到安全時會用的！直接看教學範例：
+{% codeblock lang:rb 使用範例:Post %}
 
 	require "net/http"
 	
@@ -75,10 +81,11 @@ categories: ruby
 	request = Net::HTTP::Post.new(uri.request_uri)
 	request.set_form_date({"data" => "My data blah blah", "per_page" => "50"})
 	response = http.request(request)
-	
+{% endcodeblock %}
 
 ## REST methods
 有寫過rails的人相信都對RESTful不陌生，所以直接看範例吧！
+{% codeblock lang:rb 使用範例:REST %}
 
 	require "net/http"
 	
@@ -103,10 +110,11 @@ categories: ruby
 	request = (Net::HTTP::Delete.new("/post/1"))
 	response = http.request(request)
 	
+{% endcodeblock %}
 ##SSL/HTTPS request with PEM certificate 
 如果是需要pem認證時，可以這麼做，此處直接使用Peter Cooper提供的範例
 	
-	
+{% codeblock lang:rb 使用範例:PEM certificate %}
 	require "net/https"
 	require "uri"
 
@@ -118,6 +126,7 @@ categories: ruby
 	http.key = OpenSSL::PKey::RSA.new(pem)		      # 根據pem檔案建立認證
 	http.verify_mode = OpenSSL::SSL::VERIFY_PEER
 	request = Net::HTTP::Get.new(uri.request_uri)
+{% endcodeblock %}
 	
 ##Post傳檔部分 （從缺中）
 
