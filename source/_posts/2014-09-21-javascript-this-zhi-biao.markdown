@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Javascript This 指標"
+title: "Javascript This"
 date: 2014-09-21 16:59:57 +0800
 comments: true
 categories: Javascript
