@@ -305,12 +305,12 @@ in
 </span><span class='line'>  
 </span><span class='line'>  <span class="c1">#Post: 通常是用來建立資料</span>
 </span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="p">(</span><span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Post</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;/post/1&quot;</span><span class="p">))</span>
-</span><span class='line'>  <span class="n">request</span><span class="o">.</span><span class="n">set_form_date</span><span class="p">({</span><span class="ss">:tile</span> <span class="o">=&gt;</span> <span class="s2">&quot;Monday&quot;</span><span class="p">,</span> <span class="ss">:content</span> <span class="o">=&gt;</span> <span class="s2">&quot;I&#39;m wanna go home...&quot;</span><span class="p">})</span>
+</span><span class='line'>  <span class="n">request</span><span class="o">.</span><span class="n">set_form_date</span><span class="p">({</span><span class="ss">:tilte</span> <span class="o">=&gt;</span> <span class="s2">&quot;Monday&quot;</span><span class="p">,</span> <span class="ss">:content</span> <span class="o">=&gt;</span> <span class="s2">&quot;I&#39;m wanna go home...&quot;</span><span class="p">})</span>
 </span><span class='line'>  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 </span><span class='line'>  
 </span><span class='line'>  <span class="c1">#Put : 通常是用來更新一筆資料</span>
 </span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="p">(</span><span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Put</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;/post/1&quot;</span><span class="p">))</span>
-</span><span class='line'>  <span class="n">request</span><span class="o">.</span><span class="n">set_form_date</span><span class="p">({</span><span class="ss">:tile</span> <span class="o">=&gt;</span> <span class="s2">&quot;Tuesday&quot;</span><span class="p">})</span>
+</span><span class='line'>  <span class="n">request</span><span class="o">.</span><span class="n">set_form_date</span><span class="p">({</span><span class="ss">:title</span> <span class="o">=&gt;</span> <span class="s2">&quot;Tuesday&quot;</span><span class="p">})</span>
 </span><span class='line'>  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 </span><span class='line'>  
 </span><span class='line'>  <span class="c1">#Delete: 嗯嗯，字面意思很清楚了</span>

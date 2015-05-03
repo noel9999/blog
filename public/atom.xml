@@ -4,7 +4,7 @@
   <title><![CDATA[Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-04-24T01:48:57+08:00</updated>
+  <updated>2015-05-03T14:36:02+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -25,7 +25,7 @@
 
 <h2>什麼是this?</h2>
 
-<p>this代表當前的物件，更直白的說就是正在使用的物件為何，我們會用this來代表。一般而言會呼叫this的場合僅在method裡面使用，而this代表的對象就是函式所屬的物件</p>
+<p>this代表當前的物件，更直白的說就是正在使用的物件為何，我們會用this來代表，這是很重要的一點。一般而言會呼叫this的場合僅在method裡面使用，而this代表的對象就是函式所屬的物件</p>
 
 <figure class='code'><figcaption><span>this 簡單使用方式 </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -50,6 +50,8 @@
 </span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">zilla</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">());</span> <span class="c1">//  Hi, I am godzilla</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<hr />
 
 <h2>this如何決定？</h2>
 
@@ -83,7 +85,205 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>未完&hellip;</h2>
+<hr />
+
+<h2>當方法裡面包覆方法時，this會指向全域物件</h2>
+
+<p>當物件裡面含有巢狀方法時（方法裡面又包裹方法），則this會迷失方向，因此不會參考該物件，轉而參考全域物件，也就是window物件</p>
+
+<figure class='code'><figcaption><span>碰到巢狀時，this會指向全域物件 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="nx">name</span> <span class="o">=</span> <span class="s2">&quot;Window Godzilla&quot;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">myObject</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>     <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Object Godzilla&quot;</span><span class="p">,</span>
+</span><span class='line'>     <span class="nx">sayHellow</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Hello &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">)},</span>
+</span><span class='line'>     <span class="nx">lostThis</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>       <span class="kd">var</span> <span class="nx">gg</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(){</span>
+</span><span class='line'>          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="c1">//在這裡會印出Window Godzilla 而非 Object Godzilla</span>
+</span><span class='line'>       <span class="p">}()</span>
+</span><span class='line'>     <span class="p">}</span> 
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">myObject</span><span class="p">.</span><span class="nx">sayHellow</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>即使傳入一個匿名方法，而該方法裡面又有呼叫到this時，依然會轉而參考window物件</p>
+
+<figure class='code'><figcaption><span>傳入一個帶有呼叫this匿名函式給物件方法 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">name</span> <span class="o">=</span> <span class="s2">&quot;Window Object&quot;</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">myObject</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>     <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Object Godzilla&quot;</span><span class="p">,</span>
+</span><span class='line'>     <span class="nx">sayHellow</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">){</span>
+</span><span class='line'>     <span class="nx">callback</span><span class="p">()</span>
+</span><span class='line'>     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Hello &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">)},</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="nx">myObject</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Hellow &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="p">)})</span>
+</span><span class='line'><span class="c1">// 印出</span>
+</span><span class='line'><span class="c1">// Hellow Window Godzilla</span>
+</span><span class='line'><span class="c1">// Hello Object Godzilla</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<h2>如果怕this迷失的話，我們可以明確指定給它</h2>
+
+<p>有很多方法可以避免this值迷失，常見的有下列幾種</p>
+
+<br>
+
+
+<h3>1. 依靠範圍練尋找，把this指定給明確變數</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="kd">var</span> <span class="nx">myObject</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Object Godzilla&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">sayHello</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span> <span class="c1">//就在這裡指定</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">useThat</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="p">}(</span><span class="nx">that</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2. 使用call方法來明確指定使用哪個物件當做this</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">name</span> <span class="o">=</span> <span class="s2">&quot;Window Name&quot;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">test</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">test</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">test</span><span class="p">.</span><span class="nx">call</span><span class="p">({</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Yoda&quot;</span><span class="p">})</span>
+</span><span class='line'>  <span class="c1">//如果test方法有定義參數的話，則擺在this參數後方</span>
+</span><span class='line'>  <span class="c1">//test(this, arg1, arg2)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3. 使用apply方法來明確指定使用哪個物件當做this</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">name</span> <span class="o">=</span> <span class="s2">&quot;Window Name&quot;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">test</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">test</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">test</span><span class="p">.</span><span class="nx">apply</span><span class="p">({</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Yoda&quot;</span><span class="p">})</span>
+</span><span class='line'>  <span class="c1">//使用方式同call，差別在於如果有其他參數要使用是全部擺在一個陣列，並在this之後的第二個參數傳入</span>
+</span><span class='line'>  <span class="c1">//test(this, [arg1, arg2])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<h2>使用new來建立函式時，this會參考到該new出來的instance</h2>
+
+<p>聽來有點饒舌，但大概就是這樣的意思，此舉用法上很接近其他oop的實體變數的感覺，直接看範例</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="kd">var</span> <span class="nx">Godzilla</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s2">&quot;Godzilla&quot;</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">gender</span> <span class="o">=</span> <span class="s2">&quot;Male&quot;</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="s2">&quot;Black&quot;</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">getName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Hi, my name is &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">jr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Godzilla</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">jr</span><span class="p">.</span><span class="nx">getName</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>若不使用new的話，則規則同一般使用方式</p>
+
+<h2>在prototype裡使用this，則會參考到該建構式的instance</h2>
+
+<p>如果說前一則提到的觀念像是使用實體變數的感覺，這邊則像是實體方法裡使用到實體變數的概念，因為定義在Object.prototype裡的方法可以被共享，之後該Object的實例共享，所以我們可以把它看做是實體方法，裡面呼叫的this則自然是參考到該實體的變數囉：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">Godzilla</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s2">&quot;Godzilla&quot;</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">gender</span> <span class="o">=</span> <span class="s2">&quot;Male&quot;</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="s2">&quot;Black&quot;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'><span class="nx">Godzilla</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Hi, my name is &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">jr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Godzilla</span><span class="p">()</span>  
+</span><span class='line'><span class="nx">jr</span><span class="p">.</span><span class="nx">getName</span><span class="p">()</span>
+</span><span class='line'>  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<h2>結論</h2>
+
+<p>其實this觀念並沒有這麼難懂，且大多數oop的this觀念大略是相同的，都是在幫我們釐清我們當前使用或定義的對象為何罷了。只是可能依語言特性而個有些用法上的差異等等，例如ruby裡是用self幾乎等同this的；以js危範例介紹，是因菜自js上物件的表達方式比較多變，所以this的變化也就更多元，較容易搞混，但懂得原理，只要稍微停下來思考相信很快就在也不會被難倒了，或搞混了，<strong>千萬不要迷失自我為何啊</strong>。</p>
+
+<p>以上若有錯誤或其他建議都歡迎告知或討論唷，感謝^^</p>
 ]]></content>
   </entry>
   
@@ -743,8 +943,7 @@
     <content type="html"><![CDATA[<br>
 
 
-<p>ldsjfsdjflsdjflsdf
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;js也是個物件導向（object－oriented）的語言，但與我們傳統認知的C＋＋、Java的物件導向有所差異，但至少理念上還是一樣。物件會有所謂的成員也有人稱作屬性（property或attribute），指的是屬於該物件的某種數值或字串又或是其他的物件（ex: argument.length, event.data）。另外，物件也有方法（method，就是我們認知的function，ex: location.href(somefile.url) ），名稱上或許容易令人混淆，但大致來說一般的物件導向都是這麼稱呼與認知的。</p>
+<p>js也是個物件導向（object－oriented）的語言，但與我們傳統認知的C＋＋、Java的物件導向有所差異，但至少理念上還是一樣。物件會有所謂的成員也有人稱作屬性（property或attribute），指的是屬於該物件的某種數值或字串又或是其他的物件（ex: argument.length, event.data）。另外，物件也有方法（method，就是我們認知的function，ex: location.href(somefile.url) ），名稱上或許容易令人混淆，但大致來說一般的物件導向都是這麼稱呼與認知的。</p>
 
 <!-- more -->
 
@@ -1064,12 +1263,12 @@
 </span><span class='line'>  
 </span><span class='line'>  <span class="c1">#Post: 通常是用來建立資料</span>
 </span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="p">(</span><span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Post</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;/post/1&quot;</span><span class="p">))</span>
-</span><span class='line'>  <span class="n">request</span><span class="o">.</span><span class="n">set_form_date</span><span class="p">({</span><span class="ss">:tile</span> <span class="o">=&gt;</span> <span class="s2">&quot;Monday&quot;</span><span class="p">,</span> <span class="ss">:content</span> <span class="o">=&gt;</span> <span class="s2">&quot;I&#39;m wanna go home...&quot;</span><span class="p">})</span>
+</span><span class='line'>  <span class="n">request</span><span class="o">.</span><span class="n">set_form_date</span><span class="p">({</span><span class="ss">:tilte</span> <span class="o">=&gt;</span> <span class="s2">&quot;Monday&quot;</span><span class="p">,</span> <span class="ss">:content</span> <span class="o">=&gt;</span> <span class="s2">&quot;I&#39;m wanna go home...&quot;</span><span class="p">})</span>
 </span><span class='line'>  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 </span><span class='line'>  
 </span><span class='line'>  <span class="c1">#Put : 通常是用來更新一筆資料</span>
 </span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="p">(</span><span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Put</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;/post/1&quot;</span><span class="p">))</span>
-</span><span class='line'>  <span class="n">request</span><span class="o">.</span><span class="n">set_form_date</span><span class="p">({</span><span class="ss">:tile</span> <span class="o">=&gt;</span> <span class="s2">&quot;Tuesday&quot;</span><span class="p">})</span>
+</span><span class='line'>  <span class="n">request</span><span class="o">.</span><span class="n">set_form_date</span><span class="p">({</span><span class="ss">:title</span> <span class="o">=&gt;</span> <span class="s2">&quot;Tuesday&quot;</span><span class="p">})</span>
 </span><span class='line'>  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 </span><span class='line'>  
 </span><span class='line'>  <span class="c1">#Delete: 嗯嗯，字面意思很清楚了</span>

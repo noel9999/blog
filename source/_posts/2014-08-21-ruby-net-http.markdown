@@ -98,12 +98,12 @@ categories: ruby
 	
 	#Post: 通常是用來建立資料
 	request = (Net::HTTP::Post.new("/post/1"))
-	request.set_form_date({:tile => "Monday", :content => "I'm wanna go home..."})
+	request.set_form_date({:tilte => "Monday", :content => "I'm wanna go home..."})
 	response = http.request(request)
 	
 	#Put : 通常是用來更新一筆資料
 	request = (Net::HTTP::Put.new("/post/1"))
-	request.set_form_date({:tile => "Tuesday"})
+	request.set_form_date({:title => "Tuesday"})
 	response = http.request(request)
 	
 	#Delete: 嗯嗯，字面意思很清楚了
