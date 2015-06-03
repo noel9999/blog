@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Ruby Each_with_object vs Reduce - Noel Saga</title>
+  <meta name="author" content="Noel">
+
+  
+  <meta name="description" content="Recent Posts Ruby Each_with_object vs Reduce Javascript This Javascript Function Ruby Methods Map Reduce Javascript Object and Class Recent Comments &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://noelsaga.herokuapp.com/blog/2015/06/03/ruby-each-with-object-vs-reduce">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Noel Saga" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <aside class="sidebar">
+      
+        <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/06/03/ruby-each-with-object-vs-reduce/">Ruby Each_with_object vs Reduce</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/21/javascript-this-zhi-biao/">Javascript This</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/08/24/javascript-function/">Javascript Function</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/08/22/ruby-methods-map-reduce/">Ruby Methods Map Reduce</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/08/22/javascript-object-and-class/">Javascript Object and Class</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Recent Comments</h1>
+  <div id="dsq-recentcomments" class="dsq-widget"><script type="text/javascript" src="http://disqus.com/forums/noelsaga/recent_comments_widget.js?hide_avatars=0&num_items=6"></script></div>
+</section>
+<section>
+<h1>Categories</h1>
+<span class='categories_tag'> <a href='/blog/categories/javascript' style='font-size: 160.0%'>Javascript(3)</a>  <a href='/blog/categories/ruby' style='font-size: 160.0%'>Ruby(3)</a> </span>
+</section>
+
+<section>
+  <h1>Friends</h1>
+  <ul id="friends">
+      <li>
+        <a href="http://rubyist.marsz.tw/">黃金俠的blog</a>
+      </li>
+      <li>
+        <a href="http://ayamomiji.tumblr.com/">愛雅小舖</a>
+      </li>
+      <li>
+        <a href="http://about.me/jonatw">強納森林大火</a>
+      </li>
+      <li>
+        <a href="http://seyna.tumblr.com/">文藝的blog</a>
+      </li>
+      <li>
+        <a href="http://ccaloha.herokuapp.com/">AlohaCC</a>
+      </li>
+  </ul>
+</section>
+
+
+
+
+
+      
+    </aside>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Ruby Each_with_object vs Reduce</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2015-06-03T23:37:29+08:00" pubdate data-updated="true">Jun 3<sup>rd</sup>, 2015</time>
+          | 
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ruby/'>ruby</a>
+  
+</span>
+
+ |
+          <span class="comments"><a href="/blog/2015/06/03/ruby-each-with-object-vs-reduce/#disqus_thread">comments</a></span>
+        </div>
+        <p>又發現一個好用的方法<code>each_with_object</code>，是屬於<em>Enumerable</em>的方法之一，最近看前輩的code才發現的，算是each家族中的一員，不得不說ruby內建的許多列舉方法實在是非常方便啊！它與前陣子介紹的<code>reduce</code>目的上有點類似，但似乎更為易懂，直接來看範例吧！</p>
+
+<!--more-->
+
+
+
+
+<figure class='code'><figcaption><span>each_with_object 範例一 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="sx">%w(red blue yello black)</span><span class="o">.</span><span class="n">each_with_object</span><span class="p">({})</span> <span class="k">do</span> <span class="o">|</span><span class="n">value</span><span class="p">,</span> <span class="nb">hash</span><span class="o">|</span>
+</span><span class='line'>      <span class="nb">hash</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">capitalize</span> <span class="o">+</span> <span class="s1">&#39;!&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="sr">//</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="s2">&quot;red&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Red!&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Blue!&quot;</span><span class="p">,</span> <span class="s2">&quot;yello&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Yello!&quot;</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Black!&quot;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>介紹</h2>
+
+<p>範例一其實就只是把一個陣列迭代做些處理後存入hash裡，然後依序下去直到迭代完成，是不是很熟悉呢？沒錯，類似的功能<code>reduct/inject</code>也做得到，甚至你單用each也是可以，但是<code>each_with_object</code>更方便簡單，<strong>你必須先指定一個參數</strong>當做一個容器的初始值，此例就是hash，然後每次迭代之後他會自動記住容器的狀態，並自動代入下次迭代，這裡與<code>reduce</code>不太一樣，寫法上是更簡當方便，剛剛的範例如果用<code>reduce</code>寫的話則是：</p>
+
+<figure class='code'><figcaption><span>reduce 範例一 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="sx">%w(red blue yello black)</span><span class="o">.</span><span class="n">reduce</span><span class="p">({})</span> <span class="k">do</span> <span class="o">|</span><span class="n">result</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">result</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">capitalize</span> <span class="o">+</span> <span class="s1">&#39;!&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">result</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="sr">//</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="s2">&quot;red&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Red!&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Blue!&quot;</span><span class="p">,</span> <span class="s2">&quot;yello&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Yello!&quot;</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Black!&quot;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最後輸出是一樣的，但<code>reduce</code>我們必須自己把結果擺在最後一行(<del>return</del>)，<code>reduce</code>才會把它當作下次繼續迭代的<strong><em>結果值</em></strong>，這點對某些人可能比較不是那麼地直覺。</p>
+
+<p>來看看另一個<code>each_with_object</code>的應用範例，讓我們來使用該函式做出類似select的效果</p>
+
+<figure class='code'><figcaption><span>each_with_object 範例二：模仿select </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">each_with_object</span><span class="p">(</span><span class="o">[]</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">value</span><span class="p">,</span> <span class="n">array</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">array</span> <span class="o">&lt;&lt;</span> <span class="n">value</span> <span class="k">unless</span> <span class="p">(</span><span class="n">value</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>   <span class="k">end</span> 
+</span><span class='line'><span class="sr">//</span>  <span class="o">=&gt;</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>基本上你可以依需求或你傳入的參數類型來自由使用該方法進而達到任何可能的功能，而可傳入的參數可以是array、hash、甚至是openstruct，所以object或hashie當然應該也可以，有興趣的人可以自己玩玩看。</p>
+
+<h2>與reduce差別</h2>
+
+<p>雖然這個方法看似很潮、很精簡，但還是有些使用上的限制與和<code>reduce</code>的差別，像是:</p>
+
+<ol>
+<li>each_with_object必須傳入一個參數，reduce則不然</li>
+<li>each_with_object接受的參數必須是容器型，不能是純值</li>
+<li>each_with_object程式區塊的參數順序與reduce相反，each家族都是以個別值為第一個參數</li>
+</ol>
+
+
+<p>第一與第三點應該非常直覺好懂，第二點則需要說明一下，因為each_with_object可以自己記住迭代回傳結果，而該結果也必須在使用該方法時就給定，如果此時你給他的參數是純值像是int、str、boolean等型態的物件，則會因為屬於純值而無法改變或操縱物件本身，所以永遠都會回傳自己，如以下範例:</p>
+
+<figure class='code'><figcaption><span>each_with_object 範例三：參數給數字 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">each_with_object</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">value</span><span class="p">,</span> <span class="n">array</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">value</span> <span class="o">*</span> <span class="n">array</span>
+</span><span class='line'>   <span class="k">end</span> 
+</span><span class='line'>  <span class="sr">//</span>  <span class="o">=&gt;</span> <span class="mi">1</span> <span class="err">而非</span> <span class="mi">120</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上就是該方法的介紹與分享，如果有問題或是發現小弟有哪邊有錯誤都請歡迎指教唷，感謝各位</p>
+
+
+        <hr class="divider-short"/>
+        
+        
+        <section>
+          <h1>Comments</h1>
+          <div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'noelsaga'; // Required - Replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </section>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/blog/2014/09/21/javascript-this-zhi-biao/" title="Previous Post: Javascript This">&laquo; Previous: Javascript This</a>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+ .article{
+  position: relative;
+ }
+ .container{
+  padding-right: 100px;
+ }
+ .sidebar{
+    position: absolute;
+    right: -271px;
+    width: 310px;
+    padding-left: 40px;
+    background-color: rgba(75,79,87,0.5);
+
+  }
+</style>
+<script src="/javascripts/sidebar.js"></script>
+
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2">
+  <div class="social-icon-list">
+    
+
+    
+
+    
+
+    
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4>Powered by <a href="http://octopress.org/">Octopress</a>. Designed by <a href="http://AdrianArtiles.com">Adrian Artiles</a>.</h4>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

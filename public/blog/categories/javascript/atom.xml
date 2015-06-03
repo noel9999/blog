@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Javascript | Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-05-03T19:46:38+08:00</updated>
+  <updated>2015-06-04T01:27:40+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -18,7 +18,7 @@
     <link href="http://noelsaga.herokuapp.com/blog/2014/09/21/javascript-this-zhi-biao/"/>
     <updated>2014-09-21T16:59:57+08:00</updated>
     <id>http://noelsaga.herokuapp.com/blog/2014/09/21/javascript-this-zhi-biao</id>
-    <content type="html"><![CDATA[<p>this指標是物件導向語言裡很重要的觀念與應用，像是Java, PHP等等。而自己第一次聽到這名詞是大學時學習Java的時候，後來接觸php時也又碰到了this（php物件導向也是由Java借鏡來的），但對this到底為何其實都不是很懂，被困擾了很久，單看this字面的意思還是讓人覺得抽象，不過當時也有不少同學對於this也都是一知半解，但寫程式的時候還是會知道該怎麼使用它，個人覺得這不是個好的現象，所以今天來分享一下對this的學習心得，並主要以<strong><em>javascript</em></strong>作為範例。</p>
+    <content type="html"><![CDATA[<p>this是物件導向語言裡很重要的觀念與應用，像是Java, PHP等等。而自己第一次聽到這名詞是大學時學習Java的時候，後來接觸php時也又碰到了this（php物件導向也是由Java借鏡來的），但對this到底為何其實都不是很懂，被困擾了很久，單看this字面的意思還是讓人覺得抽象，不過當時也有不少同學對於this也都是一知半解，但寫程式的時候還是會知道該怎麼使用它，個人覺得這不是個好的現象，所以今天來分享一下對this的學習心得，並主要以<strong><em>javascript</em></strong>作為範例。</p>
 
 <!-- more -->
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-05-03T19:46:26+08:00</updated>
+  <updated>2015-06-04T01:27:37+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -14,11 +14,100 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Ruby Each_with_object vs Reduce]]></title>
+    <link href="http://noelsaga.herokuapp.com/blog/2015/06/03/ruby-each-with-object-vs-reduce/"/>
+    <updated>2015-06-03T23:37:29+08:00</updated>
+    <id>http://noelsaga.herokuapp.com/blog/2015/06/03/ruby-each-with-object-vs-reduce</id>
+    <content type="html"><![CDATA[<p>又發現一個好用的方法<code>each_with_object</code>，是屬於<em>Enumerable</em>的方法之一，最近看前輩的code才發現的，算是each家族中的一員，不得不說ruby內建的許多列舉方法實在是非常方便啊！它與前陣子介紹的<code>reduce</code>目的上有點類似，但似乎更為易懂，直接來看範例吧！</p>
+
+<!--more-->
+
+
+
+
+<figure class='code'><figcaption><span>each_with_object 範例一 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="sx">%w(red blue yello black)</span><span class="o">.</span><span class="n">each_with_object</span><span class="p">({})</span> <span class="k">do</span> <span class="o">|</span><span class="n">value</span><span class="p">,</span> <span class="nb">hash</span><span class="o">|</span>
+</span><span class='line'>      <span class="nb">hash</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">capitalize</span> <span class="o">+</span> <span class="s1">&#39;!&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="sr">//</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="s2">&quot;red&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Red!&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Blue!&quot;</span><span class="p">,</span> <span class="s2">&quot;yello&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Yello!&quot;</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Black!&quot;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>介紹</h2>
+
+<p>範例一其實就只是把一個陣列迭代做些處理後存入hash裡，然後依序下去直到迭代完成，是不是很熟悉呢？沒錯，類似的功能<code>reduct/inject</code>也做得到，甚至你單用each也是可以，但是<code>each_with_object</code>更方便簡單，<strong>你必須先指定一個參數</strong>當做一個容器的初始值，此例就是hash，然後每次迭代之後他會自動記住容器的狀態，並自動代入下次迭代，這裡與<code>reduce</code>不太一樣，寫法上是更簡當方便，剛剛的範例如果用<code>reduce</code>寫的話則是：</p>
+
+<figure class='code'><figcaption><span>reduce 範例一 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="sx">%w(red blue yello black)</span><span class="o">.</span><span class="n">reduce</span><span class="p">({})</span> <span class="k">do</span> <span class="o">|</span><span class="n">result</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">result</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">capitalize</span> <span class="o">+</span> <span class="s1">&#39;!&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">result</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="sr">//</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="s2">&quot;red&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Red!&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Blue!&quot;</span><span class="p">,</span> <span class="s2">&quot;yello&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Yello!&quot;</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Black!&quot;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最後輸出是一樣的，但<code>reduce</code>我們必須自己把結果擺在最後一行(<del>return</del>)，<code>reduce</code>才會把它當作下次繼續迭代的<strong><em>結果值</em></strong>，這點對某些人可能比較不是那麼地直覺。</p>
+
+<p>來看看另一個<code>each_with_object</code>的應用範例，讓我們來使用該函式做出類似select的效果</p>
+
+<figure class='code'><figcaption><span>each_with_object 範例二：模仿select </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">each_with_object</span><span class="p">(</span><span class="o">[]</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">value</span><span class="p">,</span> <span class="n">array</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">array</span> <span class="o">&lt;&lt;</span> <span class="n">value</span> <span class="k">unless</span> <span class="p">(</span><span class="n">value</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>   <span class="k">end</span> 
+</span><span class='line'><span class="sr">//</span>  <span class="o">=&gt;</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>基本上你可以依需求或你傳入的參數類型來自由使用該方法進而達到任何可能的功能，而可傳入的參數可以是array、hash、甚至是openstruct，所以object或hashie當然應該也可以，有興趣的人可以自己玩玩看。</p>
+
+<h2>與reduce差別</h2>
+
+<p>雖然這個方法看似很潮、很精簡，但還是有些使用上的限制與和<code>reduce</code>的差別，像是:</p>
+
+<ol>
+<li>each_with_object必須傳入一個參數，reduce則不然</li>
+<li>each_with_object接受的參數必須是容器型，不能是純值</li>
+<li>each_with_object程式區塊的參數順序與reduce相反，each家族都是以個別值為第一個參數</li>
+</ol>
+
+
+<p>第一與第三點應該非常直覺好懂，第二點則需要說明一下，因為each_with_object可以自己記住迭代回傳結果，而該結果也必須在使用該方法時就給定，如果此時你給他的參數是純值像是int、str、boolean等型態的物件，則會因為屬於純值而無法改變或操縱物件本身，所以永遠都會回傳自己，如以下範例:</p>
+
+<figure class='code'><figcaption><span>each_with_object 範例三：參數給數字 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">each_with_object</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">value</span><span class="p">,</span> <span class="n">array</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">value</span> <span class="o">*</span> <span class="n">array</span>
+</span><span class='line'>   <span class="k">end</span> 
+</span><span class='line'>  <span class="sr">//</span>  <span class="o">=&gt;</span> <span class="mi">1</span> <span class="err">而非</span> <span class="mi">120</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上就是該方法的介紹與分享，如果有問題或是發現小弟有哪邊有錯誤都請歡迎指教唷，感謝各位</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Javascript This]]></title>
     <link href="http://noelsaga.herokuapp.com/blog/2014/09/21/javascript-this-zhi-biao/"/>
     <updated>2014-09-21T16:59:57+08:00</updated>
     <id>http://noelsaga.herokuapp.com/blog/2014/09/21/javascript-this-zhi-biao</id>
-    <content type="html"><![CDATA[<p>this指標是物件導向語言裡很重要的觀念與應用，像是Java, PHP等等。而自己第一次聽到這名詞是大學時學習Java的時候，後來接觸php時也又碰到了this（php物件導向也是由Java借鏡來的），但對this到底為何其實都不是很懂，被困擾了很久，單看this字面的意思還是讓人覺得抽象，不過當時也有不少同學對於this也都是一知半解，但寫程式的時候還是會知道該怎麼使用它，個人覺得這不是個好的現象，所以今天來分享一下對this的學習心得，並主要以<strong><em>javascript</em></strong>作為範例。</p>
+    <content type="html"><![CDATA[<p>this是物件導向語言裡很重要的觀念與應用，像是Java, PHP等等。而自己第一次聽到這名詞是大學時學習Java的時候，後來接觸php時也又碰到了this（php物件導向也是由Java借鏡來的），但對this到底為何其實都不是很懂，被困擾了很久，單看this字面的意思還是讓人覺得抽象，不過當時也有不少同學對於this也都是一知半解，但寫程式的時候還是會知道該怎麼使用它，個人覺得這不是個好的現象，所以今天來分享一下對this的學習心得，並主要以<strong><em>javascript</em></strong>作為範例。</p>
 
 <!-- more -->
 
