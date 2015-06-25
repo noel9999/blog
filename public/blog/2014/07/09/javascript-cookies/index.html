@@ -130,14 +130,161 @@
         </div>
         <h2>目的：</h2>
 
-<p>w3schools開宗明義的介紹，cookie是被發明來解決<strong><em>『如何讓伺服器記住使用者的資訊』</em></strong>。因為當伺服器端回傳了一個response給使用者端時，伺服器就會忘記一切關於使用者的資料，而cookie如何實作到這點呢？其實就只是把資料存在使用者端（瀏覽器），而一個cookie的大小最多為4KB，一個網站能夠存取20個cookie，而瀏覽器最多可記住300個cookie，內容是key=value的形式，其中value只能是字串，如果想存入array或hash得多花些技巧或是看看使用的開發框架有沒有幫忙處理這部份。</p>
+<p>w3schools開宗明義的介紹，cookie是被發明來解決<strong><em>『如何讓伺服器記住使用者的資訊』</em></strong>。因為當伺服器端回傳了一個response給使用者端時，伺服器就會忘記一切關於使用者的資料，而cookie如何實作到這點呢？其實就只是把資料存在使用者端（瀏覽器），例如使用者來到該網站輸入了些基本資料，而我們可以將這些資料存入cookie裡，下次該使用者在拜訪網頁時，我們就可以自動去cookie找尋之前的資料並且顯示出來，延伸應用包含使用者登入、記住使用者喜好資訊、購物車實作等等都是常見的cookie應用。而現今cookie也時常與session搭配做進一步的應用。</p>
 
 <!-- more -->
 
 
-<p>舉個最簡單跟<del>被用到爛</del>的例子，當</p>
+<h2>簡單介紹：</h2>
 
-<p>未完，待續&hellip;</p>
+<p>一般cookie特性如：</p>
+
+<ul>
+<li>一個cookie的大小最多為4KB</li>
+<li>一個網站能夠存取20個cookie</li>
+<li>瀏覽器最多可記住300個cookie，</li>
+<li>內容是key=value的形式，其中value只能是字串，如果想存入array或hash得多花些技巧</li>
+<li>可設定expires時間來決定cookie的存活時間</li>
+<li>若使用者關閉瀏覽器但cookie仍未失效，則會寫入<code>cookies.txt</code>裡</li>
+</ul>
+
+
+<h3>以http的角度來看cookie的運作方式</h3>
+
+<p>當client發出一個request給server時，該request的header裡會夾帶一些訊息，其中就包含<code>Cookie</code>，而server可借此取得該client端所儲存的cookie並使用；同理，當server端回response給client時，也會在header裡加上<code>Set-Cookie</code>的內容，藉此把想儲存的資料(如：使用者個人行為、使用偏好等資料)，存在client端裡，等待當下次該client端又向server端發出request時，便可檢查<code>Cookie</code>的內容來取得資料，來達成所謂<strong><em>讓伺服器記住使用者的資訊</em></strong>的目的。</p>
+
+<p>而一般來說cookie是server所設定且關心的，但實際上我們也可以在client端使用js來操作cookie、做即時性的操作，而不需要與server溝通，大大減少了server的工作，也增加了使用上的彈性與便利。以下就來介紹簡單的js對cookie操作：</p>
+
+<h3>範例</h3>
+
+<figure class='code'><figcaption><span>範例：js存入cookie </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="nx">now</span><span class="o">=</span><span class="k">new</span> <span class="nb">Date</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">now</span><span class="p">.</span><span class="nx">setTime</span><span class="p">(</span> <span class="nx">now</span><span class="p">.</span><span class="nx">getTime</span><span class="p">(</span> <span class="p">)</span> <span class="o">+</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">5</span> <span class="p">)</span>
+</span><span class='line'>  <span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span> <span class="o">=</span> <span class="s2">&quot;foo=bar;expires=&quot;</span> <span class="o">+</span> <span class="nx">now</span><span class="p">.</span><span class="nx">toGMTString</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>更進一步把它寫成個可以重複使用的function吧</p>
+
+<figure class='code'><figcaption><span>範例: 存取cookie函式 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="nx">expires_at</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">expires_at</span><span class="p">.</span><span class="nx">setTime</span><span class="p">(</span><span class="nx">expires_at</span><span class="p">.</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>  <span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span> <span class="o">=</span> <span class="s2">&quot;foo=bar;expires=&quot;</span> <span class="o">+</span> <span class="nx">expires_at</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>刪除cookie則把expires設得比現在的時間還早即可，就會失效了。</p>
+
+<figure class='code'><figcaption><span>範例: js移除cookie </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="nx">expires_at</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">expires_at</span><span class="p">.</span><span class="nx">setTime</span><span class="p">(</span><span class="nx">expires_at</span><span class="p">.</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>  <span class="nb">document</span><span class="p">.</span><span class="nx">cooki</span>   <span class="nx">e</span> <span class="o">=</span> <span class="s2">&quot;foo=bar;expires=&quot;</span> <span class="o">+</span> <span class="nx">expires_at</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>讀取特定cookie，對js來說似乎沒有什麼特定方式，所以只好自己寫個function來取，連同剛剛提到的都一起寫成function吧</p>
+
+<figure class='code'><figcaption><span>範例: js操作特定cookie </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">set_cookie</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">expires_at</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">domain</span><span class="p">){</span>
+</span><span class='line'>  <span class="nx">date</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">path</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">path</span> <span class="o">!==</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">?</span> <span class="nx">path</span> <span class="o">:</span> <span class="s1">&#39;/&#39;</span>
+</span><span class='line'>  <span class="nx">domain</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">domain</span> <span class="o">!==</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">?</span> <span class="nx">domain</span> <span class="o">:</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">host</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="nx">expires_at</span> <span class="o">===</span> <span class="s1">&#39;undefined&#39;</span><span class="p">){</span>
+</span><span class='line'>    <span class="c1">// 預設一小時到期</span>
+</span><span class='line'>    <span class="nx">date</span><span class="p">.</span><span class="nx">setTime</span><span class="p">(</span><span class="nx">date</span><span class="p">.</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">+</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">expires_at</span> <span class="o">=</span> <span class="nx">date</span><span class="p">.</span><span class="nx">toGMTString</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">else</span><span class="p">{</span>
+</span><span class='line'>    <span class="nx">date</span><span class="p">.</span><span class="nx">setTime</span><span class="p">(</span><span class="nx">date</span><span class="p">.</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">+</span> <span class="nx">expires_at</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">expires_at</span> <span class="o">=</span> <span class="nx">date</span><span class="p">.</span><span class="nx">toGMTString</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">cookie</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">+</span> <span class="s1">&#39;=&#39;</span> <span class="o">+</span> <span class="nx">escape</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;;expires=&#39;</span> <span class="o">+</span> <span class="nx">expires_at</span> <span class="o">+</span>  <span class="s1">&#39;;path=&#39;</span> <span class="o">+</span> <span class="nx">path</span> <span class="o">+</span> <span class="s1">&#39;;domain=&#39;</span> <span class="o">+</span> <span class="nx">domain</span>
+</span><span class='line'>  <span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span> <span class="o">=</span> <span class="nx">cookie</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">delete_cookie</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+</span><span class='line'>  <span class="nx">set_cookie</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">get_cookie</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">result</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">cookie</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="nx">cookie</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="nx">index</span> <span class="o">+</span> <span class="nx">name</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">end</span> <span class="o">=</span> <span class="nx">cookie</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">,</span><span class="nx">start</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">end</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+</span><span class='line'>      <span class="nx">result</span> <span class="o">=</span> <span class="nx">cookie</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">start</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">result</span> <span class="o">=</span> <span class="nx">cookie</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">result</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>安全性</h2>
+
+<p>既然cookie是存在瀏覽器，那是否有被使用者看到、更改，或是其他第三方更改或攔截的可能呢？答案當然是有，而且許多常見的駭客行為也正好會從cookie下手。而且許多網站以session-cookie來實作會員登入機制，而session_id時常存在cookie裡，因此也增加會員帳號被盜取的可能性(如：<a href="http://devco.re/blog/2015/01/30/cookie-security-insight-acer">宏碁雲端售票</a>)
+因此，我們盡量保持些良好的習慣與警覺性，可以降低cookie被串改或盜用的可能性</p>
+
+<ul>
+<li>應該避免把敏感性資料存在cookie裡</li>
+<li>若真有敏感性資料存在cookie裡需加密</li>
+<li>對cookie設定<code>Secure Flag</code>（Https）</li>
+<li>cookie設定<code>Http Only Flag</code>（js無法取得Cookie）</li>
+</ul>
+
+
+<p>遵守以上幾點，應能把cookie帶來的風險降到最小</p>
 
 
         <hr class="divider-short"/>

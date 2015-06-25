@@ -44,10 +44,10 @@ categories: Ruby
 ## 與reduce差別  
 
 雖然這個方法看似很潮、很精簡，但還是有些使用上的限制與和`reduce`的差別，像是:
-
-1. each_with_object必須傳入一個參數，reduce則不然
-2. each_with_object接受的參數必須是容器型，不能是純值
-3. each_with_object程式區塊的參數順序與reduce相反，each家族都是以個別值為第一個參數
+  
+ 1. each_with_object必須傳入一個參數，reduce則不然
+ 2. each_with_object接受的參數必須是容器型，不能是純值
+ 3. each_with_object程式區塊的參數順序與reduce相反，each家族都是以個別值為第一個參數
 
 第一與第三點應該非常直覺好懂，第二點則需要說明一下，因為each_with_object可以自己記住迭代回傳結果，而該結果也必須在使用該方法時就給定，如果此時你給他的參數是純值像是int、str、boolean等型態的物件，則會因為屬於純值而無法改變或操縱物件本身，所以永遠都會回傳自己，如以下範例:
   
