@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-06-26T00:40:57+08:00</updated>
+  <updated>2015-07-01T02:10:53+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -28,7 +28,7 @@
 <pre><code>%w(red blue yello black).each_with_object({}) do |value, hash|
     hash.store(value, value.capitalize + '!')
 end
-// =&gt; {"red"=&gt;"Red!", "blue"=&gt;"Blue!", "yello"=&gt;"Yello!", "black"=&gt;"Black!"}
+# =&gt; {"red"=&gt;"Red!", "blue"=&gt;"Blue!", "yello"=&gt;"Yello!", "black"=&gt;"Black!"}
 </code></pre>
 
 <p>{% endcodeblock %}</p>
@@ -43,7 +43,7 @@ end
     result.store(value, value.capitalize + '!')
     result
 end
-// =&gt; {"red"=&gt;"Red!", "blue"=&gt;"Blue!", "yello"=&gt;"Yello!", "black"=&gt;"Black!"}
+# =&gt; {"red"=&gt;"Red!", "blue"=&gt;"Blue!", "yello"=&gt;"Yello!", "black"=&gt;"Black!"}
 </code></pre>
 
 <p>{% endcodeblock %}</p>
@@ -57,10 +57,10 @@ end
 <pre><code>(1..9).each_with_object([]) do |value, array|
     array &lt;&lt; value unless (value % 2 == 0)
  end      
+# =&gt; [1, 3, 5, 7, 9]
 </code></pre>
 
-<p>//  => [1, 3, 5, 7, 9]
-{% endcodeblock %}</p>
+<p>{% endcodeblock %}</p>
 
 <p>基本上你可以依需求或你傳入的參數類型來自由使用該方法進而達到任何可能的功能，而可傳入的參數可以是array、hash、甚至是openstruct，所以object或hashie當然應該也可以，有興趣的人可以自己玩玩看。</p>
 
@@ -82,7 +82,7 @@ end
 <pre><code>(1..5).each_with_object(1) do |value, array|
     value * array
  end      
-//  =&gt; 1 而非 120
+# =&gt; 1 而非 120
 </code></pre>
 
 <p>{% endcodeblock %}</p>

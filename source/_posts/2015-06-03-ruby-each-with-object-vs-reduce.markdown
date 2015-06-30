@@ -13,7 +13,7 @@ categories: Ruby
 	%w(red blue yello black).each_with_object({}) do |value, hash|
 		hash.store(value, value.capitalize + '!')
 	end
-	// => {"red"=>"Red!", "blue"=>"Blue!", "yello"=>"Yello!", "black"=>"Black!"}
+	# => {"red"=>"Red!", "blue"=>"Blue!", "yello"=>"Yello!", "black"=>"Black!"}
 {% endcodeblock %}
 
 ## 介紹
@@ -24,7 +24,7 @@ categories: Ruby
 		result.store(value, value.capitalize + '!')
 		result
 	end
-	// => {"red"=>"Red!", "blue"=>"Blue!", "yello"=>"Yello!", "black"=>"Black!"}
+	# => {"red"=>"Red!", "blue"=>"Blue!", "yello"=>"Yello!", "black"=>"Black!"}
 {% endcodeblock %}
   
 最後輸出是一樣的，但`reduce`我們必須自己把結果擺在最後一行(~~return~~)，`reduce`才會把它當作下次繼續迭代的***結果值***，這點對某些人可能比較不是那麼地直覺。
@@ -35,7 +35,7 @@ categories: Ruby
 	(1..9).each_with_object([]) do |value, array|
 	    array << value unless (value % 2 == 0)
 	 end	  
-//  => [1, 3, 5, 7, 9]
+    # => [1, 3, 5, 7, 9]
 {% endcodeblock %}
 
 基本上你可以依需求或你傳入的參數類型來自由使用該方法進而達到任何可能的功能，而可傳入的參數可以是array、hash、甚至是openstruct，所以object或hashie當然應該也可以，有興趣的人可以自己玩玩看。
@@ -55,7 +55,7 @@ categories: Ruby
 	(1..5).each_with_object(1) do |value, array|
 		value * array
 	 end	  
-	//  => 1 而非 120
+	# => 1 而非 120
 {% endcodeblock %}
 
 以上就是該方法的介紹與分享，如果有問題或是發現小弟有哪邊有錯誤都請歡迎指教唷，感謝各位

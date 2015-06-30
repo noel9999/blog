@@ -13,7 +13,7 @@
   <meta name="author" content="Noel">
 
   
-  <meta name="description" content="Recent Posts Ruby Each_with_object vs Reduce Javascript This Javascript Function Ruby Methods Map Reduce Javascript Object and Class Recent Comments &hellip;">
+  <meta name="description" content="Recent Posts What Is Base64 Ruby Each_with_object vs Reduce Javascript This Javascript Function Ruby Methods Map Reduce Recent Comments Categories &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -48,6 +48,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/06/27/what-is-base64/">What Is Base64</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/06/03/ruby-each-with-object-vs-reduce/">Ruby Each_with_object vs Reduce</a>
       </li>
     
@@ -63,10 +67,6 @@
         <a href="/blog/2014/08/22/ruby-methods-map-reduce/">Ruby Methods Map Reduce</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/08/22/javascript-object-and-class/">Javascript Object and Class</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -75,7 +75,7 @@
 </section>
 <section>
 <h1>Categories</h1>
-<span class='categories_tag'> <a href='/blog/categories/javascript' style='font-size: 160.0%'>Javascript(3)</a>  <a href='/blog/categories/ruby' style='font-size: 160.0%'>Ruby(3)</a> </span>
+<span class='categories_tag'> <a href='/blog/categories/javascript' style='font-size: 160.0%'>Javascript(3)</a>  <a href='/blog/categories/ruby' style='font-size: 160.0%'>Ruby(3)</a>  <a href='/blog/categories/編碼' style='font-size: 120.0%'>編碼(1)</a> </span>
 </section>
 
 <section>
@@ -150,7 +150,7 @@ in
 </pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="sx">%w(red blue yello black)</span><span class="o">.</span><span class="n">each_with_object</span><span class="p">({})</span> <span class="k">do</span> <span class="o">|</span><span class="n">value</span><span class="p">,</span> <span class="nb">hash</span><span class="o">|</span>
 </span><span class='line'>      <span class="nb">hash</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">capitalize</span> <span class="o">+</span> <span class="s1">&#39;!&#39;</span><span class="p">)</span>
 </span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>  <span class="sr">//</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="s2">&quot;red&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Red!&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Blue!&quot;</span><span class="p">,</span> <span class="s2">&quot;yello&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Yello!&quot;</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Black!&quot;</span><span class="p">}</span>
+</span><span class='line'>  <span class="c1"># =&gt; {&quot;red&quot;=&gt;&quot;Red!&quot;, &quot;blue&quot;=&gt;&quot;Blue!&quot;, &quot;yello&quot;=&gt;&quot;Yello!&quot;, &quot;black&quot;=&gt;&quot;Black!&quot;}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -168,7 +168,7 @@ in
 </span><span class='line'>      <span class="n">result</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">capitalize</span> <span class="o">+</span> <span class="s1">&#39;!&#39;</span><span class="p">)</span>
 </span><span class='line'>      <span class="n">result</span>
 </span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>  <span class="sr">//</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="s2">&quot;red&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Red!&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Blue!&quot;</span><span class="p">,</span> <span class="s2">&quot;yello&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Yello!&quot;</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span><span class="o">=&gt;</span><span class="s2">&quot;Black!&quot;</span><span class="p">}</span>
+</span><span class='line'>  <span class="c1"># =&gt; {&quot;red&quot;=&gt;&quot;Red!&quot;, &quot;blue&quot;=&gt;&quot;Blue!&quot;, &quot;yello&quot;=&gt;&quot;Yello!&quot;, &quot;black&quot;=&gt;&quot;Black!&quot;}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -184,7 +184,7 @@ in
 </pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">each_with_object</span><span class="p">(</span><span class="o">[]</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">value</span><span class="p">,</span> <span class="n">array</span><span class="o">|</span>
 </span><span class='line'>      <span class="n">array</span> <span class="o">&lt;&lt;</span> <span class="n">value</span> <span class="k">unless</span> <span class="p">(</span><span class="n">value</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
 </span><span class='line'>   <span class="k">end</span> 
-</span><span class='line'><span class="sr">//</span>  <span class="o">=&gt;</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="o">]</span>
+</span><span class='line'>    <span class="c1"># =&gt; [1, 3, 5, 7, 9]</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -211,7 +211,7 @@ in
 </pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">each_with_object</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">value</span><span class="p">,</span> <span class="n">array</span><span class="o">|</span>
 </span><span class='line'>      <span class="n">value</span> <span class="o">*</span> <span class="n">array</span>
 </span><span class='line'>   <span class="k">end</span> 
-</span><span class='line'>  <span class="sr">//</span>  <span class="o">=&gt;</span> <span class="mi">1</span> <span class="err">而非</span> <span class="mi">120</span>
+</span><span class='line'>  <span class="c1"># =&gt; 1 而非 120</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -255,6 +255,8 @@ in
           <a class="pull-left" href="/blog/2014/09/21/javascript-this-zhi-biao/" title="Previous Post: Javascript This">&laquo; Previous: Javascript This</a>
         
 
+        
+          <a class="pull-right" href="/blog/2015/06/27/what-is-base64/" title="Next Post: What is base64">Next: What is base64 &raquo;</a>
         
       </div>
     </div>

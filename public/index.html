@@ -14,7 +14,7 @@
 
   
   <meta name="description" content="Noel Saga
-The fool on the hill&#8230; Home Archives About Recent Posts Ruby Each_with_object vs Reduce Javascript This Javascript Function Ruby &hellip;">
+The fool on the hill&#8230; Home Archives About Recent Posts What Is Base64 Ruby Each_with_object vs Reduce Javascript This Javascript &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,10 @@ The fool on the hill&#8230; Home Archives About Recent Posts Ruby Each_with_obje
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/06/27/what-is-base64/">What Is Base64</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/06/03/ruby-each-with-object-vs-reduce/">Ruby Each_with_object vs Reduce</a>
       </li>
     
@@ -96,10 +100,6 @@ The fool on the hill&#8230; Home Archives About Recent Posts Ruby Each_with_obje
         <a href="/blog/2014/08/22/ruby-methods-map-reduce/">Ruby Methods Map Reduce</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/08/22/javascript-object-and-class/">Javascript Object and Class</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -108,7 +108,7 @@ The fool on the hill&#8230; Home Archives About Recent Posts Ruby Each_with_obje
 </section>
 <section>
 <h1>Categories</h1>
-<span class='categories_tag'> <a href='/blog/categories/javascript' style='font-size: 160.0%'>Javascript(3)</a>  <a href='/blog/categories/ruby' style='font-size: 160.0%'>Ruby(3)</a> </span>
+<span class='categories_tag'> <a href='/blog/categories/javascript' style='font-size: 160.0%'>Javascript(3)</a>  <a href='/blog/categories/ruby' style='font-size: 160.0%'>Ruby(3)</a>  <a href='/blog/categories/編碼' style='font-size: 120.0%'>編碼(1)</a> </span>
 </section>
 
 <section>
@@ -138,6 +138,72 @@ The fool on the hill&#8230; Home Archives About Recent Posts Ruby Each_with_obje
 
           
         </aside>
+        
+          
+          <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+              <article>
+  <h2><a href="/blog/2015/06/27/what-is-base64/">What Is Base64</a></h2>
+  
+  <p>
+    <p>在從事web開發時，一定常常聽到<code>base64</code>，例如：rails裡會將cookie值採用base64編碼保護，而且在rails使用base64也相當容易，如：</p>
+
+
+<p><figure class='code'><figcaption><span>rails使用base64 </span></figcaption></p>
+
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="n">encrypted_code</span> <span class="o">=</span> <span class="no">Base64</span><span class="o">.</span><span class="n">encode64</span> <span class="s2">&quot;Hello World&quot;</span>
+</span><span class='line'>  <span class="c1"># 輸出 &quot;SGVsbG8gV29ybGQ=\n&quot;</span>
+</span><span class='line'>  <span class="no">Base64</span><span class="o">.</span><span class="n">decode64</span> <span class="n">encrypted_code</span>
+</span><span class='line'>  <span class="c1"># 輸出 &quot;Hello World&quot;</span>
+</span></code></pre></td></tr></table></div>
+
+
+<p></figure></p>
+
+<p>看起來似乎非常簡單使用跟沒什麼特別要學的成本，所以本篇教完了，結束&hellip;&hellip;..!?<br/>
+當然沒這麼簡單，學習一項事物時，我覺得除了事物本身外，<strong><em>更重要的是我們為何要學習它？</em></strong>甚至去了解它的由來，我覺得對學習可以有更深的幫助，也較有趣味性。所以接下來我會講解<code>base64</code>的蓋要與它的使用目的。</p>
+
+
+
+
+  </p>
+  <span class="meta">
+    written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2015-06-27T16:00:55+08:00" pubdate data-updated="true">Jun 27<sup>th</sup>, 2015</time>
+    
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/bian-ma/'>編碼</a>
+  
+</span>
+
+
+  </span>
+
+  
+    <a class="full-article-link pull-right" rel="full-article" href="/blog/2015/06/27/what-is-base64/">Read on &rarr;</a>
+  
+</article>
+            </div>
+          </div>
         
           
           <div class="row">
