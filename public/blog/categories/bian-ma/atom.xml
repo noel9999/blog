@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 編碼 | Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/blog/categories/bian-ma/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-07-01T02:10:53+08:00</updated>
+  <updated>2015-07-01T02:12:59+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -93,7 +93,9 @@ Base64.decode64 encrypted_code
 
 <p>若不會把漢字依據<code>UTF-8</code>轉為二進位制的話，可以來<a href="https://sites.google.com/site/nathanlexwww/tools/utf8-convert">這邊</a>轉。</p>
 
-<h2>Base64目的：</h2>
+<hr />
+
+<h2>Base64目的與運用：</h2>
 
 <p>到這裡我們對<code>base64</code>已經有大致了理解，base64的主要目的就是將非ASCII字元轉為可列印字符，所以我們也來看看這可以適合應用在哪些地方</p>
 

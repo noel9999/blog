@@ -60,8 +60,8 @@ Base64的64的由來是由`0~9`+`A~Z`+`a~z`＋`+`+`/`等64個字元所組成，�
 
 若不會把漢字依據`UTF-8`轉為二進位制的話，可以來[這邊](https://sites.google.com/site/nathanlexwww/tools/utf8-convert)轉。
 
-
-## Base64目的：
+---
+## Base64目的與運用：
 
 到這裡我們對`base64`已經有大致了理解，base64的主要目的就是將非ASCII字元轉為可列印字符，所以我們也來看看這可以適合應用在哪些地方
 
