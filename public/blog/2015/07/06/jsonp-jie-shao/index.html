@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>JSONP 介紹 - Noel Saga</title>
+  <meta name="author" content="Noel">
+
+  
+  <meta name="description" content="Recent Posts JSONP 介紹 What Is Base64 Ruby Each_with_object vs Reduce Javascript This Javascript Function Recent Comments Categories Javascript(3) &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://noelsaga.herokuapp.com/blog/2015/07/06/jsonp-jie-shao">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Noel Saga" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <aside class="sidebar">
+      
+        <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/07/06/jsonp-jie-shao/">JSONP 介紹</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/27/what-is-base64/">What Is Base64</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/03/ruby-each-with-object-vs-reduce/">Ruby Each_with_object vs Reduce</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/21/javascript-this-zhi-biao/">Javascript This</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/08/24/javascript-function/">Javascript Function</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Recent Comments</h1>
+  <div id="dsq-recentcomments" class="dsq-widget"><script type="text/javascript" src="http://disqus.com/forums/noelsaga/recent_comments_widget.js?hide_avatars=0&num_items=6"></script></div>
+</section>
+<section>
+<h1>Categories</h1>
+<span class='categories_tag'> <a href='/blog/categories/javascript' style='font-size: 160.0%'>Javascript(3)</a>  <a href='/blog/categories/jquery' style='font-size: 120.0%'>Jquery(1)</a>  <a href='/blog/categories/ruby' style='font-size: 160.0%'>Ruby(3)</a>  <a href='/blog/categories/編碼' style='font-size: 120.0%'>編碼(1)</a> </span>
+</section>
+
+<section>
+  <h1>Friends</h1>
+  <ul id="friends">
+      <li>
+        <a href="http://rubyist.marsz.tw/">黃金俠的blog</a>
+      </li>
+      <li>
+        <a href="http://ayamomiji.tumblr.com/">愛雅小舖</a>
+      </li>
+      <li>
+        <a href="http://about.me/jonatw">強納森林大火</a>
+      </li>
+      <li>
+        <a href="http://seyna.tumblr.com/">文藝的blog</a>
+      </li>
+      <li>
+        <a href="http://ccaloha.herokuapp.com/">AlohaCC</a>
+      </li>
+  </ul>
+</section>
+
+
+
+
+
+      
+    </aside>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>JSONP 介紹</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2015-07-06T01:56:17+08:00" pubdate data-updated="true">Jul 6<sup>th</sup>, 2015</time>
+          | 
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/jquery/'>jquery</a>
+  
+</span>
+
+ |
+          <span class="comments"><a href="/blog/2015/07/06/jsonp-jie-shao/#disqus_thread">comments</a></span>
+        </div>
+        <p>JSONP(JSON with Padding)，聽起來跟<code>JSON</code>很像？兩者有什麼關連嗎？！JSONP是一種跨網域資料交換的<strong><em>方式</em></strong>，而JSON則是一種資料交換的<strong><em>格式</em></strong>。而兩者的關聯就是JSON是<code>AJAX</code>在交換資料所常用的格式，而JSONP則是AJAX為突破<code>同源政策</code>(Same-origin policy)，而可讓不同網域之間一樣可以靠xhr取得資料的手段。</p>
+
+<!--more-->
+
+
+<hr />
+
+<h2>JSONP由來：</h2>
+
+<p>在探討JSONP前一樣先來看看它是為何而生的呢？因為AJAX基於安全的考量，不允許對不同網域的網站發送請求，以防某些網站會在背後偷偷試圖連到其他網站去幹壞事（如：銀行網站之類的）；但跨域的AJAX需求仍然常發生，因此當然有諸多因應之道，常見的有下：</p>
+
+<ul>
+<li> 在同樣的網域下建立一支proxy api再例用這proxy去call外部的資源</li>
+<li> 伺服器端必須<code>Access-Control-Allow-Origin</code>設為<code>*</code>或給某些特定網域</li>
+<li> 利用script tag的<code>src</code>載入</li>
+</ul>
+
+
+<p>而JSONP主要則是利用其中的第三點來達成，這是因為src這個attribute不受是否跨網域的限制(e.g. img, script, iframe)，所以我們可以利用這個特性傳回一段<strong><em>可執行</em></strong>的js code，例如</p>
+
+<p>對於某個外部請求，server會回傳一段js code</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="n">alert</span><span class="p">(</span><span class="s1">&#39;WTF&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>而clinet這邊可以這樣來獲取</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'> <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://somewhere.com/test&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>結果就是會在頁面上跳出一句<code>WTF</code>，由此證明我們可以利用src不受跨網域限制的特性來克服以往AJAX所達不到的目的，而我們更進一步可以讓server端將希望回傳的資料(JSON)包成可執行的js code回傳給我們
+如：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="nx">someFunction</span><span class="p">({</span> <span class="nx">foo</span><span class="o">:</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="nx">snsd</span><span class="o">:</span> <span class="s1">&#39;yoona&#39;</span><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>而我們只需要在clinet裡面先定義好<code>someFunction</code>這個function就可以發揮如同callback的效用達成跨網域的請求了!</p>
+
+<h3>JSONP目的</h3>
+
+<p>所以，JSONP主要就是讓server端將所有要回傳的資料包在任意名稱的function參數裡回傳給client端使用，<code>JSON with Padding</code>的名稱也非常貼切它的目的。而剛剛所提到任意名稱的function，是因為我們既然要事先定義該function，才可使用server回傳給我們的js code，那必然也得讓server要傳什麼名稱給我們，簡單的說就是需要動態的產生function名，而這只需要把function的名稱當做參數傳過去即可，而後端的處理可以這樣寫：</p>
+
+<figure class='code'><figcaption><span>some_controller.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>   <span class="k">def</span> <span class="nf">jsonp</span>
+</span><span class='line'>    <span class="vi">@data</span> <span class="o">=</span> <span class="p">{</span> <span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Yoda&#39;</span><span class="p">,</span> <span class="ss">role</span><span class="p">:</span> <span class="s1">&#39;master&#39;</span> <span class="p">}</span><span class="o">.</span><span class="n">to_json</span>
+</span><span class='line'>    <span class="vi">@func_name</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:callback</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>jsonp.js.erb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="o">&lt;%=</span> <span class="err">@</span><span class="nx">func_name</span> <span class="o">%&gt;</span><span class="p">(</span><span class="o">&lt;%=</span> <span class="nx">raw</span> <span class="err">@</span><span class="nx">data</span> <span class="o">%&gt;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>client的code會長這樣</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>     <span class="nt">&lt;script&gt;</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">say_hi</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+</span><span class='line'>      <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Hi &#39;</span><span class="o">+</span> <span class="nx">data</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="nt">&lt;/script&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://somewhere.com/test?callback=say_hi&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/script&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<h2>JSONP 使用 jQuery</h2>
+
+<h3>標準用法</h3>
+
+<p>實際上JSONP不算是官方正式提出用來解決跨網域需求存取的解法，算是非官方的協定。然而JSONP本身也非使用xhr物件來達到跨網域的請求，但jQuery還是支援jsonp而且用法相當簡單：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="kd">function</span> <span class="nx">test</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+</span><span class='line'>      <span class="c1">//do_something</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span><span class='line'>    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://somewhere.com/test&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">dataType</span><span class="o">:</span> <span class="s1">&#39;jsonp&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">jsonp</span><span class="o">:</span> <span class="s1">&#39;callback&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">jsonpCallback</span><span class="o">:</span> <span class="s1">&#39;test&#39;</span>
+</span><span class='line'>  <span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>只要把<code>dataType</code>設為<code>jsonp</code>即可。而參數<code>jsonp</code>: 預設為callback，所以是callback=?，如果jsonp設為foo那就是 foo=? 。</p>
+
+<p><code>jsonpCallback</code>: 預設是由jQeury亂數產生的唯一值當做function name，如果 jsonpCallback設為bar，那就是 callback=bar。 最後前端就必須要有定義function bar讓他可以執行。</p>
+
+<p>建議好像是讓兩者都為預設就可以了，因為cache的問題，亂數產生的function name像是callback=XXXXX就會每次都被視為新的request就比較不會有被cache住，而拿不到即時更新過資料的問題了。</p>
+
+<h3>精簡用法</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span><span class='line'>    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://somewhere.com/test&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">dataType</span><span class="o">:</span> <span class="s1">&#39;jsonp&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+</span><span class='line'>      <span class="c1">//do_something</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="nx">error</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">&#39;</span><span class="nx">fail</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>jsonp預設為callback，所以可以不需要寫，jsonpCallback也建議不用設定，使用預設的亂數值即可，而且聰明的jQuery會自動把回傳的data帶入success這個callback使用，也不需要額外在定義function去接了，非常方便！！</p>
+
+<p>網路上看到使用$.getJSON網路上有可以這樣試，jQuery似乎會自動去偵測callback這個querystring(<del>不過本人還沒測試過</del>)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">&#39;http://somewhere.com/test?callback=?&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+</span><span class='line'>      <span class="c1">//do_something</span>
+</span><span class='line'>  <span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上就是關於jsonp的學習心得與分享，如有錯誤或其他建議都歡迎指正～</p>
+
+
+        <hr class="divider-short"/>
+        
+        
+        <section>
+          <h1>Comments</h1>
+          <div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'noelsaga'; // Required - Replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </section>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/blog/2015/06/27/what-is-base64/" title="Previous Post: What is base64">&laquo; Previous: What is base64</a>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+ .article{
+  position: relative;
+ }
+ .container{
+  padding-right: 100px;
+ }
+ .sidebar{
+    position: absolute;
+    right: -271px;
+    width: 310px;
+    padding-left: 40px;
+    background-color: rgba(75,79,87,0.5);
+
+  }
+</style>
+<script src="/javascripts/sidebar.js"></script>
+
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2">
+  <div class="social-icon-list">
+    
+
+    
+
+    
+
+    
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4>Powered by <a href="http://octopress.org/">Octopress</a>. Designed by <a href="http://AdrianArtiles.com">Adrian Artiles</a>.</h4>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>
