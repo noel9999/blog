@@ -4,7 +4,7 @@
 
 url: http://noelsaga.herokuapp.com
 title: Noel Saga
-subtitle: The fool on the hill...
+subtitle: Courage is contagious...
 author: Noel
 simple_search: https://www.google.com/search
 description: 寫寫寫寫寫些什麼...!
@@ -19,7 +19,7 @@ date_format: "ordinal"
 subscribe_rss: /atom.xml
 subscribe_email:
 # RSS feeds can list your email address if you like
-email:
+email: terrorer9999@hotmail
 
 # ----------------------- #
 #    Jekyll & Plugins     #
@@ -80,13 +80,13 @@ category_tag_cloud: true
 # ----------------------- #
 
 # Github repositories
-github_user:
+github_user: noel9999
 github_repo_count: 0
 github_show_profile_link: true
 github_skip_forks: true
 
 # Twitter
-twitter_user:
+twitter_user: terrorer9999
 twitter_tweet_button: true
 
 # Google +1
@@ -115,3 +115,4 @@ google_analytics_tracking_id:
 
 # Facebook Like
 facebook_like: false
+facebook_user: 100001068144290
