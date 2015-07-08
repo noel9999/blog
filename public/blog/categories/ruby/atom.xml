@@ -4,11 +4,11 @@
   <title><![CDATA[Category: Ruby | Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-07-08T02:29:52+08:00</updated>
+  <updated>2015-07-08T16:41:24+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
-    
+    <email><![CDATA[terrorer9999@hotmail]]></email>
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
@@ -23,44 +23,78 @@
 <!--more-->
 
 
-<p>{% codeblock lang:rb each_with_object 範例一 %}</p>
-
-<pre><code>%w(red blue yello black).each_with_object({}) do |value, hash|
-    hash.store(value, value.capitalize + '!')
-end
-# =&gt; {"red"=&gt;"Red!", "blue"=&gt;"Blue!", "yello"=&gt;"Yello!", "black"=&gt;"Black!"}
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>each_with_object 範例一 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;%w(red blue yello black).each_with_object({}) do |value, hash|</span>
+</span><span class='line'><span class="sr">    hash.store(value, value.capitalize + &#39;!&#39;)</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'><span class="sr"># =&amp;gt; {&quot;red&quot;=&amp;gt;&quot;Red!&quot;, &quot;blue&quot;=&amp;gt;&quot;Blue!&quot;, &quot;yello&quot;=&amp;gt;&quot;Yello!&quot;, &quot;black&quot;=&amp;gt;&quot;Black!&quot;}</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h2>介紹</h2>
 
 <p>範例一其實就只是把一個陣列迭代做些處理後存入hash裡，然後依序下去直到迭代完成，是不是很熟悉呢？沒錯，類似的功能<code>reduct/inject</code>也做得到，甚至你單用each也是可以，但是<code>each_with_object</code>更方便簡單，<strong>你必須先指定一個參數</strong>當做一個容器的初始值，此例就是hash，然後每次迭代之後他會自動記住容器的狀態，並自動代入下次迭代，這裡與<code>reduce</code>不太一樣，寫法上是更簡當方便，剛剛的範例如果用<code>reduce</code>寫的話則是：</p>
 
-<p>{% codeblock lang:rb reduce 範例一 %}</p>
-
-<pre><code>%w(red blue yello black).reduce({}) do |result, value|
-    result.store(value, value.capitalize + '!')
-    result
-end
-# =&gt; {"red"=&gt;"Red!", "blue"=&gt;"Blue!", "yello"=&gt;"Yello!", "black"=&gt;"Black!"}
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>reduce 範例一 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;%w(red blue yello black).reduce({}) do |result, value|</span>
+</span><span class='line'><span class="sr">    result.store(value, value.capitalize + &#39;!&#39;)</span>
+</span><span class='line'><span class="sr">    result</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'><span class="sr"># =&amp;gt; {&quot;red&quot;=&amp;gt;&quot;Red!&quot;, &quot;blue&quot;=&amp;gt;&quot;Blue!&quot;, &quot;yello&quot;=&amp;gt;&quot;Yello!&quot;, &quot;black&quot;=&amp;gt;&quot;Black!&quot;}</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>最後輸出是一樣的，但<code>reduce</code>我們必須自己把結果擺在最後一行(<del>return</del>)，<code>reduce</code>才會把它當作下次繼續迭代的<strong><em>結果值</em></strong>，這點對某些人可能比較不是那麼地直覺。</p>
 
 <p>來看看另一個<code>each_with_object</code>的應用範例，讓我們來使用該函式做出類似select的效果</p>
 
-<p>{% codeblock lang:rb each_with_object 範例二：模仿select %}</p>
-
-<pre><code>(1..9).each_with_object([]) do |value, array|
-    array &lt;&lt; value unless (value % 2 == 0)
- end      
-# =&gt; [1, 3, 5, 7, 9]
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>each_with_object 範例二：模仿select </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;(1..9).each_with_object([]) do |value, array|</span>
+</span><span class='line'><span class="sr">    array &amp;lt;&amp;lt; value unless (value % 2 == 0)</span>
+</span><span class='line'><span class="sr"> end      </span>
+</span><span class='line'><span class="sr"># =&amp;gt; [1, 3, 5, 7, 9]</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>基本上你可以依需求或你傳入的參數類型來自由使用該方法進而達到任何可能的功能，而可傳入的參數可以是array、hash、甚至是openstruct，所以object或hashie當然應該也可以，有興趣的人可以自己玩玩看。</p>
 
@@ -77,15 +111,26 @@ end
 
 <p>第一與第三點應該非常直覺好懂，第二點則需要說明一下，因為each_with_object可以自己記住迭代回傳結果，而該結果也必須在使用該方法時就給定，如果此時你給他的參數是純值像是int、str、boolean等型態的物件，則會因為屬於純值而無法改變或操縱物件本身，所以永遠都會回傳自己，如以下範例:</p>
 
-<p>{% codeblock lang:rb each_with_object 範例三：參數給數字 %}</p>
-
-<pre><code>(1..5).each_with_object(1) do |value, array|
-    value * array
- end      
-# =&gt; 1 而非 120
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>each_with_object 範例三：參數給數字 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;(1..5).each_with_object(1) do |value, array|</span>
+</span><span class='line'><span class="sr">    value * array</span>
+</span><span class='line'><span class="sr"> end      </span>
+</span><span class='line'><span class="sr"># =&amp;gt; 1 而非 120</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>以上就是該方法的介紹與分享，如果有問題或是發現小弟有哪邊有錯誤都請歡迎指教唷，感謝各位</p>
 ]]></content>
@@ -111,36 +156,61 @@ end
 
 <h3>ruby內建迭代函式寫法</h3>
 
-<p>{% codeblock lang:ruby %}
-[1,2,3,4,5,6,7,8,9].find_all do |n|
-  n%2 == 0
-end</p>
-
-<h1>結果 [2,4,6,8]</h1>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">find_all</span> <span class="k">do</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">n</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;結果 [2,4,6,8]&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h3>傳統迴圈寫法:</h3>
 
-<p>{% codeblock lang:ruby %}
-array = [1,2,3,4,5,6,7,8,9]
-result = []
-for n in array
-  result &lt;&lt; n if n%2 == 0
-end</p>
-
-<h1>result: [2,4,6,8]</h1>
-
-<p>result.clear # 洗白
-i = 0
-while(i&lt;array.length)
-  result &lt;&lt; array[i] if array[i]%2 == 0
-  i += 1
-end</p>
-
-<h1>result: [2,4,6,8]</h1>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">]</span>
+</span><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="k">for</span> <span class="n">n</span> <span class="k">in</span> <span class="n">array</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">n</span> <span class="k">if</span> <span class="n">n</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;result: [2,4,6,8]&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">result</span><span class="o">.</span><span class="n">clear</span> <span class="c1"># 洗白</span>
+</span><span class='line'><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'><span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">array</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">array</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="k">if</span> <span class="n">array</span><span class="o">[</span><span class="n">i</span><span class="o">]%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;result: [2,4,6,8]&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <br>
 
@@ -158,26 +228,43 @@ end</p>
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map函式與each最大的不同是他會回傳一個新的陣列，而陣列的結果則是根據我們在程式區塊(block)裡所定義的來對原陣列做修改，其實這用途非常常見，像是我們有16名學生的原始成績，想幫他們做開根號在除以10後得到的加權成績:</p>
 
-<p>{% codeblock lang:ruby %}
-scores = [68, 84, 92, 34, 79, 82, 80, 85, 80, 31, 25, 45, 46, 30, 42, 34]
-new_scores = scores.map do |n|
-  (Math.sqrt(n)*10).round(2)
-end</p>
-
-<h1>scores: [68, 84, 92, 34, 79, 82, 80, 85, 80, 31, 25, 45, 46, 30, 42, 34]</h1>
-
-<h1>new_scores: [82.46, 91.65, 95.92, 58.31, 88.88, 90.55, 89.44, 92.2, 89.44, 55.68, 50.0, 67.08, 67.82, 54.77, 64.81, 58.31]</h1>
-
-<p>array = [[1,2],[3,4],[5,6],[7,8]]
-array.map do |n|
-  n.lasy # 只要最後一個元素
-end</p>
-
-<h1>[2,4,6,8]</h1>
-
-<p>t = Topic.scoped.map(&amp;:name)
-t = Topic.scoped.pluck(:name)
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">scores</span> <span class="o">=</span> <span class="o">[</span><span class="mi">68</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">79</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">34</span><span class="o">]</span>
+</span><span class='line'><span class="n">new_scores</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span>
+</span><span class='line'>  <span class="p">(</span><span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;scores: [68, 84, 92, 34, 79, 82, 80, 85, 80, 31, 25, 45, 46, 30, 42, 34]&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">new_scores</span><span class="p">:</span> <span class="o">[</span><span class="mi">82</span><span class="o">.</span><span class="mi">46</span><span class="p">,</span> <span class="mi">91</span><span class="o">.</span><span class="mi">65</span><span class="p">,</span> <span class="mi">95</span><span class="o">.</span><span class="mi">92</span><span class="p">,</span> <span class="mi">58</span><span class="o">.</span><span class="mi">31</span><span class="p">,</span> <span class="mi">88</span><span class="o">.</span><span class="mi">88</span><span class="p">,</span> <span class="mi">90</span><span class="o">.</span><span class="mi">55</span><span class="p">,</span> <span class="mi">89</span><span class="o">.</span><span class="mi">44</span><span class="p">,</span> <span class="mi">92</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span> <span class="mi">89</span><span class="o">.</span><span class="mi">44</span><span class="p">,</span> <span class="mi">55</span><span class="o">.</span><span class="mi">68</span><span class="p">,</span> <span class="mi">50</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">67</span><span class="o">.</span><span class="mi">08</span><span class="p">,</span> <span class="mi">67</span><span class="o">.</span><span class="mi">82</span><span class="p">,</span> <span class="mi">54</span><span class="o">.</span><span class="mi">77</span><span class="p">,</span> <span class="mi">64</span><span class="o">.</span><span class="mi">81</span><span class="p">,</span> <span class="mi">58</span><span class="o">.</span><span class="mi">31</span><span class="o">]&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;array = [[1,2],[3,4],[5,6],[7,8]]</span>
+</span><span class='line'><span class="sr">array.map do |n|</span>
+</span><span class='line'><span class="sr">  n.lasy # 只要最後一個元素</span>
+</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="o">]&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;t = Topic.scoped.map(&amp;amp;:name)</span>
+</span><span class='line'><span class="sr">t = Topic.scoped.pluck(:name)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <br>
 
@@ -196,14 +283,21 @@ t = Topic.scoped.pluck(:name)
 <br>
 
 
-<p>{% codeblock lang:ruby %}
-[1,2,3,4,5,6,7,8,9].reduce do |sum,value|
-   sum += value
-end</p>
-
-<h1>45</h1>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">reduce</span> <span class="k">do</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span><span class="n">value</span><span class="o">|</span>
+</span><span class='line'>   <span class="n">sum</span> <span class="o">+=</span> <span class="n">value</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;45&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <br>
 
@@ -213,12 +307,15 @@ end</p>
 <br>
 
 
-<p>{% codeblock lang:ruby %}
-[1,2,3,4,5,6,7,8,9].reduce(50) do |sum,value|
-   sum += value
- end
- # 95
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">reduce</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span><span class="n">value</span><span class="o">|</span>
+</span><span class='line'>   <span class="n">sum</span> <span class="o">+=</span> <span class="n">value</span>
+</span><span class='line'> <span class="k">end</span>
+</span><span class='line'> <span class="c1"># 95</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <br> 
 
@@ -228,50 +325,77 @@ end</p>
 <br>
 
 
-<p>{% codeblock lang:ruby %}
-sum = 0
-[1,2,3,4,5,6,7,8,9].each do |n|
-  sum += n
-end</p>
-
-<h1>sum: 45</h1>
-
-<h1>也可以這樣使用</h1>
-
-<p>[1,2,3,4,5,6,7,8,9].reduce(:+)</p>
-
-<h1>45</h1>
-
-<p>[1,2,3,4,5,6,7,8,9].reduce(10,:+)</p>
-
-<h1>55</h1>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">sum</span> <span class="o">+=</span> <span class="n">n</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;sum: 45&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="err">也可以這樣使用</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;[1,2,3,4,5,6,7,8,9].reduce(:+)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="mi">45</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;[1,2,3,4,5,6,7,8,9].reduce(10,:+)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="mi">55</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h3>模仿select功能</h3>
 
 <br>
 
 
-<p>{% codeblock lang:ruby%}
-[1,2,3,4,5,6,7,8,9].reduce([]) do |result, value|
-  result &lt;&lt; value if value%2 == 0
-  result  # 注意，這行如果不寫他會回傳nil，因為當1迭代進去時，不符合規則所以會回傳nil，這樣result下一次就會變成nil了而非[]
-end</p>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">reduce</span><span class="p">(</span><span class="o">[]</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">result</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">value</span> <span class="k">if</span> <span class="n">value</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="n">result</span>  <span class="c1"># 注意，這行如果不寫他會回傳nil，因為當1迭代進去時，不符合規則所以會回傳nil，這樣result下一次就會變成nil了而非[]</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h3>模仿map功能</h3>
 
 <br>
 
 
-<p>{% codeblock lang:ruby%}
-[1,2,3,4,5,6,7,8,9].reduce() do |result, value|
-  result &lt;&lt; Math.sqrt(value)/10
-  result<br/>
-end
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">reduce</span><span class="p">()</span> <span class="k">do</span> <span class="o">|</span><span class="n">result</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span>
+</span><span class='line'>  <span class="n">result</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   
@@ -291,130 +415,247 @@ end
 <!-- more -->
 
 
-<p>{% codeblock lang:rb 使用講解:Get %}</p>
-
-<pre><code>require 'net/http'
-#方法一
-uri = URI.perse("example.com/bar/dosomething")  ＃先解析成uri物件比較方便
-response = Net::HTTP.get_response(uri) # 回傳物件就是我們要的東西，我們可以利用他做很多事
-
-#方法二
-http = Net::HTTP.new(uri.host,uri.port)
-response = http.request(Net::HTTP::Get.new(uri.request_uri))  #切記Get.new()的參數是request_uri不是uri
-
-Net::HTTP.get_print(uri)   #印出response.body
-
-
-response.code       # 回傳http狀態碼
-response.body       # 回傳整個body內容，通常是編碼過不是人能看的東西
-response.message    # 回傳HTTP狀態碼代表訊息 ex："Moved Permanently" 
-response.uri        # 回傳呼叫它的uri物件
-
-#uri物件也是個很方便的東西裡面常見的功能有
-
-uri.request_uri     # 回傳你的request ex: /bar/dosomething
-uri.host            # 回傳domain
-uri.path            # 同request_uri
-uri.scheme          # 回傳使用的傳輸協定
-uri.query           # 回傳querysting
-uri.port            # 回傳使用的port
-
-#query_string處理
-params = { :limit =&gt; 10, :page =&gt; 3 }
-uri.query = URI.encode_www_form(params)
-</code></pre>
-
-<p>{% endcodeblock  %}
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>使用講解:Get </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;require &#39;net/</span><span class="n">http</span><span class="err">&#39;</span>
+</span><span class='line'><span class="c1">#方法一</span>
+</span><span class='line'><span class="n">uri</span> <span class="o">=</span> <span class="no">URI</span><span class="o">.</span><span class="n">perse</span><span class="p">(</span><span class="s2">&quot;example.com/bar/dosomething&quot;</span><span class="p">)</span>  <span class="err">＃先解析成</span><span class="n">uri</span><span class="err">物件比較方便</span>
+</span><span class='line'><span class="n">response</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">get_response</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span> <span class="c1"># 回傳物件就是我們要的東西，我們可以利用他做很多事</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#方法二</span>
+</span><span class='line'><span class="n">http</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">uri</span><span class="o">.</span><span class="n">host</span><span class="p">,</span><span class="n">uri</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+</span><span class='line'><span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Get</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">uri</span><span class="o">.</span><span class="n">request_uri</span><span class="p">))</span>  <span class="c1">#切記Get.new()的參數是request_uri不是uri</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">get_print</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>   <span class="c1">#印出response.body</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">response</span><span class="o">.</span><span class="n">code</span>       <span class="c1"># 回傳http狀態碼</span>
+</span><span class='line'><span class="n">response</span><span class="o">.</span><span class="n">body</span>       <span class="c1"># 回傳整個body內容，通常是編碼過不是人能看的東西</span>
+</span><span class='line'><span class="n">response</span><span class="o">.</span><span class="n">message</span>    <span class="c1"># 回傳HTTP狀態碼代表訊息 ex：&quot;Moved Permanently&quot; </span>
+</span><span class='line'><span class="n">response</span><span class="o">.</span><span class="n">uri</span>        <span class="c1"># 回傳呼叫它的uri物件</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#uri物件也是個很方便的東西裡面常見的功能有</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">uri</span><span class="o">.</span><span class="n">request_uri</span>     <span class="c1"># 回傳你的request ex: /bar/dosomething</span>
+</span><span class='line'><span class="n">uri</span><span class="o">.</span><span class="n">host</span>            <span class="c1"># 回傳domain</span>
+</span><span class='line'><span class="n">uri</span><span class="o">.</span><span class="n">path</span>            <span class="c1"># 同request_uri</span>
+</span><span class='line'><span class="n">uri</span><span class="o">.</span><span class="n">scheme</span>          <span class="c1"># 回傳使用的傳輸協定</span>
+</span><span class='line'><span class="n">uri</span><span class="o">.</span><span class="n">query</span>           <span class="c1"># 回傳querysting</span>
+</span><span class='line'><span class="n">uri</span><span class="o">.</span><span class="n">port</span>            <span class="c1"># 回傳使用的port</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#query_string處理</span>
+</span><span class='line'><span class="n">params</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:limit</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="mi">10</span><span class="p">,</span> <span class="ss">:page</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="mi">3</span> <span class="p">}</span>
+</span><span class='line'><span class="n">uri</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="no">URI</span><span class="o">.</span><span class="n">encode_www_form</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 應用範例：預留一個版位顯示response.body的結果，利用Net::HTTP對某伺服器發送一個請求，並且把回傳的結果存入memcache以利用來顯示到預留的版位上。嗯嗯，聽起來有點像是ajax的概念，只是由伺服器端坐的而且他是同步的&hellip;</p>
 
-<p>{% codeblock lang:rb 應用範例:Get %}</p>
-
-<pre><code>response = Net::HTTP.get_response(URI.parse("http://foobar.header.com/api"))
-if response.code.to_i == 200
-  $memcached.set("header-html", response.body, 0)
-end
-
-某一處的VIEW顯現出來
-
-&lt;%= raw $memcached.get("header-html").to_s.force_encode("utf8") %&gt;
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>應用範例:Get </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;response = Net::HTTP.get_response(URI.parse(&quot;http:/</span><span class="o">/</span><span class="n">foobar</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">api</span><span class="s2">&quot;))</span>
+</span><span class='line'><span class="s2">if response.code.to_i == 200</span>
+</span><span class='line'><span class="s2">  $memcached.set(&quot;</span><span class="n">header</span><span class="o">-</span><span class="n">html</span><span class="s2">&quot;, response.body, 0)</span>
+</span><span class='line'><span class="s2">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">某一處的VIEW顯現出來</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&amp;lt;%= raw $memcached.get(&quot;</span><span class="n">header</span><span class="o">-</span><span class="n">html</span><span class="s2">&quot;).to_s.force_encode(&quot;</span><span class="n">utf8</span><span class="s2">&quot;) %&amp;gt;</span>
+</span><span class='line'><span class="s2">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <hr />
 
 <h2>post_form</h2>
 
 <p>同理，有get方法就會有post方法，post方法一般用在傳送伺服器的的資料量大或是比較需要顧慮到安全時會用的！直接看教學範例：
-{% codeblock lang:rb 使用範例:Post %}</p>
-
-<pre><code>require "net/http"
-
-uri = URI.parse("http://example.com/foo/search")
-
-#方法一
-response = Net::HTTP.post_form(uri, {"data" =&gt; "My data blah blah", "per_page" =&gt; "50"})
-
-#方法二
-http = Net::HTTP.new(uri.host, uri.port)
-request = Net::HTTP::Post.new(uri.request_uri)
-request.set_form_date({"data" =&gt; "My data blah blah", "per_page" =&gt; "50"})
-response = http.request(request)
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>使用範例:Post </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;require &quot;net/</span><span class="n">http</span><span class="s2">&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">uri = URI.parse(&quot;</span><span class="ss">http</span><span class="p">:</span><span class="sr">//ex</span><span class="n">ample</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">foo</span><span class="o">/</span><span class="n">search</span><span class="s2">&quot;)</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">#方法一</span>
+</span><span class='line'><span class="s2">response = Net::HTTP.post_form(uri, {&quot;</span><span class="n">data</span><span class="s2">&quot; =&amp;gt; &quot;</span><span class="no">My</span> <span class="n">data</span> <span class="n">blah</span> <span class="n">blah</span><span class="s2">&quot;, &quot;</span><span class="n">per_page</span><span class="s2">&quot; =&amp;gt; &quot;</span><span class="mi">50</span><span class="s2">&quot;})</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">#方法二</span>
+</span><span class='line'><span class="s2">http = Net::HTTP.new(uri.host, uri.port)</span>
+</span><span class='line'><span class="s2">request = Net::HTTP::Post.new(uri.request_uri)</span>
+</span><span class='line'><span class="s2">request.set_form_date({&quot;</span><span class="n">data</span><span class="s2">&quot; =&amp;gt; &quot;</span><span class="no">My</span> <span class="n">data</span> <span class="n">blah</span> <span class="n">blah</span><span class="s2">&quot;, &quot;</span><span class="n">per_page</span><span class="s2">&quot; =&amp;gt; &quot;</span><span class="mi">50</span><span class="s2">&quot;})</span>
+</span><span class='line'><span class="s2">response = http.request(request)</span>
+</span><span class='line'><span class="s2">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h2>REST methods</h2>
 
 <p>有寫過rails的人相信都對RESTful不陌生，所以直接看範例吧！
-{% codeblock lang:rb 使用範例:REST %}</p>
-
-<pre><code>require "net/http"
-
-uri = URI.parse("http://api.noelsaga.net/")
-
-http = Net::HTTP.new(uri.host, uri.port) #
-
-#Get : 通常是讀取單一筆資料如show
-response = http.request(Net::HTTP::Get.new("/post/1"))
-
-#Post: 通常是用來建立資料
-request = (Net::HTTP::Post.new("/post/1"))
-request.set_form_date({:tilte =&gt; "Monday", :content =&gt; "I'm wanna go home..."})
-response = http.request(request)
-
-#Put : 通常是用來更新一筆資料
-request = (Net::HTTP::Put.new("/post/1"))
-request.set_form_date({:title =&gt; "Tuesday"})
-response = http.request(request)
-
-#Delete: 嗯嗯，字面意思很清楚了
-request = (Net::HTTP::Delete.new("/post/1"))
-response = http.request(request)
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>使用範例:REST </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;require &quot;net/</span><span class="n">http</span><span class="s2">&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">uri = URI.parse(&quot;</span><span class="ss">http</span><span class="p">:</span><span class="sr">//</span><span class="n">api</span><span class="o">.</span><span class="n">noelsaga</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="s2">&quot;)</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">http = Net::HTTP.new(uri.host, uri.port) #</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">#Get : 通常是讀取單一筆資料如show</span>
+</span><span class='line'><span class="s2">response = http.request(Net::HTTP::Get.new(&quot;</span><span class="o">/</span><span class="n">post</span><span class="o">/</span><span class="mi">1</span><span class="s2">&quot;))</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">#Post: 通常是用來建立資料</span>
+</span><span class='line'><span class="s2">request = (Net::HTTP::Post.new(&quot;</span><span class="o">/</span><span class="n">post</span><span class="o">/</span><span class="mi">1</span><span class="s2">&quot;))</span>
+</span><span class='line'><span class="s2">request.set_form_date({:tilte =&amp;gt; &quot;</span><span class="no">Monday</span><span class="s2">&quot;, :content =&amp;gt; &quot;</span><span class="n">I</span><span class="err">&#39;</span><span class="n">m</span> <span class="n">wanna</span> <span class="n">go</span> <span class="n">home</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="s2">&quot;})</span>
+</span><span class='line'><span class="s2">response = http.request(request)</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">#Put : 通常是用來更新一筆資料</span>
+</span><span class='line'><span class="s2">request = (Net::HTTP::Put.new(&quot;</span><span class="o">/</span><span class="n">post</span><span class="o">/</span><span class="mi">1</span><span class="s2">&quot;))</span>
+</span><span class='line'><span class="s2">request.set_form_date({:title =&amp;gt; &quot;</span><span class="no">Tuesday</span><span class="s2">&quot;})</span>
+</span><span class='line'><span class="s2">response = http.request(request)</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">#Delete: 嗯嗯，字面意思很清楚了</span>
+</span><span class='line'><span class="s2">request = (Net::HTTP::Delete.new(&quot;</span><span class="o">/</span><span class="n">post</span><span class="o">/</span><span class="mi">1</span><span class="s2">&quot;))</span>
+</span><span class='line'><span class="s2">response = http.request(request)</span>
+</span><span class='line'><span class="s2">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h2>SSL/HTTPS request with PEM certificate</h2>
 
 <p>如果是需要pem認證時，可以這麼做，此處直接使用Peter Cooper提供的範例</p>
 
-<p>{% codeblock lang:rb 使用範例:PEM certificate %}</p>
-
-<pre><code>require "net/https"
-require "uri"
-
-uri = URI.parse("https://secure.com/")
-pem = File.read("/path/to/my.pem")
-http = Net::HTTP.new(uri.host, uri.port)
-http.use_ssl = true
-http.cert = OpenSSL::X509::Certificate.new(pem)  # 根據pem檔案建立認證
-http.key = OpenSSL::PKey::RSA.new(pem)            # 根據pem檔案建立認證
-http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-request = Net::HTTP::Get.new(uri.request_uri)
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>使用範例:PEM certificate </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;require &quot;net/</span><span class="n">https</span><span class="s2">&quot;</span>
+</span><span class='line'><span class="s2">require &quot;</span><span class="n">uri</span><span class="s2">&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">uri = URI.parse(&quot;</span><span class="ss">https</span><span class="p">:</span><span class="sr">//se</span><span class="n">cure</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="s2">&quot;)</span>
+</span><span class='line'><span class="s2">pem = File.read(&quot;</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">my</span><span class="o">.</span><span class="n">pem</span><span class="s2">&quot;)</span>
+</span><span class='line'><span class="s2">http = Net::HTTP.new(uri.host, uri.port)</span>
+</span><span class='line'><span class="s2">http.use_ssl = true</span>
+</span><span class='line'><span class="s2">http.cert = OpenSSL::X509::Certificate.new(pem)  # 根據pem檔案建立認證</span>
+</span><span class='line'><span class="s2">http.key = OpenSSL::PKey::RSA.new(pem)            # 根據pem檔案建立認證</span>
+</span><span class='line'><span class="s2">http.verify_mode = OpenSSL::SSL::VERIFY_PEER</span>
+</span><span class='line'><span class="s2">request = Net::HTTP::Get.new(uri.request_uri)</span>
+</span><span class='line'><span class="s2">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h2>Post傳檔部分 （從缺中）</h2>
 
