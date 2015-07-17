@@ -4,7 +4,7 @@
   <title><![CDATA[Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-07-08T19:30:15+08:00</updated>
+  <updated>2015-07-18T03:27:44+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -12,6 +12,64 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[開發中，常見的參數payload是什麼?]]></title>
+    <link href="http://noelsaga.herokuapp.com/blog/2015/07/18/kai-fa-zhong-,chang-jian-de-can-shu-payloadshi-shi-mo/"/>
+    <updated>2015-07-18T02:34:43+08:00</updated>
+    <id>http://noelsaga.herokuapp.com/blog/2015/07/18/kai-fa-zhong-,chang-jian-de-can-shu-payloadshi-shi-mo</id>
+    <content type="html"><![CDATA[<p>開發中，常常見到許多文件裡的方法或函式帶有名為<code>payload</code>的參數，像是最近在因為新專案開始使用了<code>react.js</code>+<code>flux</code>，正在看前輩的code學習與<del>觀摩中</del>，就非常常見到payload這參數，直覺想到『
+啊這個字就是負載量啊!?沒什麼的嘛』但其實知道他英文叫做負載量但我還是不知道這參數是要幹什麼的，或是為什麼要這樣取名，不直接叫<code>data</code>, <code>params</code>之類的。甚至不小心在看pg官方文件裡又出現payload這個參數名，讓我更驚覺到原來不是只有<code>flux</code>裡面這樣用，別的地方也會這樣命名，也意味著這其實是個常見且通用的使用名詞，所以還是來個一探究竟的好。</p>
+
+<!--more-->
+
+
+<hr />
+
+<h2>Payload的定義</h2>
+
+<p>payload意思即為承載量，在開發中則是指出在一堆資料中我們所<strong><em>關心</em></strong>的部分!</p>
+
+<p>網路找到的定義為：</p>
+
+<blockquote><p>On the Internet, a payload is either: The essential data that is being carried within a packet or other transmission unit.</p></blockquote>
+
+<h2>Payload的由來</h2>
+
+<p>google到一篇很好的文章對payload為何這樣叫有很好的解釋，文中指出這個名詞是借用運輸工具上的觀念而來的，例如：卡車、油罐車、貨輪等所謂的<strong>載具</strong>，然後通常一個載具的總重量一定<strong>大於</strong>載具的承載量，例如油罐車的總重量包含了他所運載的油量、司機的重量、油罐車行駛所需的油量，但我們所關心僅是油罐車所承載的油量而已。</p>
+
+<p><del>故，得證</del></p>
+
+<blockquote><p>Payload, the load that pays</p></blockquote>
+
+<p>對programming來說，我們可以某api的response為例子來看</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="p">{</span>
+</span><span class='line'>      <span class="s2">&quot;status&quot;</span><span class="o">:</span><span class="s2">&quot;OK&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s2">&quot;data&quot;</span><span class="o">:</span>
+</span><span class='line'>          <span class="p">{</span>
+</span><span class='line'>              <span class="s2">&quot;message&quot;</span><span class="o">:</span><span class="s2">&quot;Hello, world!&quot;</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> 其中的Hello, world!正是payload，也是我們關心的部分。</p>
+
+<p> 到這裡我們應該了解為何參數名要叫做<code>payload</code>，而非<code>data</code>或是<code>params</code>是有其目的性的，而更進一步的熟悉與使用payload這個參數，則就要再深入看該方法或函式的使用與定義了。</p>
+
+<h2>參考</h2>
+
+<p><a href="http://programmers.stackexchange.com/questions/158603/what-does-the-term-payload-mean-in-programming">文中的解釋與例子出處</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[JSONP 介紹]]></title>

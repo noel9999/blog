@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>開發中，常見的參數payload是什麼? - Noel Saga</title>
+  <meta name="author" content="Noel">
+
+  
+  <meta name="description" content="Recent Posts 開發中，常見的參數payload是什麼? JSONP 介紹 What Is Base64 Ruby Each_with_object vs Reduce Javascript This Recent Comments Categories Javascript(3) &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://noelsaga.herokuapp.com/blog/2015/07/18/kai-fa-zhong-,chang-jian-de-can-shu-payloadshi-shi-mo">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Noel Saga" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <aside class="sidebar">
+      
+        <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/07/18/kai-fa-zhong-,chang-jian-de-can-shu-payloadshi-shi-mo/">開發中，常見的參數payload是什麼?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/07/06/jsonp-jie-shao/">JSONP 介紹</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/27/what-is-base64/">What Is Base64</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/03/ruby-each-with-object-vs-reduce/">Ruby Each_with_object vs Reduce</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/21/javascript-this-zhi-biao/">Javascript This</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Recent Comments</h1>
+  <div id="dsq-recentcomments" class="dsq-widget"><script type="text/javascript" src="http://disqus.com/forums/noelsaga/recent_comments_widget.js?hide_avatars=0&num_items=6"></script></div>
+</section>
+<section>
+<h1>Categories</h1>
+<span class='categories_tag'> <a href='/blog/categories/javascript' style='font-size: 160.0%'>Javascript(3)</a>  <a href='/blog/categories/jquery' style='font-size: 120.0%'>Jquery(1)</a>  <a href='/blog/categories/programming' style='font-size: 120.0%'>Programming(1)</a>  <a href='/blog/categories/ruby' style='font-size: 160.0%'>Ruby(3)</a>  <a href='/blog/categories/編碼' style='font-size: 120.0%'>編碼(1)</a> </span>
+</section>
+
+<section>
+  <h1>Friends</h1>
+  <ul id="friends">
+      <li>
+        <a href="http://rubyist.marsz.tw/">黃金俠的blog</a>
+      </li>
+      <li>
+        <a href="http://ayamomiji.tumblr.com/">愛雅小舖</a>
+      </li>
+      <li>
+        <a href="http://about.me/jonatw">強納森林大火</a>
+      </li>
+      <li>
+        <a href="http://urpro.info/">文藝的blog</a>
+      </li>
+      <li>
+        <a href="http://ccaloha.herokuapp.com/">AlohaCC</a>
+      </li>
+  </ul>
+</section>
+
+
+
+
+
+      
+    </aside>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>開發中，常見的參數payload是什麼?</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2015-07-18T02:34:43+08:00" pubdate data-updated="true">Jul 18<sup>th</sup>, 2015</time>
+          | 
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/programming/'>programming</a>
+  
+</span>
+
+ |
+          <span class="comments"><a href="/blog/2015/07/18/kai-fa-zhong-,chang-jian-de-can-shu-payloadshi-shi-mo/#disqus_thread">comments</a></span>
+        </div>
+        <p>開發中，常常見到許多文件裡的方法或函式帶有名為<code>payload</code>的參數，像是最近在因為新專案開始使用了<code>react.js</code>+<code>flux</code>，正在看前輩的code學習與<del>觀摩中</del>，就非常常見到payload這參數，直覺想到『
+啊這個字就是負載量啊!?沒什麼的嘛』但其實知道他英文叫做負載量但我還是不知道這參數是要幹什麼的，或是為什麼要這樣取名，不直接叫<code>data</code>, <code>params</code>之類的。甚至不小心在看pg官方文件裡又出現payload這個參數名，讓我更驚覺到原來不是只有<code>flux</code>裡面這樣用，別的地方也會這樣命名，也意味著這其實是個常見且通用的使用名詞，所以還是來個一探究竟的好。</p>
+
+<!--more-->
+
+
+<hr />
+
+<h2>Payload的定義</h2>
+
+<p>payload意思即為承載量，在開發中則是指出在一堆資料中我們所<strong><em>關心</em></strong>的部分!</p>
+
+<p>網路找到的定義為：</p>
+
+<blockquote><p>On the Internet, a payload is either: The essential data that is being carried within a packet or other transmission unit.</p></blockquote>
+
+<h2>Payload的由來</h2>
+
+<p>google到一篇很好的文章對payload為何這樣叫有很好的解釋，文中指出這個名詞是借用運輸工具上的觀念而來的，例如：卡車、油罐車、貨輪等所謂的<strong>載具</strong>，然後通常一個載具的總重量一定<strong>大於</strong>載具的承載量，例如油罐車的總重量包含了他所運載的油量、司機的重量、油罐車行駛所需的油量，但我們所關心僅是油罐車所承載的油量而已。</p>
+
+<p><del>故，得證</del></p>
+
+<blockquote><p>Payload, the load that pays</p></blockquote>
+
+<p>對programming來說，我們可以某api的response為例子來看</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="p">{</span>
+</span><span class='line'>      <span class="s2">&quot;status&quot;</span><span class="o">:</span><span class="s2">&quot;OK&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s2">&quot;data&quot;</span><span class="o">:</span>
+</span><span class='line'>          <span class="p">{</span>
+</span><span class='line'>              <span class="s2">&quot;message&quot;</span><span class="o">:</span><span class="s2">&quot;Hello, world!&quot;</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> 其中的Hello, world!正是payload，也是我們關心的部分。</p>
+
+<p> 到這裡我們應該了解為何參數名要叫做<code>payload</code>，而非<code>data</code>或是<code>params</code>是有其目的性的，而更進一步的熟悉與使用payload這個參數，則就要再深入看該方法或函式的使用與定義了。</p>
+
+<h2>參考</h2>
+
+<p><a href="http://programmers.stackexchange.com/questions/158603/what-does-the-term-payload-mean-in-programming">文中的解釋與例子出處</a></p>
+
+
+        <hr class="divider-short"/>
+        
+        
+        <section>
+          <h1>Comments</h1>
+          <div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'noelsaga'; // Required - Replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </section>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/blog/2015/07/06/jsonp-jie-shao/" title="Previous Post: JSONP 介紹">&laquo; Previous: JSONP 介紹</a>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+ .article{
+  position: relative;
+ }
+ .container{
+  padding-right: 100px;
+ }
+ .sidebar{
+    position: absolute;
+    right: -271px;
+    width: 310px;
+    padding-left: 40px;
+    background-color: rgba(75,79,87,0.5);
+
+  }
+</style>
+<script src="/javascripts/sidebar.js"></script>
+
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2">
+  <div class="social-icon-list">
+    
+    <a href="https://twitter.com/terrorer9999"><img src="/images/glyphicons_social_31_twitter.png"/></a>
+    
+
+    
+    <a href="https://github.com/noel9999"><img src="/images/glyphicons_social_21_github.png"/></a>
+    
+
+    
+    <a href="https://www.facebook.com/profile.php/?id=100001068144290"><img src="/images/glyphicons_390_facebook.png"/></a>
+    
+
+    
+
+    
+    <a href="mailto:terrorer9999@hotmail"><img src="/images/glyphicons_social_39_e-mail.png"/></a>
+    
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4>Powered by <a href="http://octopress.org/">Octopress</a>. Designed by <a href="http://AdrianArtiles.com">Adrian Artiles</a>.</h4>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>
