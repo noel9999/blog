@@ -4,7 +4,7 @@
   <title><![CDATA[Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-07-18T03:27:44+08:00</updated>
+  <updated>2015-07-22T01:49:36+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -12,6 +12,131 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[使用pre-commit來修煉codestyle]]></title>
+    <link href="http://noelsaga.herokuapp.com/blog/2015/07/22/shi-yong-pre-commitlai-xiu-lian-codestyle/"/>
+    <updated>2015-07-22T01:35:26+08:00</updated>
+    <id>http://noelsaga.herokuapp.com/blog/2015/07/22/shi-yong-pre-commitlai-xiu-lian-codestyle</id>
+    <content type="html"><![CDATA[<p>想寫出有<strong>執行效率</strong>、又<strong>簡潔易讀</strong>、<del>又潮</del>的ruby codestyle嗎？</p>
+
+<p>雖然不是人人都有大神幫忙做code review，但慶幸ruby有<code>rubocop</code>可以用，裡面可以偵測我們的code是否有符合ruby codestyle的最適規範，而且還可以搭配<code>pre-commit</code>，這個gem來幫我們做到每次提交commit前先掃描我們的code，看看是否有符合codestyle，沒有符合的話就不給commit，希望借此養成良好的codestyle！</p>
+
+<!--more-->
+
+
+<h3>1. 首先安裝gem</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem 'pre-commit', require: false
+</span><span class='line'>gem 'rubocop', require: false</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2.新增檔案 rails_project/.robocup.yml</h3>
+
+<p>這部份我都是手動新增的，裡面定義了一些基礎的客製化規範，照抄前輩挑選的，大家如果沒特定需求也可以照抄</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">AllCops</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">RunRailsCops</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">Exclude</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">db/schema.rb</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Metrics/LineLength</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">Max</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">120</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Metrics/MethodLength</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">Max</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">20</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Metrics/ClassLength</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">Max</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">250</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Style/AsciiComments</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">Enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Style/ClassAndModuleChildren</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">EnforcedStyle</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">compact</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Style/Documentation</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">Enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Style/IfUnlessModifier</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">Enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3.新增檔案 config/pre_commit.yml</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="nn">---</span>
+</span><span class='line'><span class="l-Scalar-Plain">:checks_remove</span><span class="p-Indicator">:</span> <span class="p-Indicator">[]</span>
+</span><span class='line'><span class="l-Scalar-Plain">:checks_add</span><span class="p-Indicator">:</span>
+</span><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">:tabs</span>
+</span><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">:nb_space</span>
+</span><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">:whitespace</span>
+</span><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">:merge_conflict</span>
+</span><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">:debugger</span>
+</span><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">:pry</span>
+</span><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">:local</span>
+</span><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">:jshint</span>
+</span><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">:console_log</span>
+</span><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">:migration</span>
+</span><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">:rubocop</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>4. 執行<code>pre-commit install</code></h3>
+
+<p>之後，每次開始提交commit就會在terminal下看到執行的結果了！然後就乖乖的養成良好的習慣慢慢改吧，雖然一開始會不習慣，但是之後會發現真的挺受用的！<br/>
+如果有看不懂的提示也可以去Google找或是去<a href="https://github.com/bbatsov/ruby-style-guide#underscore-unused-vars">ruby-style-guide</a>翻閱看看，裡面都有解釋為何這樣設計或是範例。</p>
+
+<h3>5.補充</h3>
+
+<p>若想偷懶強制commit上去可以加上參數<code>-n</code></p>
+
+<p><code>git commit -am 'some message' -n</code></p>
+
+<h3>參考：<a href="https://github.com/jish/pre-commit">github: pre-commit</a></h3>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[開發中，常見的參數payload是什麼?]]></title>

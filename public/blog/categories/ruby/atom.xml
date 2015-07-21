@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-07-18T03:27:49+08:00</updated>
+  <updated>2015-07-22T01:49:43+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -12,6 +12,92 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[使用pre-commit來修煉codestyle]]></title>
+    <link href="http://noelsaga.herokuapp.com/blog/2015/07/22/shi-yong-pre-commitlai-xiu-lian-codestyle/"/>
+    <updated>2015-07-22T01:35:26+08:00</updated>
+    <id>http://noelsaga.herokuapp.com/blog/2015/07/22/shi-yong-pre-commitlai-xiu-lian-codestyle</id>
+    <content type="html"><![CDATA[<p>想寫出有<strong>執行效率</strong>、又<strong>簡潔易讀</strong>、<del>又潮</del>的ruby codestyle嗎？</p>
+
+<p>雖然不是人人都有大神幫忙做code review，但慶幸ruby有<code>rubocop</code>可以用，裡面可以偵測我們的code是否有符合ruby codestyle的最適規範，而且還可以搭配<code>pre-commit</code>，這個gem來幫我們做到每次提交commit前先掃描我們的code，看看是否有符合codestyle，沒有符合的話就不給commit，希望借此養成良好的codestyle！</p>
+
+<!--more-->
+
+
+<h3>1. 首先安裝gem</h3>
+
+<p><code>
+gem 'pre-commit', require: false
+gem 'rubocop', require: false
+</code></p>
+
+<h3>2.新增檔案 rails_project/.robocup.yml</h3>
+
+<p>這部份我都是手動新增的，裡面定義了一些基礎的客製化規範，照抄前輩挑選的，大家如果沒特定需求也可以照抄
+{% codeblock lang:yml %}
+AllCops:
+  RunRailsCops: true
+  Exclude:</p>
+
+<pre><code>- db/schema.rb
+</code></pre>
+
+<p>Metrics/LineLength:
+  Max: 120</p>
+
+<p>Metrics/MethodLength:
+  Max: 20</p>
+
+<p>Metrics/ClassLength:
+  Max: 250</p>
+
+<p>Style/AsciiComments:
+  Enabled: false</p>
+
+<p>Style/ClassAndModuleChildren:
+  EnforcedStyle: compact</p>
+
+<p>Style/Documentation:
+  Enabled: false</p>
+
+<p>Style/IfUnlessModifier:
+  Enabled: false
+{% endcodeblock %}</p>
+
+<h3>3.新增檔案 config/pre_commit.yml</h3>
+
+<h2>{% codeblock lang:yml %}</h2>
+
+<p>:checks_remove: []
+:checks_add:
+&ndash; :tabs
+&ndash; :nb_space
+&ndash; :whitespace
+&ndash; :merge_conflict
+&ndash; :debugger
+&ndash; :pry
+&ndash; :local
+&ndash; :jshint
+&ndash; :console_log
+&ndash; :migration
+&ndash; :rubocop
+{% endcodeblock %}</p>
+
+<h3>4. 執行<code>pre-commit install</code></h3>
+
+<p>之後，每次開始提交commit就會在terminal下看到執行的結果了！然後就乖乖的養成良好的習慣慢慢改吧，雖然一開始會不習慣，但是之後會發現真的挺受用的！<br/>
+如果有看不懂的提示也可以去Google找或是去<a href="https://github.com/bbatsov/ruby-style-guide#underscore-unused-vars">ruby-style-guide</a>翻閱看看，裡面都有解釋為何這樣設計或是範例。</p>
+
+<h3>5.補充</h3>
+
+<p>若想偷懶強制commit上去可以加上參數<code>-n</code></p>
+
+<p><code>git commit -am 'some message' -n</code></p>
+
+<h3>參考：<a href="https://github.com/jish/pre-commit">github: pre-commit</a></h3>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ruby Each_with_object vs Reduce]]></title>
