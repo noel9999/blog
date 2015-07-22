@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-07-23T02:07:25+08:00</updated>
+  <updated>2015-07-23T02:11:06+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -29,8 +29,9 @@
 
 <p><code>ruby</code>的類別變數有區分以下兩種，而兩者都可以被類別方法正常存取與使用，但還是有差異如下：</p>
 
-<blockquote><p>@@var => Class Variable  類別變數
-@var => Class Instance Variable  類別實體變數</p></blockquote>
+<blockquote><p>@@var => Class Variable  類別變數</p>
+
+<p>@var => Class Instance Variable  類別實體變數</p></blockquote>
 
 <h3>主要差異為：</h3>
 

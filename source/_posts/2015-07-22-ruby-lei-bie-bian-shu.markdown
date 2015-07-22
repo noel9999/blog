@@ -15,6 +15,7 @@ categories: ruby
 `ruby`的類別變數有區分以下兩種，而兩者都可以被類別方法正常存取與使用，但還是有差異如下：
 >
 @@var => Class Variable  類別變數
+>
 @var => Class Instance Variable  類別實體變數
 
 ### 主要差異為：
