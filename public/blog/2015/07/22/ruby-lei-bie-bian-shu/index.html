@@ -1,0 +1,505 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Ruby 類別變數 - Noel Saga</title>
+  <meta name="author" content="Noel">
+
+  
+  <meta name="description" content="Recent Posts Ruby 類別變數 使用pre-commit來修煉codestyle 開發中，常見的參數payload是什麼? JSONP 介紹 What Is Base64 Recent Comments Categories Javascript(3) Jquery(1) &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://noelsaga.herokuapp.com/blog/2015/07/22/ruby-lei-bie-bian-shu">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Noel Saga" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <aside class="sidebar">
+      
+        <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/07/22/ruby-lei-bie-bian-shu/">Ruby 類別變數</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/07/22/shi-yong-pre-commitlai-xiu-lian-codestyle/">使用pre-commit來修煉codestyle</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/07/18/kai-fa-zhong-,chang-jian-de-can-shu-payloadshi-shi-mo/">開發中，常見的參數payload是什麼?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/07/06/jsonp-jie-shao/">JSONP 介紹</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/27/what-is-base64/">What Is Base64</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Recent Comments</h1>
+  <div id="dsq-recentcomments" class="dsq-widget"><script type="text/javascript" src="http://disqus.com/forums/noelsaga/recent_comments_widget.js?hide_avatars=0&num_items=6"></script></div>
+</section>
+<section>
+<h1>Categories</h1>
+<span class='categories_tag'> <a href='/blog/categories/javascript' style='font-size: 136.0%'>Javascript(3)</a>  <a href='/blog/categories/jquery' style='font-size: 112.0%'>Jquery(1)</a>  <a href='/blog/categories/programming' style='font-size: 124.0%'>Programming(2)</a>  <a href='/blog/categories/ruby' style='font-size: 160.0%'>Ruby(5)</a>  <a href='/blog/categories/編碼' style='font-size: 112.0%'>編碼(1)</a> </span>
+</section>
+
+<section>
+  <h1>Friends</h1>
+  <ul id="friends">
+      <li>
+        <a href="http://rubyist.marsz.tw/">黃金俠的blog</a>
+      </li>
+      <li>
+        <a href="http://ayamomiji.tumblr.com/">愛雅小舖</a>
+      </li>
+      <li>
+        <a href="http://about.me/jonatw">強納森林大火</a>
+      </li>
+      <li>
+        <a href="http://urpro.info/">文藝的blog</a>
+      </li>
+      <li>
+        <a href="http://ccaloha.herokuapp.com/">AlohaCC</a>
+      </li>
+  </ul>
+</section>
+
+
+
+
+
+      
+    </aside>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Ruby 類別變數</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2015-07-22T23:36:42+08:00" pubdate data-updated="true">Jul 22<sup>nd</sup>, 2015</time>
+          | 
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ruby/'>ruby</a>
+  
+</span>
+
+ |
+          <span class="comments"><a href="/blog/2015/07/22/ruby-lei-bie-bian-shu/#disqus_thread">comments</a></span>
+        </div>
+        <p>類別變數，有時也稱靜態變數，簡單說就是專屬於類別的變數，不依實體不同而有所差異，類別成員下皆共享的，因為是存在特定的記憶體區塊，所以不會因實體的存活期間所影響。</p>
+
+<p>各個oop語言的類別變數大致的理念都是相同的，用法上可能會略有不同，今次是就來探討<code>ruby</code>的使用狀況。</p>
+
+<!--more-->
+
+
+<h2>類別變數種類</h2>
+
+<p><code>ruby</code>的類別變數有區分以下兩種，而兩者都可以被類別方法正常存取與使用，但還是有差異如下：</p>
+
+<blockquote><p>@@var => Class Variable  類別變數
+@var => Class Instance Variable  類別實體變數</p></blockquote>
+
+<h3>主要差異為：</h3>
+
+<h3>1.<code>@@</code>可以給子類別繼承; <code>@</code>不可以</h3>
+
+<figure class='code'><figcaption><span>類別變數繼承 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">Parent</span>
+</span><span class='line'>  <span class="vc">@@blood</span> <span class="o">=</span> <span class="ss">:b</span>
+</span><span class='line'>  <span class="vi">@hobby</span> <span class="o">=</span> <span class="ss">:car</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">blood</span>
+</span><span class='line'>    <span class="vc">@@blood</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">hobby</span>
+</span><span class='line'>    <span class="vi">@hobby</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Child</span> <span class="o">&lt;</span> <span class="no">Parent</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Parent</span><span class="o">.</span><span class="n">hobby</span> <span class="c1"># car</span>
+</span><span class='line'><span class="no">Child</span><span class="o">.</span><span class="n">hobby</span> <span class="c1"># nil</span>
+</span><span class='line'><span class="no">Parent</span><span class="o">.</span><span class="n">blood</span> <span class="c1"># b</span>
+</span><span class='line'><span class="no">Child</span><span class="o">.</span><span class="n">blodd</span> <span class="c1"># b</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Child</span><span class="o">.</span><span class="n">instance_eval</span> <span class="k">do</span>
+</span><span class='line'>  <span class="vi">@hobby</span> <span class="o">=</span> <span class="ss">:coding</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="no">Child</span><span class="o">.</span><span class="n">hobby</span> <span class="c1"># coding</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<h3>2.<code>@@</code>雖可以被繼承，但由於所有類別都共用，故<code>@@</code>更改後也會影響其他類別所擁有的相同<code>@@</code>;<code>@</code>因為不會被繼承所以沒這問題</h3>
+
+<p>所以使用<code>@@</code>的時候請小心，一般來說較常使用<code>@</code>來當做類別變數</p>
+
+<figure class='code'><figcaption><span>類別變數共享問題 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">Parent</span>
+</span><span class='line'>  <span class="vc">@@blood</span> <span class="o">=</span> <span class="ss">:b</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">blood</span>
+</span><span class='line'>    <span class="vc">@@blood</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">blood</span><span class="o">=</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</span><span class='line'>    <span class="vc">@@blood</span> <span class="o">=</span> <span class="n">value</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Child</span> <span class="o">&lt;</span> <span class="no">Parent</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Parent</span><span class="o">.</span><span class="n">blood</span> <span class="c1"># b</span>
+</span><span class='line'><span class="no">Child</span><span class="o">.</span><span class="n">blood</span> <span class="c1"># b</span>
+</span><span class='line'><span class="no">Child</span><span class="o">.</span><span class="n">blood</span> <span class="o">=</span> <span class="ss">:c</span>
+</span><span class='line'><span class="no">Parent</span><span class="o">.</span><span class="n">blood</span> <span class="c1"># c</span>
+</span><span class='line'><span class="no">Child</span><span class="o">.</span><span class="n">blood</span> <span class="c1"># c</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<h3>3.<code>@@</code>可以給實體方法使用; <code>@</code>不可以</h3>
+
+<p>因為<code>@</code>對實體方法的角度來看，會當做實體變數去讀取而非類別實體變數</p>
+
+<figure class='code'><figcaption><span>實體方法使用類別變數 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">Parent</span>
+</span><span class='line'>  <span class="vc">@@blood</span> <span class="o">=</span> <span class="ss">:b</span>
+</span><span class='line'>  <span class="vi">@hobby</span> <span class="o">=</span> <span class="ss">:car</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">blood</span>
+</span><span class='line'>    <span class="vc">@@blood</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">hobby</span>
+</span><span class='line'>    <span class="vi">@hobby</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">dad</span> <span class="o">=</span> <span class="no">Parent</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">dad</span><span class="o">.</span><span class="n">blood</span> <span class="c1"># b</span>
+</span><span class='line'><span class="n">dad</span><span class="o">.</span><span class="n">hobby</span> <span class="c1"># nil</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果實體方法想使用類別實體變數，那就改讓實體方法去呼叫類別方法即可</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="no">Parent</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">hobby</span>
+</span><span class='line'>    <span class="vi">@hobby</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">get_hobby_by_class_method</span>
+</span><span class='line'>    <span class="no">Parent</span><span class="o">.</span><span class="n">hobby</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">mom</span> <span class="o">=</span> <span class="no">Parent</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">mom</span><span class="o">.</span><span class="n">hobby</span> <span class="c1"># nil</span>
+</span><span class='line'><span class="n">mom</span><span class="o">.</span><span class="n">get_hobby_by_class_method</span> <span class="c1"># car</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>補充</h2>
+
+<p>換種類別方法定義的方式來看更複雜一點的例子</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">Animal</span>
+</span><span class='line'>  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>    <span class="vc">@@move</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>    <span class="vc">@@breath</span> <span class="o">=</span> <span class="s2">&quot;Air&quot;</span>
+</span><span class='line'>    <span class="vi">@food</span> <span class="o">=</span> <span class="sx">%w(meat grass)</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">description</span>
+</span><span class='line'>      <span class="k">if</span> <span class="vc">@@move</span>
+</span><span class='line'>        <span class="nb">puts</span> <span class="s2">&quot;We Can beathe </span><span class="si">#{</span><span class="vc">@@breath</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">food</span>
+</span><span class='line'>      <span class="vi">@food</span> <span class="o">||=</span> <span class="o">[]</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">food_list</span>
+</span><span class='line'>      <span class="vi">@food</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">food</span><span class="o">|</span>
+</span><span class='line'>        <span class="nb">puts</span> <span class="s2">&quot;We like </span><span class="si">#{</span><span class="n">food</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="k">end</span> <span class="k">if</span> <span class="vi">@food</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Animal</span><span class="o">.</span><span class="n">description</span>
+</span><span class='line'><span class="c1"># We Can beathe Air</span>
+</span><span class='line'><span class="c1"># nil</span>
+</span><span class='line'><span class="no">Animal</span><span class="o">.</span><span class="n">food_list</span>
+</span><span class='line'><span class="c1"># nil</span>
+</span><span class='line'><span class="no">Animal</span><span class="o">.</span><span class="n">food</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;meat&quot;</span>
+</span><span class='line'><span class="no">Animal</span><span class="o">.</span><span class="n">food_list</span>
+</span><span class='line'><span class="c1"># We like meat</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>看來我們無法在<code>class &lt;&lt; self</code>的裡面直接定義<code>@</code>的類別實體變數，若非要在該區塊內設定<code>@</code>的類別實體變數，得借用類別方法來完成！</p>
+
+<h3>參考</h3>
+
+<p><a href="https://rubymonk.com/learning/books/4-ruby-primer-ascent/chapters/45-more-classes/lessons/113-class-variables">Class Variables and Methods</a></p>
+
+
+        <hr class="divider-short"/>
+        
+        
+        <section>
+          <h1>Comments</h1>
+          <div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'noelsaga'; // Required - Replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </section>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/blog/2015/07/22/shi-yong-pre-commitlai-xiu-lian-codestyle/" title="Previous Post: 使用pre-commit來修煉codestyle">&laquo; Previous: 使用pre-commit來修煉codestyle</a>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+ .article{
+  position: relative;
+ }
+ .container{
+  padding-right: 100px;
+ }
+ .sidebar{
+    position: absolute;
+    right: -271px;
+    width: 310px;
+    padding-left: 40px;
+    background-color: rgba(75,79,87,0.5);
+
+  }
+</style>
+<script src="/javascripts/sidebar.js"></script>
+
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2">
+  <div class="social-icon-list">
+    
+    <a href="https://twitter.com/terrorer9999"><img src="/images/glyphicons_social_31_twitter.png"/></a>
+    
+
+    
+    <a href="https://github.com/noel9999"><img src="/images/glyphicons_social_21_github.png"/></a>
+    
+
+    
+    <a href="https://www.facebook.com/profile.php/?id=100001068144290"><img src="/images/glyphicons_390_facebook.png"/></a>
+    
+
+    
+
+    
+    <a href="mailto:terrorer9999@hotmail"><img src="/images/glyphicons_social_39_e-mail.png"/></a>
+    
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4>Powered by <a href="http://octopress.org/">Octopress</a>. Designed by <a href="http://AdrianArtiles.com">Adrian Artiles</a>.</h4>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-07-22T01:49:43+08:00</updated>
+  <updated>2015-07-23T02:07:25+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -12,6 +12,204 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby 類別變數]]></title>
+    <link href="http://noelsaga.herokuapp.com/blog/2015/07/22/ruby-lei-bie-bian-shu/"/>
+    <updated>2015-07-22T23:36:42+08:00</updated>
+    <id>http://noelsaga.herokuapp.com/blog/2015/07/22/ruby-lei-bie-bian-shu</id>
+    <content type="html"><![CDATA[<p>類別變數，有時也稱靜態變數，簡單說就是專屬於類別的變數，不依實體不同而有所差異，類別成員下皆共享的，因為是存在特定的記憶體區塊，所以不會因實體的存活期間所影響。</p>
+
+<p>各個oop語言的類別變數大致的理念都是相同的，用法上可能會略有不同，今次是就來探討<code>ruby</code>的使用狀況。</p>
+
+<!--more-->
+
+
+<h2>類別變數種類</h2>
+
+<p><code>ruby</code>的類別變數有區分以下兩種，而兩者都可以被類別方法正常存取與使用，但還是有差異如下：</p>
+
+<blockquote><p>@@var => Class Variable  類別變數
+@var => Class Instance Variable  類別實體變數</p></blockquote>
+
+<h3>主要差異為：</h3>
+
+<h3>1.<code>@@</code>可以給子類別繼承; <code>@</code>不可以</h3>
+
+<p>{% codeblock lang:rb 類別變數繼承 %}
+class Parent
+  @@blood = :b
+  @hobby = :car</p>
+
+<p>  def self.blood</p>
+
+<pre><code>@@blood
+</code></pre>
+
+<p>  end</p>
+
+<p>  def self.hobby</p>
+
+<pre><code>@hobby
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>class Child &lt; Parent
+end</p>
+
+<p>Parent.hobby # car
+Child.hobby # nil
+Parent.blood # b
+Child.blodd # b</p>
+
+<p>Child.instance_eval do
+  @hobby = :coding
+end
+Child.hobby # coding
+{% endcodeblock %}</p>
+
+<hr />
+
+<h3>2.<code>@@</code>雖可以被繼承，但由於所有類別都共用，故<code>@@</code>更改後也會影響其他類別所擁有的相同<code>@@</code>;<code>@</code>因為不會被繼承所以沒這問題</h3>
+
+<p>所以使用<code>@@</code>的時候請小心，一般來說較常使用<code>@</code>來當做類別變數</p>
+
+<p>{% codeblock lang:rb 類別變數共享問題 %}
+class Parent
+  @@blood = :b</p>
+
+<p>  def self.blood</p>
+
+<pre><code>@@blood
+</code></pre>
+
+<p>  end</p>
+
+<p>  def self.blood=(value)</p>
+
+<pre><code>@@blood = value
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>class Child &lt; Parent
+end</p>
+
+<p>Parent.blood # b
+Child.blood # b
+Child.blood = :c
+Parent.blood # c
+Child.blood # c
+{% endcodeblock %}</p>
+
+<hr />
+
+<h3>3.<code>@@</code>可以給實體方法使用; <code>@</code>不可以</h3>
+
+<p>因為<code>@</code>對實體方法的角度來看，會當做實體變數去讀取而非類別實體變數
+{% codeblock lang:rb 實體方法使用類別變數 %}
+class Parent
+  @@blood = :b
+  @hobby = :car</p>
+
+<p>  def blood</p>
+
+<pre><code>@@blood
+</code></pre>
+
+<p>  end</p>
+
+<p>  def hobby</p>
+
+<pre><code>@hobby
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>dad = Parent.new
+dad.blood # b
+dad.hobby # nil
+{% endcodeblock %}
+如果實體方法想使用類別實體變數，那就改讓實體方法去呼叫類別方法即可</p>
+
+<p>{% codeblock lang:rb %}
+Parent.class_eval do
+  def self.hobby</p>
+
+<pre><code>@hobby
+</code></pre>
+
+<p>  end</p>
+
+<p>  def get_hobby_by_class_method</p>
+
+<pre><code>Parent.hobby
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>mom = Parent.new
+mom.hobby # nil
+mom.get_hobby_by_class_method # car
+{% endcodeblock %}</p>
+
+<h2>補充</h2>
+
+<p>換種類別方法定義的方式來看更複雜一點的例子
+{% codeblock lang:rb %}
+class Animal
+  class &lt;&lt; self</p>
+
+<pre><code>@@move = true
+@@breath = "Air"
+@food = %w(meat grass)
+def description
+  if @@move
+    puts "We Can beathe #{@@breath}"
+  end
+end
+
+def food
+  @food ||= []
+end
+
+def food_list
+  @food.each do |food|
+    puts "We like #{food}"
+  end if @food
+end
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>Animal.description</p>
+
+<h1>We Can beathe Air</h1>
+
+<h1>nil</h1>
+
+<p>Animal.food_list</p>
+
+<h1>nil</h1>
+
+<p>Animal.food &lt;&lt; &ldquo;meat&rdquo;
+Animal.food_list</p>
+
+<h1>We like meat{% endcodeblock %}</h1>
+
+<p>看來我們無法在<code>class &lt;&lt; self</code>的裡面直接定義<code>@</code>的類別實體變數，若非要在該區塊內設定<code>@</code>的類別實體變數，得借用類別方法來完成！</p>
+
+<h3>參考</h3>
+
+<p><a href="https://rubymonk.com/learning/books/4-ruby-primer-ascent/chapters/45-more-classes/lessons/113-class-variables">Class Variables and Methods</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[使用pre-commit來修煉codestyle]]></title>
