@@ -50,7 +50,7 @@ Child.hobby # coding
 {% endcodeblock %}
 
 ---
-### 2.`@@`雖可以被繼承，但由於所有類別都共用，故`@@`更改後也會影響其他類別所擁有的相同`@@`;`@`因為不會被繼承所以沒這問題
+### 2.`@@`雖可以被繼承，但由於所有類別都共用，故`@@`更改後也會影響其他類別所擁有的相同`@@`;而`@`因為不會被繼承所以沒這問題
 所以使用`@@`的時候請小心，一般來說較常使用`@`來當做類別變數
 
 {% codeblock lang:rb 類別變數共享問題 %}
@@ -115,6 +115,8 @@ mom.hobby # nil
 mom.get_hobby_by_class_method # car
 {% endcodeblock %}
 
+---
+
 ## 補充
 換種類別方法定義的方式來看更複雜一點的例子
 {% codeblock lang:rb %}
@@ -152,5 +154,6 @@ Animal.food_list
 
 看來我們無法在`class << self`的裡面直接定義`@`的類別實體變數，若非要在該區塊內設定`@`的類別實體變數，得借用類別方法來完成！
 
+---
 ### 參考
 [Class Variables and Methods](https://rubymonk.com/learning/books/4-ruby-primer-ascent/chapters/45-more-classes/lessons/113-class-variables)

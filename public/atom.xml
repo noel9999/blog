@@ -4,7 +4,7 @@
   <title><![CDATA[Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-07-23T02:10:55+08:00</updated>
+  <updated>2015-07-23T02:14:06+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -93,7 +93,7 @@
 
 <hr />
 
-<h3>2.<code>@@</code>雖可以被繼承，但由於所有類別都共用，故<code>@@</code>更改後也會影響其他類別所擁有的相同<code>@@</code>;<code>@</code>因為不會被繼承所以沒這問題</h3>
+<h3>2.<code>@@</code>雖可以被繼承，但由於所有類別都共用，故<code>@@</code>更改後也會影響其他類別所擁有的相同<code>@@</code>;而<code>@</code>因為不會被繼承所以沒這問題</h3>
 
 <p>所以使用<code>@@</code>的時候請小心，一般來說較常使用<code>@</code>來當做類別變數</p>
 
@@ -214,6 +214,8 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<hr />
+
 <h2>補充</h2>
 
 <p>換種類別方法定義的方式來看更複雜一點的例子</p>
@@ -284,6 +286,8 @@
 
 
 <p>看來我們無法在<code>class &lt;&lt; self</code>的裡面直接定義<code>@</code>的類別實體變數，若非要在該區塊內設定<code>@</code>的類別實體變數，得借用類別方法來完成！</p>
+
+<hr />
 
 <h3>參考</h3>
 
