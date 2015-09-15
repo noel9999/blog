@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-07-23T02:14:15+08:00</updated>
+  <updated>2015-09-16T00:43:45+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -12,6 +12,125 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby Arguments 小技巧]]></title>
+    <link href="http://noelsaga.herokuapp.com/blog/2015/09/15/ruby-arguments-xiao-ji-qiao/"/>
+    <updated>2015-09-15T00:42:40+08:00</updated>
+    <id>http://noelsaga.herokuapp.com/blog/2015/09/15/ruby-arguments-xiao-ji-qiao</id>
+    <content type="html"><![CDATA[<p>在ruby裡，函式參數的定義與使用可以多變且靈活，這裡我們來分享一些比較特別的但實用的例子</p>
+
+<!--more-->
+
+
+<h2>參數的定義使用</h2>
+
+<p>當如果參數是要使用hash的話，我們都知道可以這樣用
+{% codeblock lang:rb %}</p>
+
+<p>def hello (options = {})
+  first_name = options[:first_name]
+  last_name = options[:last_name]
+  %Q(Hello, #{first_name} #{last_name})
+end</p>
+
+<p>hello first_name: &lsquo;Wayne&rsquo;, last_name: &lsquo;Rooney&rsquo;
+// &ldquo;Hello, Wayne Rooney&rdquo;
+{% endcodeblock %}</p>
+
+<h3>使用 <em>Keyword Arguments</em></h3>
+
+<p>但實際可以這樣用更快，少了從<code>options</code>取值的步驟，而且結果是一樣的</p>
+
+<p>{% codeblock lang:rb %}</p>
+
+<p>def hello (first_name:, last_name:)
+  %Q(Hello, #{first_name} #{last_name})
+end</p>
+
+<p>hello first_name: &lsquo;Wayne&rsquo;, last_name: &lsquo;Rooney&rsquo;
+// &ldquo;Hello, Wayne Rooney&rdquo;
+{% endcodeblock %}</p>
+
+<p>直接丟一個<code>hash</code>給它也可以，<del>廢話</del></p>
+
+<p>{% codeblock lang:rb %}
+hello { first_name: &lsquo;Wayne&rsquo;, last_name: &lsquo;Rooney&rsquo; }
+// &ldquo;Hello, Wayne Rooney&rdquo;
+{% endcodeblock %}</p>
+
+<p>但這樣會失敗
+{% codeblock lang:rb %}
+hello first_name: &lsquo;Wayne&rsquo;, { last_name: &lsquo;Rooney&rsquo; }
+// SyntaxError: unexpected &lsquo;\n&rsquo;, expecting =>
+{% endcodeblock %}</p>
+
+<p>必須先把<code>merge</code>成一個hash，或使採用<del>更潮</del>的<code>**</code>運算子
+{% codeblock lang:rb %}
+hello first_name: &lsquo;Wayne&rsquo;, **{ last_name: &lsquo;Rooney&rsquo; }
+&ldquo;Hello, Wayne Rooney&rdquo;
+{% endcodeblock %}</p>
+
+<p>也可以與其他參數混用，但一般來說我們會把<code>hash</code>形式的參數擺在最後面
+{% codeblock lang:rb %}</p>
+
+<p> def man_united(manager, members, color:, name:)</p>
+
+<pre><code>%Q(Manager: #{manager}, members: #{members}, color: #{color}, name: #{name} )
+</code></pre>
+
+<p> end
+ man_united &lsquo;+2&rsquo;, :rooney, color: :red, name: :red_devil
+ // &ldquo;Manager: +2, members: rooney, color: red, name: red_devil &rdquo;
+{% endcodeblock %}</p>
+
+<p>我們也可以這樣用，讓不固定的參數可以區分成<code>array</code>與<code>hash</code>型態</p>
+
+<p>{% codeblock lang:rb %}</p>
+
+<p> def test(*array, **hash)</p>
+
+<pre><code>"#{array[0]} #{array[1]} #{hash[:name]}, #{hash[:age]}"
+</code></pre>
+
+<p> end</p>
+
+<p> test(1,2,name: :noel, age: 27, extra: :not_available)
+ // &ldquo;1 2 noel, 27&rdquo;
+{% endcodeblock %}</p>
+
+<h3>如果不在乎傳入什麼值的話，可以這樣定義方法</h3>
+
+<p>{% codeblock lang:rb %}</p>
+
+<p> def foo(*)</p>
+
+<pre><code>do_something
+</code></pre>
+
+<p> end</p>
+
+<p>{% endcodeblock %}</p>
+
+<p>這樣有什麼好處呢？假使今天我們想覆寫某個方法，在執行前先去增加某些邏輯，但又不影響到其他地方的使用。我們可以這樣寫：</p>
+
+<p>{% codeblock lang:rb %}</p>
+
+<p> def save(*)</p>
+
+<pre><code>do_something
+super
+</code></pre>
+
+<p> end</p>
+
+<p>{% endcodeblock %}</p>
+
+<p>這樣同樣是呼叫<code>save</code>方法，但我已經在裡面塞入某些邏輯，但又不影響其他地方對<code>save</code>的使用，而<code>save</code>依然不需要擔心到底會接到哪些參數，反正都會原封不動的還給<code>super</code></p>
+
+<p><a href="http://www.justinweiss.com/blog/2015/03/30/fun-with-keyword-arguments/">參考</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ruby 類別變數]]></title>
@@ -561,153 +680,6 @@ end</p>
   result<br/>
 end
 {% endcodeblock %}</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[RubyWay: Net::HTTP篇]]></title>
-    <link href="http://noelsaga.herokuapp.com/blog/2014/08/21/ruby-net-http/"/>
-    <updated>2014-08-21T23:53:47+08:00</updated>
-    <id>http://noelsaga.herokuapp.com/blog/2014/08/21/ruby-net-http</id>
-    <content type="html"><![CDATA[<h2>前言</h2>
-
-<p>這算是比較抽象的一篇，目前我也不是很清楚他實際的作用與原理，但先記錄一下我所學到的部分與應用。</p>
-
-<h2>get_response</h2>
-
-<p> 有時候我們會需要在程式裡發出一個request，簡單的說就想像我們直接在瀏覽器裡輸入一串url，此時我們就可以利用Net::HTTP.get_response(<em>你要的uri</em>)，會回傳一個物件，而我們可以根據這個物件做我們想要的應用，看程式碼教學：</p>
-
-<!-- more -->
-
-
-<p>{% codeblock lang:rb 使用講解:Get %}</p>
-
-<pre><code>require 'net/http'
-#方法一
-uri = URI.perse("example.com/bar/dosomething")  ＃先解析成uri物件比較方便
-response = Net::HTTP.get_response(uri) # 回傳物件就是我們要的東西，我們可以利用他做很多事
-
-#方法二
-http = Net::HTTP.new(uri.host,uri.port)
-response = http.request(Net::HTTP::Get.new(uri.request_uri))  #切記Get.new()的參數是request_uri不是uri
-
-Net::HTTP.get_print(uri)   #印出response.body
-
-
-response.code       # 回傳http狀態碼
-response.body       # 回傳整個body內容，通常是編碼過不是人能看的東西
-response.message    # 回傳HTTP狀態碼代表訊息 ex："Moved Permanently" 
-response.uri        # 回傳呼叫它的uri物件
-
-#uri物件也是個很方便的東西裡面常見的功能有
-
-uri.request_uri     # 回傳你的request ex: /bar/dosomething
-uri.host            # 回傳domain
-uri.path            # 同request_uri
-uri.scheme          # 回傳使用的傳輸協定
-uri.query           # 回傳querysting
-uri.port            # 回傳使用的port
-
-#query_string處理
-params = { :limit =&gt; 10, :page =&gt; 3 }
-uri.query = URI.encode_www_form(params)
-</code></pre>
-
-<p>{% endcodeblock  %}
-應用範例：預留一個版位顯示response.body的結果，利用Net::HTTP對某伺服器發送一個請求，並且把回傳的結果存入memcache以利用來顯示到預留的版位上。嗯嗯，聽起來有點像是ajax的概念，只是由伺服器端坐的而且他是同步的&hellip;</p>
-
-<p>{% codeblock lang:rb 應用範例:Get %}</p>
-
-<pre><code>response = Net::HTTP.get_response(URI.parse("http://foobar.header.com/api"))
-if response.code.to_i == 200
-  $memcached.set("header-html", response.body, 0)
-end
-
-某一處的VIEW顯現出來
-
-&lt;%= raw $memcached.get("header-html").to_s.force_encode("utf8") %&gt;
-</code></pre>
-
-<p>{% endcodeblock %}</p>
-
-<hr />
-
-<h2>post_form</h2>
-
-<p>同理，有get方法就會有post方法，post方法一般用在傳送伺服器的的資料量大或是比較需要顧慮到安全時會用的！直接看教學範例：
-{% codeblock lang:rb 使用範例:Post %}</p>
-
-<pre><code>require "net/http"
-
-uri = URI.parse("http://example.com/foo/search")
-
-#方法一
-response = Net::HTTP.post_form(uri, {"data" =&gt; "My data blah blah", "per_page" =&gt; "50"})
-
-#方法二
-http = Net::HTTP.new(uri.host, uri.port)
-request = Net::HTTP::Post.new(uri.request_uri)
-request.set_form_date({"data" =&gt; "My data blah blah", "per_page" =&gt; "50"})
-response = http.request(request)
-</code></pre>
-
-<p>{% endcodeblock %}</p>
-
-<h2>REST methods</h2>
-
-<p>有寫過rails的人相信都對RESTful不陌生，所以直接看範例吧！
-{% codeblock lang:rb 使用範例:REST %}</p>
-
-<pre><code>require "net/http"
-
-uri = URI.parse("http://api.noelsaga.net/")
-
-http = Net::HTTP.new(uri.host, uri.port) #
-
-#Get : 通常是讀取單一筆資料如show
-response = http.request(Net::HTTP::Get.new("/post/1"))
-
-#Post: 通常是用來建立資料
-request = (Net::HTTP::Post.new("/post/1"))
-request.set_form_date({:tilte =&gt; "Monday", :content =&gt; "I'm wanna go home..."})
-response = http.request(request)
-
-#Put : 通常是用來更新一筆資料
-request = (Net::HTTP::Put.new("/post/1"))
-request.set_form_date({:title =&gt; "Tuesday"})
-response = http.request(request)
-
-#Delete: 嗯嗯，字面意思很清楚了
-request = (Net::HTTP::Delete.new("/post/1"))
-response = http.request(request)
-</code></pre>
-
-<p>{% endcodeblock %}</p>
-
-<h2>SSL/HTTPS request with PEM certificate</h2>
-
-<p>如果是需要pem認證時，可以這麼做，此處直接使用Peter Cooper提供的範例</p>
-
-<p>{% codeblock lang:rb 使用範例:PEM certificate %}</p>
-
-<pre><code>require "net/https"
-require "uri"
-
-uri = URI.parse("https://secure.com/")
-pem = File.read("/path/to/my.pem")
-http = Net::HTTP.new(uri.host, uri.port)
-http.use_ssl = true
-http.cert = OpenSSL::X509::Certificate.new(pem)  # 根據pem檔案建立認證
-http.key = OpenSSL::PKey::RSA.new(pem)            # 根據pem檔案建立認證
-http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-request = Net::HTTP::Get.new(uri.request_uri)
-</code></pre>
-
-<p>{% endcodeblock %}</p>
-
-<h2>Post傳檔部分 （從缺中）</h2>
-
-<p><a href="http://www.rubyinside.com/nethttp-cheat-sheet-2940.html">參考Peter Cooper文章</a></p>
 ]]></content>
   </entry>
   

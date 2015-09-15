@@ -4,7 +4,7 @@
   <title><![CDATA[Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-07-23T02:14:06+08:00</updated>
+  <updated>2015-09-16T00:43:39+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -12,6 +12,151 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby Arguments 小技巧]]></title>
+    <link href="http://noelsaga.herokuapp.com/blog/2015/09/15/ruby-arguments-xiao-ji-qiao/"/>
+    <updated>2015-09-15T00:42:40+08:00</updated>
+    <id>http://noelsaga.herokuapp.com/blog/2015/09/15/ruby-arguments-xiao-ji-qiao</id>
+    <content type="html"><![CDATA[<p>在ruby裡，函式參數的定義與使用可以多變且靈活，這裡我們來分享一些比較特別的但實用的例子</p>
+
+<!--more-->
+
+
+<h2>參數的定義使用</h2>
+
+<p>當如果參數是要使用hash的話，我們都知道可以這樣用</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">def</span> <span class="nf">hello</span> <span class="p">(</span><span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+</span><span class='line'>  <span class="n">first_name</span> <span class="o">=</span> <span class="n">options</span><span class="o">[</span><span class="ss">:first_name</span><span class="o">]</span>
+</span><span class='line'>  <span class="n">last_name</span> <span class="o">=</span> <span class="n">options</span><span class="o">[</span><span class="ss">:last_name</span><span class="o">]</span>
+</span><span class='line'>  <span class="sx">%Q(Hello, </span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="sx"> </span><span class="si">#{</span><span class="n">last_name</span><span class="si">}</span><span class="sx">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">hello</span> <span class="n">first_name</span><span class="p">:</span> <span class="s1">&#39;Wayne&#39;</span><span class="p">,</span> <span class="n">last_name</span><span class="p">:</span> <span class="s1">&#39;Rooney&#39;</span>
+</span><span class='line'><span class="sr">//</span> <span class="s2">&quot;Hello, Wayne Rooney&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>使用 <em>Keyword Arguments</em></h3>
+
+<p>但實際可以這樣用更快，少了從<code>options</code>取值的步驟，而且結果是一樣的</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">def</span> <span class="nf">hello</span> <span class="p">(</span><span class="n">first_name</span><span class="p">:,</span> <span class="n">last_name</span><span class="p">:)</span>
+</span><span class='line'>  <span class="sx">%Q(Hello, </span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="sx"> </span><span class="si">#{</span><span class="n">last_name</span><span class="si">}</span><span class="sx">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">hello</span> <span class="n">first_name</span><span class="p">:</span> <span class="s1">&#39;Wayne&#39;</span><span class="p">,</span> <span class="n">last_name</span><span class="p">:</span> <span class="s1">&#39;Rooney&#39;</span>
+</span><span class='line'><span class="sr">//</span> <span class="s2">&quot;Hello, Wayne Rooney&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>直接丟一個<code>hash</code>給它也可以，<del>廢話</del></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">hello</span> <span class="p">{</span> <span class="n">first_name</span><span class="p">:</span> <span class="s1">&#39;Wayne&#39;</span><span class="p">,</span> <span class="n">last_name</span><span class="p">:</span> <span class="s1">&#39;Rooney&#39;</span> <span class="p">}</span>
+</span><span class='line'><span class="sr">//</span> <span class="s2">&quot;Hello, Wayne Rooney&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>但這樣會失敗</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">hello</span> <span class="n">first_name</span><span class="p">:</span> <span class="s1">&#39;Wayne&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="n">last_name</span><span class="p">:</span> <span class="s1">&#39;Rooney&#39;</span> <span class="p">}</span>
+</span><span class='line'><span class="sr">//</span> <span class="ss">SyntaxError</span><span class="p">:</span> <span class="n">unexpected</span> <span class="s1">&#39;\n&#39;</span><span class="p">,</span> <span class="n">expecting</span> <span class="o">=&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>必須先把<code>merge</code>成一個hash，或使採用<del>更潮</del>的<code>**</code>運算子</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">hello</span> <span class="n">first_name</span><span class="p">:</span> <span class="s1">&#39;Wayne&#39;</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span> <span class="n">last_name</span><span class="p">:</span> <span class="s1">&#39;Rooney&#39;</span> <span class="p">}</span>
+</span><span class='line'><span class="s2">&quot;Hello, Wayne Rooney&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>也可以與其他參數混用，但一般來說我們會把<code>hash</code>形式的參數擺在最後面</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'> <span class="k">def</span> <span class="nf">man_united</span><span class="p">(</span><span class="n">manager</span><span class="p">,</span> <span class="n">members</span><span class="p">,</span> <span class="ss">color</span><span class="p">:,</span> <span class="nb">name</span><span class="p">:)</span>
+</span><span class='line'>    <span class="sx">%Q(Manager: </span><span class="si">#{</span><span class="n">manager</span><span class="si">}</span><span class="sx">, members: </span><span class="si">#{</span><span class="n">members</span><span class="si">}</span><span class="sx">, color: </span><span class="si">#{</span><span class="n">color</span><span class="si">}</span><span class="sx">, name: </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="sx"> )</span>
+</span><span class='line'> <span class="k">end</span>
+</span><span class='line'> <span class="n">man_united</span> <span class="s1">&#39;+2&#39;</span><span class="p">,</span> <span class="ss">:rooney</span><span class="p">,</span> <span class="ss">color</span><span class="p">:</span> <span class="ss">:red</span><span class="p">,</span> <span class="nb">name</span><span class="p">:</span> <span class="ss">:red_devil</span>
+</span><span class='line'> <span class="sr">//</span> <span class="s2">&quot;Manager: +2, members: rooney, color: red, name: red_devil &quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我們也可以這樣用，讓不固定的參數可以區分成<code>array</code>與<code>hash</code>型態</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'> <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="o">*</span><span class="n">array</span><span class="p">,</span> <span class="o">**</span><span class="nb">hash</span><span class="p">)</span>
+</span><span class='line'>  <span class="s2">&quot;</span><span class="si">#{</span><span class="n">array</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">array</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="nb">hash</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span><span class="si">}</span><span class="s2">, </span><span class="si">#{</span><span class="nb">hash</span><span class="o">[</span><span class="ss">:age</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'> <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'> <span class="nb">test</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="nb">name</span><span class="p">:</span> <span class="ss">:noel</span><span class="p">,</span> <span class="ss">age</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span> <span class="ss">extra</span><span class="p">:</span> <span class="ss">:not_available</span><span class="p">)</span>
+</span><span class='line'> <span class="sr">//</span> <span class="s2">&quot;1 2 noel, 27&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>如果不在乎傳入什麼值的話，可以這樣定義方法</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">do_something</span>
+</span><span class='line'> <span class="k">end</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣有什麼好處呢？假使今天我們想覆寫某個方法，在執行前先去增加某些邏輯，但又不影響到其他地方的使用。我們可以這樣寫：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'> <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">do_something</span>
+</span><span class='line'>  <span class="k">super</span>
+</span><span class='line'> <span class="k">end</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣同樣是呼叫<code>save</code>方法，但我已經在裡面塞入某些邏輯，但又不影響其他地方對<code>save</code>的使用，而<code>save</code>依然不需要擔心到底會接到哪些參數，反正都會原封不動的還給<code>super</code></p>
+
+<p><a href="http://www.justinweiss.com/blog/2015/03/30/fun-with-keyword-arguments/">參考</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ruby 類別變數]]></title>

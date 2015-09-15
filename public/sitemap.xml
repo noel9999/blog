@@ -3,6 +3,12 @@
   
   
   <url>
+    <loc>http://noelsaga.herokuapp.com/blog/2015/09/15/ruby-arguments-xiao-ji-qiao/</loc>
+    <lastmod>2015-09-15T00:42:40+08:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://noelsaga.herokuapp.com/blog/2015/07/22/ruby-lei-bie-bian-shu/</loc>
     <lastmod>2015-07-22T23:36:42+08:00</lastmod>
     <priority>0.8</priority>
@@ -83,28 +89,28 @@
   
   <url>
     <loc>http://noelsaga.herokuapp.com/</loc>
-    <lastmod>2015-07-23T02:14:15+08:00</lastmod>
+    <lastmod>2015-09-16T00:43:45+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://noelsaga.herokuapp.com/blog/archives/</loc>
-    <lastmod>2015-07-23T02:14:15+08:00</lastmod>
+    <lastmod>2015-09-16T00:43:45+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://noelsaga.herokuapp.com/posts/</loc>
-    <lastmod>2015-07-23T02:14:15+08:00</lastmod>
+    <lastmod>2015-09-16T00:43:45+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://noelsaga.herokuapp.com/about/</loc>
-    <lastmod>2015-07-23T02:14:15+08:00</lastmod>
+    <lastmod>2015-09-16T00:43:45+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
