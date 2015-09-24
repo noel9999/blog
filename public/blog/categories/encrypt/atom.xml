@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Encrypt | Noel Saga]]></title>
+  <link href="http://noelsaga.herokuapp.com/blog/categories/encrypt/atom.xml" rel="self"/>
+  <link href="http://noelsaga.herokuapp.com/"/>
+  <updated>2015-09-25T01:24:35+08:00</updated>
+  <id>http://noelsaga.herokuapp.com/</id>
+  <author>
+    <name><![CDATA[Noel]]></name>
+    <email><![CDATA[terrorer9999@hotmail]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[What Is Base64]]></title>
+    <link href="http://noelsaga.herokuapp.com/blog/2015/06/27/what-is-base64/"/>
+    <updated>2015-06-27T16:00:55+08:00</updated>
+    <id>http://noelsaga.herokuapp.com/blog/2015/06/27/what-is-base64</id>
+    <content type="html"><![CDATA[<p>在從事web開發時，一定常常聽到<code>base64</code>，例如：rails裡會將cookie值採用base64編碼保護，而且在rails使用base64也相當容易，如：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>rails使用base64 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;encrypted_code = Base64.encode64 &quot;Hello World&quot;</span>
+</span><span class='line'><span class="sr"># 輸出 &quot;SGVsbG8gV29ybGQ=\n&quot;</span>
+</span><span class='line'><span class="sr">Base64.decode64 encrypted_code</span>
+</span><span class='line'><span class="sr"># 輸出 &quot;Hello World&quot;</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>看起來似乎非常簡單使用跟沒什麼特別要學的成本，所以本篇教完了，結束&hellip;&hellip;..!?<br/>
+當然沒這麼簡單，學習一項事物時，我覺得除了事物本身外，<strong><em>更重要的是我們為何要學習它？</em></strong>甚至去了解它的由來，我覺得對學習可以有更深的幫助，也較有趣味性。所以接下來我會講解<code>base64</code>的蓋要與它的使用目的。</p>
+
+<!--more-->
+
+
+<hr />
+
+<h2>Base64由來:</h2>
+
+<p>Base64的由來與電子郵件格式息息相關，最初在八零年代時(1982年RFC822規範文件)定義了傳統的電子郵件格式，而那時規定了只能傳輸<code>ASCII</code>，而這也導致了</p>
+
+<ul>
+<li>非英語字元不能在電子郵件中使用</li>
+<li>電子郵件裡不能插入二進位檔案</li>
+<li>電子郵件無法攜帶檔案附件</li>
+</ul>
+
+
+<p>而為了解決這個問題，90年代後工程師拓展了電子郵件的技術規範、並提出補充，造就了<code>MIME</code>的出現，以及為了轉換二進位制文件為ASCII字符而生的編碼，Base64等編碼方法的出現。</p>
+
+<hr />
+
+<h2>Base64介紹：</h2>
+
+<p>Base64的介紹及原理在維基百科裡其實已經有詳細的講解及過程，在這我仍然簡單的介紹原理及運算並以維基百科提供的資料為參照。</p>
+
+<p>Base64的64的由來是由<code>0~9</code>+<code>A~Z</code>+<code>a~z</code>＋<code>+</code>+<code>/</code>等64個字元所組成，而64為2的6次方，所以以6的位元為1個單位，因此如果3個byte共24位元長度得資料則除以6變成4個Base64字元，長度因此增加了<strong><em>約</em></strong>1/3的長度。若字元長度無法被6整除則會再補上0位元，並再最後產生的結果莫段加上1或2<code>=</code>字元符號(依補多少個0而定)，因此前面才會說長度增加<strong>大約</strong>為1/3。</p>
+
+<p>而算法的過程為</p>
+
+<ul>
+<li>1: 將文字轉為ASCII編碼</li>
+<li>2: 將ASCII編碼轉為二進位制</li>
+<li>3: 以6個字元為一組，若長度不夠被六整除則在最右邊補上0字元直到可被6整除</li>
+<li>4: 得到新的以6個字元為長度後則在最左邊補上2個0使之轉為二進位制資料並求出值</li>
+<li>5: 根據該值去對Base64編碼做索引</li>
+<li>6: 若在步驟3有補了4個0就要在最後結果尾端補上2個<code>=</code>，若2個0就要在最後結果尾端補上1個<code>=</code></li>
+</ul>
+
+
+<p>範例:</p>
+
+<p><code>Bar</code></p>
+
+<ul>
+<li>1: 66,        97,        114</li>
+<li>2: 01000010, 01100001,   01110010</li>
+<li>3: 010000, 100110, 000101, 110010</li>
+<li>4: 0010000(16), 00100110(38), 00000101(5), 00110010(50)</li>
+<li>5: 查<a href="http://www.dotnetspider.com/attachments/Resources/41901-12628-base-64-table.png">Base64表</a>後得到<code>QmFy</code>即為所求</li>
+<li>6: 步驟3沒有補0故此步驟不需要做</li>
+</ul>
+
+
+<p>最終結果為<code>Qmfy</code>比本來的<code>Bar</code>長度多了1/3。</p>
+
+<h4>等等</h4>
+
+<p>但是我們這只是用英文轉啊？！好像沒有意義。如果想轉中文怎麼辦？其實只有一開始多增加了一些步驟，要先根據漢字編碼如採用的是<code>utf-8</code>or<code>GBK</code>等不同編碼，先轉為二進位制再帶入上面的過程則可求得該漢字的Base64結果。</p>
+
+<p>若不會把漢字依據<code>UTF-8</code>轉為二進位制的話，可以來<a href="https://sites.google.com/site/nathanlexwww/tools/utf8-convert">這邊</a>轉。</p>
+
+<hr />
+
+<h2>Base64目的與運用：</h2>
+
+<p>到這裡我們對<code>base64</code>已經有大致了理解，base64的主要目的就是將非ASCII字元轉為可列印字符，所以我們也來看看這可以適合應用在哪些地方</p>
+
+<ul>
+<li>電子郵件的格是轉換</li>
+<li>可避免二進位制檔案在網路傳輸過程中因某些格式或是協定將部分內容視為特殊符號而造成的遺漏或失真</li>
+<li>HTTP請求中可將較長的資訊編碼後放在url參數或表單中，同樣可避免特殊符號造成的影響</li>
+<li>隱藏資訊的可讀性（但Base64不能視作加密方法，因為可以被解譯）</li>
+<li>Data URI(HTML中可直接攜帶二進位制檔案，並且透過MIME所使用)</li>
+</ul>
+
+
+<p>除了上述當然也還有其他得應用，但常見的幾個大概就是這樣，到這邊希望大家對Base64的使用疑惑已經解開了，如果有什麼對Base64的心發現或是我文章中有不對的地方都歡迎大家分享或指教～</p>
+
+<h4>參考</h4>
+
+<p><a href="http://www.ruanyifeng.com/blog/2008/06/base64.html">Base64笔记</a></p>
+]]></content>
+  </entry>
+  
+</feed>

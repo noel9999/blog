@@ -1,0 +1,349 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Rails 探訪html_safe - Noel Saga</title>
+  <meta name="author" content="Noel">
+
+  
+  <meta name="description" content="Recent Posts Rails 探訪html_safe Rails為何要使用escape_javascript? Ruby Arguments 小技巧 Ruby 類別變數 使用pre-commit來修煉codestyle Recent Comments Categories Ajax(1 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://noelsaga.herokuapp.com/blog/2015/09/25/rails-tan-fang-html-safe">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Noel Saga" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <aside class="sidebar">
+      
+        <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/09/25/rails-tan-fang-html-safe/">Rails 探訪html_safe</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/25/railswei-he-yao-shi-yong-escape-javascript/">Rails為何要使用escape_javascript?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/15/ruby-arguments-xiao-ji-qiao/">Ruby Arguments 小技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/07/22/ruby-lei-bie-bian-shu/">Ruby 類別變數</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/07/22/shi-yong-pre-commitlai-xiu-lian-codestyle/">使用pre-commit來修煉codestyle</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Recent Comments</h1>
+  <div id="dsq-recentcomments" class="dsq-widget"><script type="text/javascript" src="http://disqus.com/forums/noelsaga/recent_comments_widget.js?hide_avatars=0&num_items=6"></script></div>
+</section>
+<section>
+<h1>Categories</h1>
+<span class='categories_tag'> <a href='/blog/categories/ajax' style='font-size: 110.0%'>Ajax(1)</a>  <a href='/blog/categories/encrypt' style='font-size: 110.0%'>Encrypt(1)</a>  <a href='/blog/categories/javascript' style='font-size: 140.0%'>Javascript(4)</a>  <a href='/blog/categories/jquery' style='font-size: 110.0%'>Jquery(1)</a>  <a href='/blog/categories/programming' style='font-size: 120.0%'>Programming(2)</a>  <a href='/blog/categories/rails' style='font-size: 120.0%'>Rails(2)</a>  <a href='/blog/categories/ruby' style='font-size: 160.0%'>Ruby(6)</a> </span>
+</section>
+
+<section>
+  <h1>Friends</h1>
+  <ul id="friends">
+      <li>
+        <a href="http://rubyist.marsz.tw/">黃金俠的blog</a>
+      </li>
+      <li>
+        <a href="http://ayamomiji.tumblr.com/">愛雅小舖</a>
+      </li>
+      <li>
+        <a href="http://about.me/jonatw">強納森林大火</a>
+      </li>
+      <li>
+        <a href="http://urpro.info/">文藝的blog</a>
+      </li>
+      <li>
+        <a href="http://ccaloha.herokuapp.com/">AlohaCC</a>
+      </li>
+  </ul>
+</section>
+
+
+
+
+
+      
+    </aside>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Rails 探訪html_safe</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2015-09-25T01:12:27+08:00" pubdate data-updated="true">Sep 25<sup>th</sup>, 2015</time>
+          | 
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rails/'>rails</a>
+  
+</span>
+
+ |
+          <span class="comments"><a href="/blog/2015/09/25/rails-tan-fang-html-safe/#disqus_thread">comments</a></span>
+        </div>
+        <h2>介紹</h2>
+
+<p>Rails3開始為了安全性的考量<code>(XSS）</code>，怕使用者張貼一些有特殊目的<code>HTML</code>到網站上進而影響其他使用者或網站運作，所以會自動把所有<code>&lt;%= %&gt;</code>裡的字串都做溢出，當字串包含先特殊符號如：<code>&lt; , &gt;</code>等等都會被處理掉，這樣自然就不會被瀏覽器，非常地安全，而如果想不被溢出，我們此時可以使用<code>html_safe</code>這個helper來避免，詳情可以參考<a href="https://ihower.tw/rails4/security.html">ihower網路安全</a>。</p>
+
+<!--more-->
+
+
+<p>但如果只講到這邊，那直接看<code>ihower</code>不是更快更詳細，所以這邊會在深入講解一下<code>html_safe</code>的應用與介紹。</p>
+
+<h2>html_safe特性</h2>
+
+<p>如果我們對一個字串呼叫<code>html_safe</code>，他其實會回傳一個<code>ActiveSupport::SafeBuffer</code>的物件，基本上這個物件用起來、看起來都很像一般的字串，但他有個<strong><em>特性</em></strong>，就是如果該物件與其他的字串物件做結合，如使用<code>+ 或 &lt;&lt;</code> 等方法結合時，後加入的字串會自動被溢出：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>
+</span><span class='line'>  <span class="s1">&#39;&lt;p&gt;Foo&lt;/p&gt;&#39;</span><span class="o">.</span><span class="n">html_safe</span> <span class="o">+</span> <span class="s1">&#39;&lt;p&gt;Bar&lt;/p&gt;&#39;</span>
+</span><span class='line'>  <span class="c1"># 會變成 </span>
+</span><span class='line'>  <span class="s2">&quot;&lt;p&gt;Foo&lt;/p&gt;&amp;lt;p&amp;gt;Bar&amp;lt;/p&amp;gt;&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果被加入的字串也是個<code>SafeBuffer</code>則不會有被溢出</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>  <span class="s1">&#39;&lt;p&gt;Foo&lt;/p&gt;&#39;</span><span class="o">.</span><span class="n">html_safe</span> <span class="o">+</span> <span class="s1">&#39;&lt;p&gt;Bar&lt;/p&gt;&#39;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>  <span class="c1"># 會變成 </span>
+</span><span class='line'>  <span class="s2">&quot;&lt;p&gt;Foo&lt;/p&gt;&lt;p&gt;Bar&lt;/p&gt;&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Render與html_safe</h2>
+
+<p>而<code>render</code>執行的時候，其實會先有一個<code>空字串的SafeBuffer</code>，在把template的每一行<del>?</del>都加入到那個字串裡面，所以本身就是<code>SafeBuffer</code>的字串就不會被溢出，純<code>html</code>也不會有是，而剩餘寫在<code>&lt;%= %&gt;</code>的當然都會自被溢出。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>  <span class="n">html</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>  <span class="n">html</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;&lt;p&gt;&#39;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>  <span class="n">html</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;&lt;br /&gt;&#39;</span>
+</span><span class='line'>  <span class="n">html</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;&lt;/p&gt;&#39;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>  <span class="n">html</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>而Rails本身提供的<code>view helper</code>都已經是經過html_safe處理的，所以則可以正常運作。</p>
+
+<h2>小心使用html_safe</h2>
+
+<p>如果想客製化自己的<code>view helper</code>或是直接對一串可能包含<strong><em>變數</em></strong>的字串做<code>html_safe</code>時，我們可能會這麼做</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>  <span class="s2">&quot;&lt;p&gt;</span><span class="si">#{</span><span class="n">text</span><span class="si">}</span><span class="s2">&lt;/p&gt;&quot;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>  <span class="c1"># or</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">my_helper</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>    <span class="s2">&quot;&lt;p&gt;</span><span class="si">#{</span><span class="n">text</span><span class="si">}</span><span class="s2">&lt;/p&gt;&quot;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>則可能會很大的風險，因為我們不知道變數<code>text</code> 會包含著什麼內容，但整個字串都被已經被取消溢出了，如果<code>text</code>是含有惡意的code則就危險了。</p>
+
+<br>
+
+
+<p>所以，我們其實是應該<code>針對未知的部份</code>做溢出即可</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>  <span class="k">def</span> <span class="nf">my_helper</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">html</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>    <span class="n">html</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;&lt;p&gt;&#39;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>    <span class="n">html</span> <span class="o">&lt;&lt;</span> <span class="n">text</span>
+</span><span class='line'>    <span class="n">html</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;&lt;/p&gt;&#39;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>但這樣好像有點醜，所以我們可以善用 Rails提供的<code>content_tag</code> helper來幫助我們，由於Rails helper都已經幫我們做好安全措施了，所以可以直接放心<del>服用</del></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>  <span class="k">def</span> <span class="nf">my_helper</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">content_tag</span><span class="p">(</span><span class="ss">:p</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>結論</h2>
+
+<ul>
+<li>1: 永遠不要相信使用者傳來的參數或內容，要思考到最壞的打算</li>
+<li>2: 避免對<code>含有未知內容的字串</code>做<code>html_safe</code></li>
+</ul>
+
+
+<p><a href="http://makandracards.com/makandra/2579-everything-you-know-about-html_safe-is-wrong">參考</a></p>
+
+
+        <hr class="divider-short"/>
+        
+        
+        <section>
+          <h1>Comments</h1>
+          <div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'noelsaga'; // Required - Replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </section>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/blog/2015/09/25/railswei-he-yao-shi-yong-escape-javascript/" title="Previous Post: Rails為何要使用escape_javascript?">&laquo; Previous: Rails為何要使用escape_javascript?</a>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+ .article{
+  position: relative;
+ }
+ .container{
+  padding-right: 100px;
+ }
+ .sidebar{
+    position: absolute;
+    right: -271px;
+    width: 310px;
+    padding-left: 40px;
+    background-color: rgba(75,79,87,0.5);
+
+  }
+</style>
+<script src="/javascripts/sidebar.js"></script>
+
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2">
+  <div class="social-icon-list">
+    
+    <a href="https://twitter.com/terrorer9999"><img src="/images/glyphicons_social_31_twitter.png"/></a>
+    
+
+    
+    <a href="https://github.com/noel9999"><img src="/images/glyphicons_social_21_github.png"/></a>
+    
+
+    
+    <a href="https://www.facebook.com/profile.php/?id=100001068144290"><img src="/images/glyphicons_390_facebook.png"/></a>
+    
+
+    
+
+    
+    <a href="mailto:terrorer9999@hotmail"><img src="/images/glyphicons_social_39_e-mail.png"/></a>
+    
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4>Powered by <a href="http://octopress.org/">Octopress</a>. Designed by <a href="http://AdrianArtiles.com">Adrian Artiles</a>.</h4>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

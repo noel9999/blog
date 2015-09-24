@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Rails | Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-09-25T01:22:50+08:00</updated>
+  <updated>2015-09-25T01:24:35+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -31,33 +31,47 @@
 
 <p>如果我們對一個字串呼叫<code>html_safe</code>，他其實會回傳一個<code>ActiveSupport::SafeBuffer</code>的物件，基本上這個物件用起來、看起來都很像一般的字串，但他有個<strong><em>特性</em></strong>，就是如果該物件與其他的字串物件做結合，如使用<code>+ 或 &lt;&lt;</code> 等方法結合時，後加入的字串會自動被溢出：</p>
 
-<p>{% codeblock lang:rb %}</p>
-
-<p>  &lsquo;<p>Foo</p>&rsquo;.html_safe + &lsquo;<p>Bar</p>&rsquo;
-  # 會變成
-  &ldquo;<p>Foo</p>&lt;p&gt;Bar&lt;/p&gt;&rdquo;
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  &amp;lsquo;&lt;p&gt;Foo&lt;/</span><span class="nb">p</span><span class="o">&gt;&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">.</span><span class="n">html_safe</span> <span class="o">+</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">Bar</span><span class="o">&lt;</span><span class="sr">/p&gt;&amp;rsquo;</span>
+</span><span class='line'><span class="sr">  # 會變成</span>
+</span><span class='line'><span class="sr">  &amp;ldquo;&lt;p&gt;Foo&lt;/</span><span class="nb">p</span><span class="o">&gt;&amp;</span><span class="n">lt</span><span class="p">;</span><span class="nb">p</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="no">Bar</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">/</span><span class="nb">p</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>如果被加入的字串也是個<code>SafeBuffer</code>則不會有被溢出</p>
 
-<p>{% codeblock lang:rb %}
-  &lsquo;<p>Foo</p>&rsquo;.html_safe + &lsquo;<p>Bar</p>&rsquo;.html_safe
-  # 會變成
-  &ldquo;<p>Foo</p><p>Bar</p>&rdquo;
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>  <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">Foo</span><span class="o">&lt;</span><span class="sr">/p&gt;&amp;rsquo;.html_safe + &amp;lsquo;&lt;p&gt;Bar&lt;/</span><span class="nb">p</span><span class="o">&gt;&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>  <span class="c1"># 會變成</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">Foo</span><span class="o">&lt;</span><span class="sr">/p&gt;&lt;p&gt;Bar&lt;/</span><span class="nb">p</span><span class="o">&gt;&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h2>Render與html_safe</h2>
 
 <p>而<code>render</code>執行的時候，其實會先有一個<code>空字串的SafeBuffer</code>，在把template的每一行<del>?</del>都加入到那個字串裡面，所以本身就是<code>SafeBuffer</code>的字串就不會被溢出，純<code>html</code>也不會有是，而剩餘寫在<code>&lt;%= %&gt;</code>的當然都會自被溢出。</p>
 
-<p>{% codeblock lang:rb %}</p>
-
-<p>  html = &lsquo;&rsquo;.html_safe
-  html &lt;&lt; &lsquo;<p>&rsquo;.html_safe
-  html &lt;&lt; &lsquo;<br />&rsquo;
-  html &lt;&lt; &lsquo;</p>&rsquo;.html_safe
-  html
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  html = &amp;lsquo;&amp;rsquo;.html_safe</span>
+</span><span class='line'><span class="sr">  html &amp;lt;&amp;lt; &amp;lsquo;&lt;p&gt;&amp;rsquo;.html_safe</span>
+</span><span class='line'><span class="sr">  html &amp;lt;&amp;lt; &amp;lsquo;&lt;br /</span><span class="o">&gt;&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">html</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;&amp;rsquo;.html_safe</span>
+</span><span class='line'><span class="sr">  html</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>而Rails本身提供的<code>view helper</code>都已經是經過html_safe處理的，所以則可以正常運作。</p>
 
@@ -65,17 +79,27 @@
 
 <p>如果想客製化自己的<code>view helper</code>或是直接對一串可能包含<strong><em>變數</em></strong>的字串做<code>html_safe</code>時，我們可能會這麼做</p>
 
-<p>{% codeblock lang:rb %}</p>
-
-<p>  &ldquo;<p>#{text}</p>&rdquo;.html_safe
-  # or
-  def my_helper(text)</p>
-
-<pre><code>"&lt;p&gt;#{text}&lt;/p&gt;".html_safe
-</code></pre>
-
-<p>  end
-{% endcodeblock %}
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  &amp;ldquo;&lt;p&gt;</span><span class="si">#{</span><span class="n">text</span><span class="si">}</span><span class="sr">&lt;/</span><span class="nb">p</span><span class="o">&gt;&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>  <span class="c1"># or</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">my_helper</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;&quot;&amp;lt;p&amp;gt;</span><span class="si">#{</span><span class="n">text</span><span class="si">}</span><span class="sr">&amp;lt;/</span><span class="nb">p</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="s2">&quot;.html_safe</span>
+</span><span class='line'><span class="s2">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;p&gt;  end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 則可能會很大的風險，因為我們不知道變數<code>text</code> 會包含著什麼內容，但整個字串都被已經被取消溢出了，如果<code>text</code>是含有惡意的code則就危險了。</p>
 
 <br>
@@ -83,30 +107,49 @@
 
 <p>所以，我們其實是應該<code>針對未知的部份</code>做溢出即可</p>
 
-<p>{% codeblock lang:rb %}</p>
-
-<p>  def my_helper(text)</p>
-
-<pre><code>html = ''.html_safe
-html &lt;&lt; '&lt;p&gt;'.html_safe
-html &lt;&lt; text
-html &lt;&lt; '&lt;/p&gt;'.html_safe
-</code></pre>
-
-<p>  end
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def my_helper(text)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">html</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'><span class="n">html</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s1">&#39;&amp;lt;p&amp;gt;&#39;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'><span class="n">html</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">text</span>
+</span><span class='line'><span class="n">html</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s1">&#39;&amp;lt;/p&amp;gt;&#39;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>但這樣好像有點醜，所以我們可以善用 Rails提供的<code>content_tag</code> helper來幫助我們，由於Rails helper都已經幫我們做好安全措施了，所以可以直接放心<del>服用</del></p>
 
-<p>{% codeblock lang:rb %}</p>
-
-<p>  def my_helper(text)</p>
-
-<pre><code>content_tag(:p, text)
-</code></pre>
-
-<p>  end
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def my_helper(text)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">content_tag</span><span class="p">(</span><span class="ss">:p</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h2>結論</h2>
 
@@ -132,44 +175,59 @@ html &lt;&lt; '&lt;/p&gt;'.html_safe
 <!--more-->
 
 
-<p>{% img /images/rjs_example.png 800 600 &lsquo;RJS圖例說明&rsquo; &lsquo;RJS圖例說明&rsquo; %}</p>
+<p><img src="/images/rjs_example.png" width="800" height="600" title="&lsquo;RJS圖例說明&rsquo; &lsquo;RJS圖例說明&rsquo;" ></p>
 
 <br>
 
 
 <p> 而通常我們希望改變的網頁上的某些區塊例如：某表單、某欄位，所以我們最快的方法是使用Rails提供的方法像是 <code>render</code>來直接產生一些html，像是增加一個圖片連結：</p>
 
-<p>{% codeblock lang:html %}</p>
-
-<pre><code>&lt;a href="http://somehost/resources/123456"&gt;Hello World!&lt;/a&gt;
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>a href=&quot;http://somehost/resources/123456&quot;<span class="ni">&amp;gt;</span>Hello World!<span class="ni">&amp;lt;</span>/a<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>我們會使用<code>$('#some_id').append("&lt;%= render some_link %&gt;")</code>
 來更改頁面，但如果直接這樣用把剛剛那段html當做參數丟進去就會有問題，因為<code>append("&lt;%= ... %&gt;")</code> 的那雙引號會造成bug，會變成：</p>
 
-<p>{% codeblock lang:js %}</p>
-
-<p>  $(&lsquo;#some_id&rsquo;).append(&ldquo;<a href="http://somehost/resources/123456">Hello World</a>&rdquo;)
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">$</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="err">#</span><span class="nx">some_id</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;).</span><span class="nx">append</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="o">&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;http://somehost/resources/123456&quot;</span><span class="o">&gt;</span><span class="nx">Hello</span> <span class="nx">World</span><span class="o">&lt;</span><span class="err">/a&gt;&amp;rdquo;)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>兩個雙引號組成的字串，會因為其他的雙引號造成問題，
 所以我們需要<code>escape_javascript</code>來幫忙跳脫雙引號的<del>束縛</del>，`</p>
 
-<p>{% codeblock lang:js %}</p>
-
-<p>  $(&lsquo;#some_id&rsquo;).append(&ldquo;&lt;%= escape_javascript render some_link %>&rdquo;)`:
-  // 會等於
-  $(&lsquo;#some_id&rsquo;).append(&ldquo;<a href=\"http://somehost/resources/123456\">Hello World</a>&rdquo;)
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">$</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="err">#</span><span class="nx">some_id</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;).</span><span class="nx">append</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="o">%=</span> <span class="nx">escape_javascript</span> <span class="nx">render</span> <span class="nx">some_link</span> <span class="o">%&gt;&amp;</span><span class="nx">rdquo</span><span class="p">;)</span><span class="err">`</span><span class="o">:</span>
+</span><span class='line'>  <span class="c1">// 會等於</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="err">#</span><span class="nx">some_id</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;).</span><span class="nx">append</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="o">&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="err">\</span><span class="s2">&quot;http://somehost/resources/123456\&quot;</span><span class="o">&gt;</span><span class="nx">Hello</span> <span class="nx">World</span><span class="o">&lt;</span><span class="err">/a&gt;&amp;rdquo;)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h4>那如果我們不用雙引號，改用單引號包起來的話呢？</h4>
 
 <p>因為在jQuery我們的確會這麼寫
-{% codeblock lang:js %}
-  $(&lsquo;#some_id&rsquo;).append(&lsquo;&ldquo;<p>Hello World</p>&rdquo;&rsquo;)
-{% endcodeblock %}</p>
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="err">#</span><span class="nx">some_id</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;).</span><span class="nx">append</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Hello</span> <span class="nx">World</span><span class="o">&lt;</span><span class="err">/p&gt;&amp;rdquo;&amp;rsquo;)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>但實際上只用單引號包起來仍然會碰到字串內容如果有<code>斷行(\n)</code>而造成的問題，所以也要交給<code>escape_javascript</code>處理掉。</p>
 
