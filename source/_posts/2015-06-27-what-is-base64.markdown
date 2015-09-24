@@ -3,7 +3,7 @@ layout: post
 title: "What is base64"
 date: 2015-06-27 16:00:55 +0800
 comments: true
-categories:  編碼
+categories:  Encrypt
 ---
 在從事web開發時，一定常常聽到`base64`，例如：rails裡會將cookie值採用base64編碼保護，而且在rails使用base64也相當容易，如：  
 

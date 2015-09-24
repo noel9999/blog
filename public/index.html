@@ -14,7 +14,7 @@
 
   
   <meta name="description" content="Noel Saga
-Courage is contagious&#8230; Home Archives About Recent Posts Rails為何要使用escape_javascript? Ruby Arguments 小技巧 Ruby 類別變數 使用pre- &hellip;">
+Courage is contagious&#8230; Home Archives About Recent Posts Rails 探訪html_safe Rails為何要使用escape_javascript? Ruby Arguments 小技巧 Ruby 類別變數 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +87,10 @@ Courage is contagious&#8230; Home Archives About Recent Posts Rails為何要使�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/09/25/rails-tan-fang-html-safe/">Rails 探訪html_safe</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/09/25/railswei-he-yao-shi-yong-escape-javascript/">Rails為何要使用escape_javascript?</a>
       </li>
     
@@ -102,10 +106,6 @@ Courage is contagious&#8230; Home Archives About Recent Posts Rails為何要使�
         <a href="/blog/2015/07/22/shi-yong-pre-commitlai-xiu-lian-codestyle/">使用pre-commit來修煉codestyle</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/07/18/kai-fa-zhong-,chang-jian-de-can-shu-payloadshi-shi-mo/">開發中，常見的參數payload是什麼?</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -114,7 +114,7 @@ Courage is contagious&#8230; Home Archives About Recent Posts Rails為何要使�
 </section>
 <section>
 <h1>Categories</h1>
-<span class='categories_tag'> <a href='/blog/categories/ajax' style='font-size: 110.0%'>Ajax(1)</a>  <a href='/blog/categories/javascript' style='font-size: 140.0%'>Javascript(4)</a>  <a href='/blog/categories/jquery' style='font-size: 110.0%'>Jquery(1)</a>  <a href='/blog/categories/programming' style='font-size: 120.0%'>Programming(2)</a>  <a href='/blog/categories/rails' style='font-size: 110.0%'>Rails(1)</a>  <a href='/blog/categories/ruby' style='font-size: 160.0%'>Ruby(6)</a>  <a href='/blog/categories/編碼' style='font-size: 110.0%'>編碼(1)</a> </span>
+<span class='categories_tag'> <a href='/blog/categories/ajax' style='font-size: 110.0%'>Ajax(1)</a>  <a href='/blog/categories/encrypt' style='font-size: 110.0%'>Encrypt(1)</a>  <a href='/blog/categories/javascript' style='font-size: 140.0%'>Javascript(4)</a>  <a href='/blog/categories/jquery' style='font-size: 110.0%'>Jquery(1)</a>  <a href='/blog/categories/programming' style='font-size: 120.0%'>Programming(2)</a>  <a href='/blog/categories/rails' style='font-size: 120.0%'>Rails(2)</a>  <a href='/blog/categories/ruby' style='font-size: 160.0%'>Ruby(6)</a> </span>
 </section>
 
 <section>
@@ -144,6 +144,58 @@ Courage is contagious&#8230; Home Archives About Recent Posts Rails為何要使�
 
           
         </aside>
+        
+          
+          <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+              <article>
+  <h2><a href="/blog/2015/09/25/rails-tan-fang-html-safe/">Rails 探訪html_safe</a></h2>
+  
+  <p>
+    <h2>介紹</h2>
+
+
+
+
+<p>Rails3開始為了安全性的考量<code>(XSS）</code>，怕使用者張貼一些有特殊目的<code>HTML</code>到網站上進而影響其他使用者或網站運作，所以會自動把所有<code>&lt;%= %&gt;</code>裡的字串都做溢出，當字串包含先特殊符號如：<code>&lt; , &gt;</code>等等都會被處理掉，這樣自然就不會被瀏覽器，非常地安全，而如果想不被溢出，我們此時可以使用<code>html_safe</code>這個helper來避免，詳情可以參考<a href="https://ihower.tw/rails4/security.html">ihower網路安全</a>。</p>
+
+
+
+
+  </p>
+  <span class="meta">
+    written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2015-09-25T01:12:27+08:00" pubdate data-updated="true">Sep 25<sup>th</sup>, 2015</time>
+    
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rails/'>rails</a>
+  
+</span>
+
+
+  </span>
+
+  
+    <a class="full-article-link pull-right" rel="full-article" href="/blog/2015/09/25/rails-tan-fang-html-safe/">Read on &rarr;</a>
+  
+</article>
+            </div>
+          </div>
         
           
           <div class="row">
@@ -495,7 +547,7 @@ in
 in
 <span class="categories">
   
-    <a class='category' href='/blog/categories/bian-ma/'>編碼</a>
+    <a class='category' href='/blog/categories/encrypt/'>encrypt</a>
   
 </span>
 
