@@ -9,7 +9,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>開發中，常見的參數payload是什麼? - Noel Saga</title>
+  <title>Rails為何要使用escape_javascript? - Noel Saga</title>
   <meta name="author" content="Noel">
 
   
@@ -22,7 +22,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://noelsaga.herokuapp.com/blog/2015/07/18/kai-fa-zhong-,chang-jian-de-can-shu-payloadshi-shi-mo">
+  <link rel="canonical" href="http://noelsaga.herokuapp.com/blog/2015/09/25/railswei-he-yao-shi-yong-escape-javascript">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Noel Saga" type="application/atom+xml">
@@ -107,7 +107,7 @@
     </aside>
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
-        <h1>開發中，常見的參數payload是什麼?</h1>
+        <h1>Rails為何要使用escape_javascript?</h1>
         <div class="meta">
           written 
 
@@ -122,69 +122,78 @@
 
 
 
-<time datetime="2015-07-18T02:34:43+08:00" pubdate data-updated="true">Jul 18<sup>th</sup>, 2015</time>
+<time datetime="2015-09-25T00:35:13+08:00" pubdate data-updated="true">Sep 25<sup>th</sup>, 2015</time>
           | 
 
 in
 <span class="categories">
   
-    <a class='category' href='/blog/categories/programming/'>programming</a>
+    <a class='category' href='/blog/categories/ajax/'>ajax</a>, <a class='category' href='/blog/categories/javascript/'>javascript,</a>, <a class='category' href='/blog/categories/rails/'>rails,</a>
   
 </span>
 
  |
-          <span class="comments"><a href="/blog/2015/07/18/kai-fa-zhong-,chang-jian-de-can-shu-payloadshi-shi-mo/#disqus_thread">comments</a></span>
+          <span class="comments"><a href="/blog/2015/09/25/railswei-he-yao-shi-yong-escape-javascript/#disqus_thread">comments</a></span>
         </div>
-        <p>開發中，常常見到許多文件裡的方法或函式帶有名為<code>payload</code>的參數，像是最近在因為新專案開始使用了<code>react.js</code>+<code>flux</code>，正在看前輩的code學習與<del>觀摩中</del>，就非常常見到payload這參數，直覺想到『
-啊這個字就是負載量啊!?沒什麼的嘛』但其實知道他英文叫做負載量但我還是不知道這參數是要幹什麼的，或是為什麼要這樣取名，不直接叫<code>data</code>, <code>params</code>之類的。甚至不小心在看pg官方文件裡又出現payload這個參數名，讓我更驚覺到原來不是只有<code>flux</code>裡面這樣用，別的地方也會這樣命名，也意味著這其實是個常見且通用的使用名詞，所以還是來個一探究竟的好。</p>
+        <h2>前言:</h2>
+
+<p>在Rails裡，為了某些AJAX效果，我們會使用<code>RJS（Remote Javascript）</code>，簡單地說就是發送了個js請求給server，rails controller做了某些事情後會<code>render像是*.js.erb的檔案</code>，在這檔案裡我們可以混用ruby與js，所以可以做些我們想做的事之後再編譯成js code並回傳給browser，然後browser直接處理這段js並改變網頁文件。</p>
 
 <!--more-->
 
 
-<hr />
+<p><img src="/images/rjs_example.png" width="800" height="600" title="RJS圖例說明" alt="RJS圖例說明"></p>
 
-<h2>Payload的定義</h2>
+<br>
 
-<p>payload意思即為承載量，在開發中則是指出在一堆資料中我們所<strong><em>關心</em></strong>的部分!</p>
 
-<p>網路找到的定義為：</p>
+<p> 而通常我們希望改變的網頁上的某些區塊例如：某表單、某欄位，所以我們最快的方法是使用Rails提供的方法像是 <code>render</code>來直接產生一些html，像是增加一個圖片連結：</p>
 
-<blockquote><p>On the Internet, a payload is either: The essential data that is being carried within a packet or other transmission unit.</p></blockquote>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://somehost/resources/123456&quot;</span><span class="nt">&gt;</span>Hello World!<span class="nt">&lt;/a&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<h2>Payload的由來</h2>
 
-<p>google到一篇很好的文章對payload為何這樣叫有很好的解釋，文中指出這個名詞是借用運輸工具上的觀念而來的，例如：卡車、油罐車、貨輪等所謂的<strong>載具</strong>，然後通常一個載具的總重量一定<strong>大於</strong>載具的承載量，例如油罐車的總重量包含了他所運載的油量、司機的重量、油罐車行駛所需的油量，但我們所關心僅是油罐車所承載的油量而已。</p>
+<p>我們會使用<code>$('#some_id').append("&lt;%= render some_link %&gt;")</code>
+來更改頁面，但如果直接這樣用把剛剛那段html當做參數丟進去就會有問題，因為<code>append("&lt;%= ... %&gt;")</code> 的那雙引號會造成bug，會變成：</p>
 
-<p><del>故，得證</del></p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#some_id&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;&lt;a href=&quot;</span><span class="nx">http</span><span class="o">:</span><span class="c1">//somehost/resources/123456&quot;&gt;Hello World&lt;/a&gt;&quot;)</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<blockquote><p>Payload, the load that pays</p></blockquote>
 
-<p>對programming來說，我們可以某api的response為例子來看</p>
+<p>兩個雙引號組成的字串，會因為其他的雙引號造成問題，
+所以我們需要<code>escape_javascript</code>來幫忙跳脫雙引號的<del>束縛</del>，`</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="p">{</span>
-</span><span class='line'>      <span class="s2">&quot;status&quot;</span><span class="o">:</span><span class="s2">&quot;OK&quot;</span><span class="p">,</span>
-</span><span class='line'>      <span class="s2">&quot;data&quot;</span><span class="o">:</span>
-</span><span class='line'>          <span class="p">{</span>
-</span><span class='line'>              <span class="s2">&quot;message&quot;</span><span class="o">:</span><span class="s2">&quot;Hello, world!&quot;</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#some_id&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;&lt;%= escape_javascript render some_link %&gt;&quot;</span><span class="p">)</span><span class="err">`</span><span class="o">:</span>
+</span><span class='line'>  <span class="c1">// 會等於</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#some_id&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;&lt;a href=\&quot;http://somehost/resources/123456\&quot;&gt;Hello World&lt;/a&gt;&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p> 其中的Hello, world!正是payload，也是我們關心的部分。</p>
+<h4>那如果我們不用雙引號，改用單引號包起來的話呢？</h4>
 
-<p> 到這裡我們應該了解為何參數名要叫做<code>payload</code>，而非<code>data</code>或是<code>params</code>是有其目的性的，而更進一步的熟悉與使用payload這個參數，則就要再深入看該方法或函式的使用與定義了。</p>
+<p>因為在jQuery我們的確會這麼寫</p>
 
-<h2>參考</h2>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#some_id&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;&quot;&lt;p&gt;Hello World&lt;/p&gt;&quot;&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p><a href="http://programmers.stackexchange.com/questions/158603/what-does-the-term-payload-mean-in-programming">文中的解釋與例子出處</a></p>
+
+<p>但實際上只用單引號包起來仍然會碰到字串內容如果有<code>斷行(\n)</code>而造成的問題，所以也要交給<code>escape_javascript</code>處理掉。</p>
+
+<p>所以，為了在<code>RJS</code>等使用情境下，為了取得</p>
+
+<ul>
+<li>1: <strong><em>有效且可執行的 javascript code</em></strong></li>
+<li>2: <strong><em>跳脫雙引號帶來的束縛</em></strong></li>
+</ul>
+
+
+<p><a href="http://stackoverflow.com/questions/1620113/why-escape-javascript-before-rendering-a-partial">參考</a></p>
 
 
         <hr class="divider-short"/>
@@ -221,11 +230,9 @@ in
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
         
-          <a class="pull-left" href="/blog/2015/07/06/jsonp-jie-shao/" title="Previous Post: JSONP 介紹">&laquo; Previous: JSONP 介紹</a>
+          <a class="pull-left" href="/blog/2015/09/15/ruby-arguments-xiao-ji-qiao/" title="Previous Post: Ruby Arguments 小技巧">&laquo; Previous: Ruby Arguments 小技巧</a>
         
 
-        
-          <a class="pull-right" href="/blog/2015/07/22/shi-yong-pre-commitlai-xiu-lian-codestyle/" title="Next Post: 使用pre-commit來修煉codestyle">Next: 使用pre-commit來修煉codestyle &raquo;</a>
         
       </div>
     </div>

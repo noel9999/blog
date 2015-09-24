@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Javascript, | Noel Saga]]></title>
-  <link href="http://noelsaga.herokuapp.com/blog/categories/javascript/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Rails, | Noel Saga]]></title>
+  <link href="http://noelsaga.herokuapp.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
   <updated>2015-09-25T01:04:39+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>

@@ -13,7 +13,7 @@
   <meta name="author" content="Noel">
 
   
-  <meta name="description" content="All Posts 1 Recent Posts Ruby Arguments 小技巧 Ruby 類別變數 使用pre-commit來修煉codestyle 開發中，常見的參數payload是什麼? JSONP 介紹 Recent Comments Categories Javascript(3 &hellip;">
+  <meta name="description" content="All Posts 1 Recent Posts Rails為何要使用escape_javascript? Ruby Arguments 小技巧 Ruby 類別變數 使用pre-commit來修煉codestyle 開發中，常見的參數payload是什麼? Recent Comments &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -59,6 +59,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/09/25/railswei-he-yao-shi-yong-escape-javascript/">Rails為何要使用escape_javascript?</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/09/15/ruby-arguments-xiao-ji-qiao/">Ruby Arguments 小技巧</a>
       </li>
     
@@ -74,10 +78,6 @@
         <a href="/blog/2015/07/18/kai-fa-zhong-,chang-jian-de-can-shu-payloadshi-shi-mo/">開發中，常見的參數payload是什麼?</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/07/06/jsonp-jie-shao/">JSONP 介紹</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -86,7 +86,7 @@
 </section>
 <section>
 <h1>Categories</h1>
-<span class='categories_tag'> <a href='/blog/categories/javascript' style='font-size: 130.0%'>Javascript(3)</a>  <a href='/blog/categories/jquery' style='font-size: 110.0%'>Jquery(1)</a>  <a href='/blog/categories/programming' style='font-size: 120.0%'>Programming(2)</a>  <a href='/blog/categories/ruby' style='font-size: 160.0%'>Ruby(6)</a>  <a href='/blog/categories/編碼' style='font-size: 110.0%'>編碼(1)</a> </span>
+<span class='categories_tag'> <a href='/blog/categories/ajax' style='font-size: 110.0%'>Ajax(1)</a>  <a href='/blog/categories/javascript' style='font-size: 130.0%'>Javascript(3)</a>  <a href='/blog/categories/javascript-' style='font-size: 110.0%'>Javascript,(1)</a>  <a href='/blog/categories/jquery' style='font-size: 110.0%'>Jquery(1)</a>  <a href='/blog/categories/programming' style='font-size: 120.0%'>Programming(2)</a>  <a href='/blog/categories/rails-' style='font-size: 110.0%'>Rails,(1)</a>  <a href='/blog/categories/ruby' style='font-size: 160.0%'>Ruby(6)</a>  <a href='/blog/categories/編碼' style='font-size: 110.0%'>編碼(1)</a> </span>
 </section>
 
 <section>
@@ -116,6 +116,58 @@
 
         
       </aside>
+      
+      
+      <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+          <article>
+  <h2><a href="/blog/2015/09/25/railswei-he-yao-shi-yong-escape-javascript/">Rails為何要使用escape_javascript?</a></h2>
+  
+  <p>
+    <h2>前言:</h2>
+
+
+
+
+<p>在Rails裡，為了某些AJAX效果，我們會使用<code>RJS（Remote Javascript）</code>，簡單地說就是發送了個js請求給server，rails controller做了某些事情後會<code>render像是*.js.erb的檔案</code>，在這檔案裡我們可以混用ruby與js，所以可以做些我們想做的事之後再編譯成js code並回傳給browser，然後browser直接處理這段js並改變網頁文件。</p>
+
+
+
+
+  </p>
+  <span class="meta">
+    written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2015-09-25T00:35:13+08:00" pubdate data-updated="true">Sep 25<sup>th</sup>, 2015</time>
+    
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ajax/'>ajax</a>, <a class='category' href='/blog/categories/javascript/'>javascript,</a>, <a class='category' href='/blog/categories/rails/'>rails,</a>
+  
+</span>
+
+
+  </span>
+
+  
+    <a class="full-article-link pull-right" rel="full-article" href="/blog/2015/09/25/railswei-he-yao-shi-yong-escape-javascript/">Read on &rarr;</a>
+  
+</article>
+        </div>
+      </div>
       
       
       <div class="row">
