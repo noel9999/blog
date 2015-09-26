@@ -18,7 +18,17 @@ p, li {
 
 blockquote {
   margin-left:46px;
-  font-family:"Segoe Print", "Times New Roman", Verdana;
+    /*Font*/
+  font-family: Georgia, serif;
+  font-size: 16px;
+  line-height: 1.2;
+  color: #666;
+  text-align: justify;
+  
+  /*Box Shadow - (Optional)*/
+  -moz-box-shadow: 2px 2px 15px #ccc;
+  -webkit-box-shadow: 2px 2px 15px #ccc;
+  box-shadow: 2px 2px 15px #ccc;
   padding: 8px;
   min-height: 44px;  
   background: #f9f9f9;
@@ -36,4 +46,24 @@ blockquote {
   position:relative;
   z-index:10;
   float:left;
+}
+blockquote::after{
+  /*Reset to make sure*/
+  content: "";
+}
+
+blockquote a{
+  text-decoration: none;
+  background: #eee;
+  cursor: pointer;
+  padding: 0 3px;
+  color: #c76c0c;
+}
+
+blockquote a:hover{
+ color: #666;
+}
+
+blockquote em{
+  font-style: italic;
 }
