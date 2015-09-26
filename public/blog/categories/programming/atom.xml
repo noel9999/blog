@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Programming | Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-09-25T01:24:35+08:00</updated>
+  <updated>2015-09-26T16:03:33+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -35,95 +35,54 @@ gem 'rubocop', require: false
 <h3>2.新增檔案 rails_project/.robocup.yml</h3>
 
 <p>這部份我都是手動新增的，裡面定義了一些基礎的客製化規範，照抄前輩挑選的，大家如果沒特定需求也可以照抄
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">AllCops</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">RunRailsCops</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">Exclude:&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;pre&gt;&lt;code&gt;- db/schema.rb</span>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;Metrics/LineLength</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">Max</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">120&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;Metrics/MethodLength</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">Max</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">20&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;Metrics/ClassLength</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">Max</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">250&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;Style/AsciiComments</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">Enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;Style/ClassAndModuleChildren</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">EnforcedStyle</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">compact&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;Style/Documentation</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">Enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;Style/IfUnlessModifier</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">Enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+{% codeblock lang:yml %}
+AllCops:
+  RunRailsCops: true
+  Exclude:</p>
+
+<pre><code>- db/schema.rb
+</code></pre>
+
+<p>Metrics/LineLength:
+  Max: 120</p>
+
+<p>Metrics/MethodLength:
+  Max: 20</p>
+
+<p>Metrics/ClassLength:
+  Max: 250</p>
+
+<p>Style/AsciiComments:
+  Enabled: false</p>
+
+<p>Style/ClassAndModuleChildren:
+  EnforcedStyle: compact</p>
+
+<p>Style/Documentation:
+  Enabled: false</p>
+
+<p>Style/IfUnlessModifier:
+  Enabled: false
+{% endcodeblock %}</p>
 
 <h3>3.新增檔案 config/pre_commit.yml</h3>
 
-<h2><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">&lt;/h2&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;:checks_remove</span><span class="p-Indicator">:</span> <span class="p-Indicator">[]</span>
-</span><span class='line'><span class="l-Scalar-Plain">:checks_add</span><span class="p-Indicator">:</span>
-</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :tabs</span>
-</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :nb_space</span>
-</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :whitespace</span>
-</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :merge_conflict</span>
-</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :debugger</span>
-</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :pry</span>
-</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :local</span>
-</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :jshint</span>
-</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :console_log</span>
-</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :migration</span>
-</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :rubocop</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<h2>{% codeblock lang:yml %}</h2>
+
+<p>:checks_remove: []
+:checks_add:
+&ndash; :tabs
+&ndash; :nb_space
+&ndash; :whitespace
+&ndash; :merge_conflict
+&ndash; :debugger
+&ndash; :pry
+&ndash; :local
+&ndash; :jshint
+&ndash; :console_log
+&ndash; :migration
+&ndash; :rubocop
+{% endcodeblock %}</p>
 
 <h3>4. 執行<code>pre-commit install</code></h3>
 
@@ -171,31 +130,18 @@ gem 'rubocop', require: false
 
 <p>對programming來說，我們可以某api的response為例子來看</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;status&quot;</span><span class="o">:</span><span class="s2">&quot;OK&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;data&quot;</span><span class="o">:</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="s2">&quot;message&quot;</span><span class="o">:</span><span class="s2">&quot;Hello, world!&quot;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:js %}</p>
+
+<pre><code>{
+    "status":"OK",
+    "data":
+        {
+            "message":"Hello, world!"
+        }
+}
+</code></pre>
+
+<p>{% endcodeblock %}</p>
 
 <p> 其中的Hello, world!正是payload，也是我們關心的部分。</p>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Encrypt | Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/blog/categories/encrypt/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-09-25T01:24:35+08:00</updated>
+  <updated>2015-09-26T16:03:33+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -20,26 +20,15 @@
     <id>http://noelsaga.herokuapp.com/blog/2015/06/27/what-is-base64</id>
     <content type="html"><![CDATA[<p>在從事web開發時，一定常常聽到<code>base64</code>，例如：rails裡會將cookie值採用base64編碼保護，而且在rails使用base64也相當容易，如：</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>rails使用base64 </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;encrypted_code = Base64.encode64 &quot;Hello World&quot;</span>
-</span><span class='line'><span class="sr"># 輸出 &quot;SGVsbG8gV29ybGQ=\n&quot;</span>
-</span><span class='line'><span class="sr">Base64.decode64 encrypted_code</span>
-</span><span class='line'><span class="sr"># 輸出 &quot;Hello World&quot;</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:rb rails使用base64 %}</p>
+
+<pre><code>encrypted_code = Base64.encode64 "Hello World"
+# 輸出 "SGVsbG8gV29ybGQ=\n"
+Base64.decode64 encrypted_code
+# 輸出 "Hello World"
+</code></pre>
+
+<p>{% endcodeblock %}</p>
 
 <p>看起來似乎非常簡單使用跟沒什麼特別要學的成本，所以本篇教完了，結束&hellip;&hellip;..!?<br/>
 當然沒這麼簡單，學習一項事物時，我覺得除了事物本身外，<strong><em>更重要的是我們為何要學習它？</em></strong>甚至去了解它的由來，我覺得對學習可以有更深的幫助，也較有趣味性。所以接下來我會講解<code>base64</code>的蓋要與它的使用目的。</p>
