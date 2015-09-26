@@ -49,7 +49,8 @@ categories: [rails, javascript, AJAX]
 
 所以，為了在`RJS`等使用情境下，為了取得
 
-  * 1: ***有效且可執行的 javascript code***
-  * 2: ***跳脫雙引號帶來的束縛***
-
+  1. ***有效且可執行的 javascript code***
+  2. ***跳脫雙引號帶來的束縛***
+  
+  
 [參考](http://stackoverflow.com/questions/1620113/why-escape-javascript-before-rendering-a-partial)
