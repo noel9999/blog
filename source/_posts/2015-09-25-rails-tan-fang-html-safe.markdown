@@ -85,7 +85,7 @@ Rails3開始為了安全性的考量`(XSS）`，怕使用者張貼一些有特�
 
 ## 結論
 
-* 1: 永遠不要相信使用者傳來的參數或內容，要思考到最壞的打算
-* 2: 避免對`含有未知內容的字串`做`html_safe`
+1. 永遠不要相信使用者傳來的參數或內容，要思考到最壞的打算
+2. 避免對`含有未知內容的字串`做`html_safe`
 
 [參考](http://makandracards.com/makandra/2579-everything-you-know-about-html_safe-is-wrong)
