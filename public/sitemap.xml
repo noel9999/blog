@@ -3,6 +3,12 @@
   
   
   <url>
+    <loc>http://noelsaga.herokuapp.com/blog/2016/07/01/service-object-she-ji-jian-yi/</loc>
+    <lastmod>2016-07-01T01:56:06+08:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://noelsaga.herokuapp.com/blog/2015/09/25/rails-tan-fang-html-safe/</loc>
     <lastmod>2015-09-25T01:12:27+08:00</lastmod>
     <priority>0.8</priority>
@@ -101,28 +107,28 @@
   
   <url>
     <loc>http://noelsaga.herokuapp.com/</loc>
-    <lastmod>2015-09-26T18:55:07+08:00</lastmod>
+    <lastmod>2016-07-01T02:07:20+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://noelsaga.herokuapp.com/blog/archives/</loc>
-    <lastmod>2015-09-26T18:55:07+08:00</lastmod>
+    <lastmod>2016-07-01T02:07:20+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://noelsaga.herokuapp.com/posts/</loc>
-    <lastmod>2015-09-26T18:55:07+08:00</lastmod>
+    <lastmod>2016-07-01T02:07:20+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://noelsaga.herokuapp.com/about/</loc>
-    <lastmod>2015-09-26T18:55:07+08:00</lastmod>
+    <lastmod>2016-07-01T02:07:20+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

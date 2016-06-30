@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Rails | Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-09-26T18:55:07+08:00</updated>
+  <updated>2016-07-01T02:07:20+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -12,6 +12,412 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Service Object 設計建議]]></title>
+    <link href="http://noelsaga.herokuapp.com/blog/2016/07/01/service-object-she-ji-jian-yi/"/>
+    <updated>2016-07-01T01:56:06+08:00</updated>
+    <id>http://noelsaga.herokuapp.com/blog/2016/07/01/service-object-she-ji-jian-yi</id>
+    <content type="html"><![CDATA[<h2>前言</h2>
+
+<p>隨著大家<code>ServiceObject</code>越用越多，也產生了不同的設計習慣與使用方式，為了讓大家有一制的設計原則，方便後人使用或減少修改成本、遵行風格建立下去，我們可以來集思廣益、訂立一套良好的準則，希望大家可以遵守之，並且耳濡目染之下相互影響。當然，如果有發現不良的地方或更好的方式都歡迎提出討論。</p>
+
+<!--more-->
+
+
+<h2>命名方式</h2>
+
+<p>具體的動名詞或名詞 ＋ <code>Service</code>
+範例:</p>
+
+<ol>
+<li><code>FireFighterService</code></li>
+<li><code>SendMessageService</code></li>
+</ol>
+
+
+<p>一個Service最好只做一件事情以遵守<code>SRP</code>，所以如果彼此有共同的對象或元素可以增加<code>namespace</code>，並分拆：</p>
+
+<ol>
+<li><code>SMS::SendMessageService</code></li>
+<li><code>SMS::SendImageMessageService</code></li>
+</ol>
+
+
+<h2>越少的公開方法越好</h2>
+
+<p>為了遵守<code>SRP</code>的特性，公開的方法越少越好，甚至希望只有一個 公開的<code>execute</code>
+方法，這樣的目的較好測試（通常也僅需測試該方法）、也不會混淆使用者該<code>ServiceObject</code>的用途，如果有多個公開方法，則可以思考是不是該分拆別的<code>ServiceObject</code>出去或是該方法到底可以被誰或什麼情況呼叫；而其他的方法都該設為<code>private</code>，一來使用者不需要知道（想想餐廳點餐的故事）、二來此方法日後也有變動或拓展的可能所以無需給他人知道。</p>
+
+<blockquote><p>統一的公開介面：<code>execute</code>></p></blockquote>
+
+<h2>參數的設計</h2>
+
+<p>由於每個<code>ServiceObject</code>的使用目的與前後文都不盡相同，所以參數的設計應該盡可能的減少限制或是會變成過度設計的可能。但這裡提供幾個基本的建議：</p>
+
+<h3>參數的位置</h3>
+
+<p>理想的<code>ServiceObject</code>使用過程中只會經過<code>new</code>跟<code>execute</code>，所以參數位置也只會出現在這兩處：</p>
+
+<h4>宣告在<code>initialize</code></h4>
+
+<ol>
+<li>關於需要功能初始化的設定性質的參數、或是該參數內容變動的可能性極低時；如果初始化的參數日後變動需求很低時，也可以不需要當做參數，而直接定義</li>
+<li>如果有需要使用到其他的物件或類別時，可以當做參數傳入，以減少相依性問題；該物件或類別當然也可以不經參數傳入而直接考慮隔離成一個<code>preivate</code>方法，依日後需求變化而定，見仁見智。</li>
+</ol>
+
+
+<h4>宣告在<code>execute</code></h4>
+
+<ol>
+<li>關於資料處理範圍、特定處理對象</li>
+<li>關於操作範圍、額外功能參數</li>
+</ol>
+
+
+<h3>參數宣告</h3>
+
+<ol>
+<li>雖然每個人都有自己宣告參數的偏好，但個人認為<code>hash</code>是很好的選擇，有明確的key、value，在參數的數量、順序與使用彈性上的較佳，也最簡單。</li>
+</ol>
+
+
+<p><code>
+def execute(args = {})
+  args = args.symbolize_keys
+  player_a = args.fetch(:player_a, 'default_player')
+  player_b = args.fetch(:player_b, 'default_player')
+  do_something
+end
+</code></p>
+
+<h2>回傳物件設計</h2>
+
+<p>回傳的資訊若有一致的介面的話，日後與其他object互動也更有彈性、更易開發；而回傳的資訊又有幾項要點：
+1. 一個表示執行成功或失敗的布林值
+2. 當<code>ServiceObject</code>涉及到資料的處理或更新時，我們關心的是最後的回傳資料結果
+3. 若執行失敗或錯誤發生時，關於失敗的原因、或更進一步的資訊</p>
+
+<p>```ruby
+  SuccessfulResult = Struct.new :payload do</p>
+
+<pre><code>def self.create(payload: nil)
+  fail 'payload must have to respond_to method "as_json".' unless payload.respond_to? :as_json
+  new(payload)
+end
+
+def success?
+  true
+end
+
+def as_json(*)
+  {
+    success: true,
+    payload: payload.as_json
+  }
+end
+
+def error
+  nil
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  FailedResult = Struct.new :error do</p>
+
+<pre><code>def self.create(error: ServiceObjectError.new)
+  new(error)
+end
+
+def success?
+  false
+end
+
+def as_json(*)
+  {
+    success: false,
+    error: error.as_json
+  }
+end
+
+def payload
+  nil
+end
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>然後我們可以這樣用：
+```ruby
+  def execute(args ={})</p>
+
+<pre><code>do_something
+SuccessfulResult.create payload: data_to_return_or_not
+</code></pre>
+
+<p>  rescue ServiceObjectError => e</p>
+
+<pre><code>FailedResult.create error: e
+</code></pre>
+
+<p>  end
+```</p>
+
+<p>這樣我們可以對結果這樣使用：
+```ruby</p>
+
+<pre><code>result = SomeService.new.execute
+if result.success?
+  do_something_with result.payload
+else
+  handle_with result.error
+end
+</code></pre>
+
+<p>```</p>
+
+<h3>回傳的rsult_object的介面</h3>
+
+<ol>
+<li><code>success?</code>  ＝> 判斷執行成功或失敗</li>
+<li><code>payload</code> => 當執行成功，且有資料結果需要回傳做使用時，會藉由此來取得</li>
+<li><code>error</code> => 當執行失敗的時候，可透過該方法來取得資訊，e.g.: <code>error.code</code>, <code>error.message</code>；error的介面會另外寫一個準則</li>
+<li><code>as_json</code> => 進一步的化成<code>JSON</code>型態回傳</li>
+</ol>
+
+
+<h2>當存在數個外部服務可提供相同服務的ServiceObject，可考慮使用 <code>Adapter Pattern</code></h2>
+
+<p>以寄信為例，同時會有多個第三方服務提供，而使用上的目的幾乎都是相同的，不外都是寄信、寄多筆信等，對使用者來說都是一樣的角色，簡訊發送商，為此我們不需寫成  <code>Goolge::SendMailService</code>, <code>Yahoo::SendMailService</code>，更好的方式應該是<code>SendMailService.new(provider: 'google').execute</code></p>
+
+<h3>簡易的範例：</h3>
+
+<p>```ruby
+class SendMailService
+  def initialize(args = {})</p>
+
+<pre><code>provider = args.symbolize_keys.fetch(:provider, 'google')
+@mail_provider = MailProvider::Adapter.const_get(provider.to_s.capitalize).new
+</code></pre>
+
+<p>  end</p>
+
+<p>  def execute(args ={})</p>
+
+<pre><code>mail_provider.send_mail(args)
+</code></pre>
+
+<p>  end</p>
+
+<p>  private</p>
+
+<p>  accessor_reader :mail_provider
+end</p>
+
+<p>module MailProvider
+  module Adapter</p>
+
+<pre><code>class Google
+  # 遵守一致寄信服務商的介面
+  include ActsAsSendMailProvider
+
+  def initialize
+    google_id     = 'hooli.xyz'
+    google_secret = 'hooli.xyz'
+    @provider = Goolge.come_out_with(google_id, google_secret)
+  end
+
+  def send_mail(args = {})
+    @provider.do_something_by_google
+  end
+end
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>module MailProvider
+  module Adapter</p>
+
+<pre><code>class Yahoo
+  # 遵守一致寄信服務商的介面
+  include ActsAsSendMailProvider
+
+  def initialize
+    yahoo_id     = 'hooli.xyz'
+    yahoo_secret = 'hooli.xyz'
+    @provider = Yahoo.come_out_with(yahoo_id, yahoo_secret)
+  end
+
+  def send_mail(args = {})
+    @provider.do_something_by_yahoo
+  end
+end
+</code></pre>
+
+<p>  end
+end</p>
+
+<h2>```</h2>
+
+<h2>實驗性範例，目前僅供參考<del>（如有問題，不負責任）</del></h2>
+
+<h3>建立一個<code>ActsAsServiceObject</code>module，當做該介面的角色</h3>
+
+<p>```ruby
+module ActsAsServiceObject
+  SuccessfulResult = Struct.new :payload do</p>
+
+<pre><code>def self.create(payload: nil)
+  fail 'payload must have to respond_to method "as_json".' unless payload.respond_to? :as_json
+  new(payload)
+end
+
+def success?
+  true
+end
+
+def as_json(*)
+  {
+    success: true,
+    payload: payload.as_json
+  }
+end
+
+def error
+  nil
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  FailedResult = Struct.new :error do</p>
+
+<pre><code>def self.create(error: ServiceObjectError.new)
+  new(error)
+end
+
+def success?
+  false
+end
+
+def as_json(*)
+  {
+    success: false,
+    error: error.as_json
+  }
+end
+
+def payload
+  nil
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  class ServiceObjectError &lt; StandardError</p>
+
+<pre><code>attr_reader :caused_by
+def initialize(message = nil, caused_by: nil)
+  super(message)
+  @caused_by = caused_by
+end
+
+alias_method :original_message, :message
+
+def code
+  self.class.name
+end
+
+def as_json(*)
+  { message: message, code: code }
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  # 唯一的對外公開方法，統一都傳hash當做參數，基本上include該module不需特別覆寫此方法</p>
+
+<pre><code>def execute(args = {})
+SuccessfulResult.create payload: process(args)
+</code></pre>
+
+<p>  rescue ServiceObjectError => e</p>
+
+<pre><code>FailedResult.create error: e
+</code></pre>
+
+<p>  end</p>
+
+<p>  private</p>
+
+<p> # include該module的類別，唯一需要自己實作的方法，預設都需一個args型態為hash的參數
+ # 而此方法的最後回傳值會被當做SuccessfulResult物件的payload
+ # 而當方法裡有任何繼承ServiceObjectError的例外發生都會被捕捉成FailedObject
+ def process(args = {})</p>
+
+<pre><code>fail 'my son will take care of you'
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<h3>include <code>ActsAsServiceObject</code>並實作method <code>process</code></h3>
+
+<p>```ruby
+class MyTestServiceObject
+  include ActsAsServiceObject</p>
+
+<p>  private</p>
+
+<p>  def process(args = {})</p>
+
+<pre><code>args = default_process_args.merge args.symbolize_keys
+required_variable_a, required_variable_b = args.values_at(:required_variable_a, :required_variable_b)
+do_something
+data_you_want_to_return_in_payload_or_not
+</code></pre>
+
+<p>  end</p>
+
+<p>  def default_process_args</p>
+
+<pre><code>{ required_variable_a: 'A', required_variable_b: 'B', required_variable_c: 'C' }
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<h3>說明：</h3>
+
+<p>照這種方式，只需實作<code>process</code>方法，而該方法的回傳值會是<code>SuccessfulResult</code>的payload；此外，不需自己實作<code>execute</code>，只需記得<code>execute</code>與<code>process</code>的參數都是接收一個<code>hash</code>，實際上<code>execute</code>就是在做<code>process</code>的工作，只是會多幫忙處理一致化回傳物件的工作，若要覆寫<code>execute</code>方法，就必須自己記得處理這一塊。</p>
+
+<p>而process裡若是有任何與預期不符的結果，引發一個繼承自<code>ServiceObjectError</code>的error的話就會自動被捕作並且回傳<code>FailedResult</code>物件。</p>
+
+<p><code>ruby
+my_result = MyTestServiceObject.new.execute(foo: 'bar')
+my_result.success?
+my_result.payload
+my_result.error
+my_result.as_json
+</code></p>
+
+<h2>有任何問題或更好的建議都歡迎提出指正，謝謝</h2>
+
+<h2>參考：</h2>
+
+<ol>
+<li><a href="https://www.sitepoint.com/ruby-error-handling-beyond-basics/">SERVICE OBJECT設計建議</a></li>
+<li><a href="https://www.netguru.co/blog/service-objects-in-rails-will-help">SERVICE_OBJECT設計建議2</a></li>
+<li><a href="https://www.sitepoint.com/using-and-testing-the-adapter-design-pattern/">調適者模式</a></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails 探訪html_safe]]></title>
@@ -31,33 +437,47 @@
 
 <p>如果我們對一個字串呼叫<code>html_safe</code>，他其實會回傳一個<code>ActiveSupport::SafeBuffer</code>的物件，基本上這個物件用起來、看起來都很像一般的字串，但他有個<strong><em>特性</em></strong>，就是如果該物件與其他的字串物件做結合，如使用<code>+ 或 &lt;&lt;</code> 等方法結合時，後加入的字串會自動被溢出：</p>
 
-<p>{% codeblock lang:rb %}</p>
-
-<p>  &lsquo;<p>Foo</p>&rsquo;.html_safe + &lsquo;<p>Bar</p>&rsquo;
-  # 會變成
-  &ldquo;<p>Foo</p>&lt;p&gt;Bar&lt;/p&gt;&rdquo;
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  &amp;lsquo;&lt;p&gt;Foo&lt;/</span><span class="nb">p</span><span class="o">&gt;&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">.</span><span class="n">html_safe</span> <span class="o">+</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">Bar</span><span class="o">&lt;</span><span class="sr">/p&gt;&amp;rsquo;</span>
+</span><span class='line'><span class="sr">  # 會變成</span>
+</span><span class='line'><span class="sr">  &amp;ldquo;&lt;p&gt;Foo&lt;/</span><span class="nb">p</span><span class="o">&gt;&amp;</span><span class="n">lt</span><span class="p">;</span><span class="nb">p</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="no">Bar</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">/</span><span class="nb">p</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>如果被加入的字串也是個<code>SafeBuffer</code>則不會有被溢出</p>
 
-<p>{% codeblock lang:rb %}
-  &lsquo;<p>Foo</p>&rsquo;.html_safe + &lsquo;<p>Bar</p>&rsquo;.html_safe
-  # 會變成
-  &ldquo;<p>Foo</p><p>Bar</p>&rdquo;
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>  <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">Foo</span><span class="o">&lt;</span><span class="sr">/p&gt;&amp;rsquo;.html_safe + &amp;lsquo;&lt;p&gt;Bar&lt;/</span><span class="nb">p</span><span class="o">&gt;&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>  <span class="c1"># 會變成</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">Foo</span><span class="o">&lt;</span><span class="sr">/p&gt;&lt;p&gt;Bar&lt;/</span><span class="nb">p</span><span class="o">&gt;&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h2>Render與html_safe</h2>
 
 <p>而<code>render</code>執行的時候，其實會先有一個<code>空字串的SafeBuffer</code>，在把template的每一行<del>?</del>都加入到那個字串裡面，所以本身就是<code>SafeBuffer</code>的字串就不會被溢出，純<code>html</code>也不會有是，而剩餘寫在<code>&lt;%= %&gt;</code>的當然都會自被溢出。</p>
 
-<p>{% codeblock lang:rb %}</p>
-
-<p>  html = &lsquo;&rsquo;.html_safe
-  html &lt;&lt; &lsquo;<p>&rsquo;.html_safe
-  html &lt;&lt; &lsquo;<br />&rsquo;
-  html &lt;&lt; &lsquo;</p>&rsquo;.html_safe
-  html
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  html = &amp;lsquo;&amp;rsquo;.html_safe</span>
+</span><span class='line'><span class="sr">  html &amp;lt;&amp;lt; &amp;lsquo;&lt;p&gt;&amp;rsquo;.html_safe</span>
+</span><span class='line'><span class="sr">  html &amp;lt;&amp;lt; &amp;lsquo;&lt;br /</span><span class="o">&gt;&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">html</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;&amp;rsquo;.html_safe</span>
+</span><span class='line'><span class="sr">  html</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>而Rails本身提供的<code>view helper</code>都已經是經過html_safe處理的，所以則可以正常運作。</p>
 
@@ -65,17 +485,27 @@
 
 <p>如果想客製化自己的<code>view helper</code>或是直接對一串可能包含<strong><em>變數</em></strong>的字串做<code>html_safe</code>時，我們可能會這麼做</p>
 
-<p>{% codeblock lang:rb %}</p>
-
-<p>  &ldquo;<p>#{text}</p>&rdquo;.html_safe
-  # or
-  def my_helper(text)</p>
-
-<pre><code>"&lt;p&gt;#{text}&lt;/p&gt;".html_safe
-</code></pre>
-
-<p>  end
-{% endcodeblock %}
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  &amp;ldquo;&lt;p&gt;</span><span class="si">#{</span><span class="n">text</span><span class="si">}</span><span class="sr">&lt;/</span><span class="nb">p</span><span class="o">&gt;&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>  <span class="c1"># or</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">my_helper</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;&quot;&amp;lt;p&amp;gt;</span><span class="si">#{</span><span class="n">text</span><span class="si">}</span><span class="sr">&amp;lt;/</span><span class="nb">p</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="s2">&quot;.html_safe</span>
+</span><span class='line'><span class="s2">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;p&gt;  end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 則可能會很大的風險，因為我們不知道變數<code>text</code> 會包含著什麼內容，但整個字串都被已經被取消溢出了，如果<code>text</code>是含有惡意的code則就危險了。</p>
 
 <br>
@@ -83,30 +513,49 @@
 
 <p>所以，我們其實是應該<code>針對未知的部份</code>做溢出即可</p>
 
-<p>{% codeblock lang:rb %}</p>
-
-<p>  def my_helper(text)</p>
-
-<pre><code>html = ''.html_safe
-html &lt;&lt; '&lt;p&gt;'.html_safe
-html &lt;&lt; text
-html &lt;&lt; '&lt;/p&gt;'.html_safe
-</code></pre>
-
-<p>  end
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def my_helper(text)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">html</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'><span class="n">html</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s1">&#39;&amp;lt;p&amp;gt;&#39;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'><span class="n">html</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">text</span>
+</span><span class='line'><span class="n">html</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s1">&#39;&amp;lt;/p&amp;gt;&#39;</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>但這樣好像有點醜，所以我們可以善用 Rails提供的<code>content_tag</code> helper來幫助我們，由於Rails helper都已經幫我們做好安全措施了，所以可以直接放心<del>服用</del></p>
 
-<p>{% codeblock lang:rb %}</p>
-
-<p>  def my_helper(text)</p>
-
-<pre><code>content_tag(:p, text)
-</code></pre>
-
-<p>  end
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def my_helper(text)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">content_tag</span><span class="p">(</span><span class="ss">:p</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h2>結論</h2>
 
@@ -132,44 +581,59 @@ html &lt;&lt; '&lt;/p&gt;'.html_safe
 <!--more-->
 
 
-<p>{% img /images/rjs_example.png 800 600 &lsquo;RJS圖例說明&rsquo; &lsquo;RJS圖例說明&rsquo; %}</p>
+<p><img src="/images/rjs_example.png" width="800" height="600" title="&lsquo;RJS圖例說明&rsquo; &lsquo;RJS圖例說明&rsquo;" ></p>
 
 <br>
 
 
 <p> 而通常我們希望改變的網頁上的某些區塊例如：某表單、某欄位，所以我們最快的方法是使用Rails提供的方法像是 <code>render</code>來直接產生一些html，像是增加一個圖片連結：</p>
 
-<p>{% codeblock lang:html %}</p>
-
-<pre><code>&lt;a href="http://somehost/resources/123456"&gt;Hello World!&lt;/a&gt;
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>a href=&quot;http://somehost/resources/123456&quot;<span class="ni">&amp;gt;</span>Hello World!<span class="ni">&amp;lt;</span>/a<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>我們會使用<code>$('#some_id').append("&lt;%= render some_link %&gt;")</code>
 來更改頁面，但如果直接這樣用把剛剛那段html當做參數丟進去就會有問題，因為<code>append("&lt;%= ... %&gt;")</code> 的那雙引號會造成bug，會變成：</p>
 
-<p>{% codeblock lang:js %}</p>
-
-<p>  $(&lsquo;#some_id&rsquo;).append(&ldquo;<a href="http://somehost/resources/123456">Hello World</a>&rdquo;)
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">$</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="err">#</span><span class="nx">some_id</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;).</span><span class="nx">append</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="o">&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;http://somehost/resources/123456&quot;</span><span class="o">&gt;</span><span class="nx">Hello</span> <span class="nx">World</span><span class="o">&lt;</span><span class="err">/a&gt;&amp;rdquo;)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>兩個雙引號組成的字串，會因為其他的雙引號造成問題，
 所以我們需要<code>escape_javascript</code>來幫忙跳脫雙引號的<del>束縛</del>，`</p>
 
-<p>{% codeblock lang:js %}</p>
-
-<p>  $(&lsquo;#some_id&rsquo;).append(&ldquo;&lt;%= escape_javascript render some_link %>&rdquo;)`:
-  // 會等於
-  $(&lsquo;#some_id&rsquo;).append(&ldquo;<a href=\"http://somehost/resources/123456\">Hello World</a>&rdquo;)
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">$</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="err">#</span><span class="nx">some_id</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;).</span><span class="nx">append</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="o">%=</span> <span class="nx">escape_javascript</span> <span class="nx">render</span> <span class="nx">some_link</span> <span class="o">%&gt;&amp;</span><span class="nx">rdquo</span><span class="p">;)</span><span class="err">`</span><span class="o">:</span>
+</span><span class='line'>  <span class="c1">// 會等於</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="err">#</span><span class="nx">some_id</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;).</span><span class="nx">append</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="o">&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="err">\</span><span class="s2">&quot;http://somehost/resources/123456\&quot;</span><span class="o">&gt;</span><span class="nx">Hello</span> <span class="nx">World</span><span class="o">&lt;</span><span class="err">/a&gt;&amp;rdquo;)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h4>那如果我們不用雙引號，改用單引號包起來的話呢？</h4>
 
 <p>因為在jQuery我們的確會這麼寫
-{% codeblock lang:js %}
-  $(&lsquo;#some_id&rsquo;).append(&lsquo;&ldquo;<p>Hello World</p>&rdquo;&rsquo;)
-{% endcodeblock %}</p>
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="err">#</span><span class="nx">some_id</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;).</span><span class="nx">append</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Hello</span> <span class="nx">World</span><span class="o">&lt;</span><span class="err">/p&gt;&amp;rdquo;&amp;rsquo;)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>但實際上只用單引號包起來仍然會碰到字串內容如果有<code>斷行(\n)</code>而造成的問題，所以也要交給<code>escape_javascript</code>處理掉。</p>
 

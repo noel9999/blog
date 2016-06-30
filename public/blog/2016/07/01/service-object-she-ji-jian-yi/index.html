@@ -1,0 +1,799 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Service Object 設計建議 - Noel Saga</title>
+  <meta name="author" content="Noel">
+
+  
+  <meta name="description" content="Recent Posts Service Object 設計建議 Rails 探訪html_safe Rails為何要使用escape_javascript? Ruby Arguments 小技巧 Ruby 類別變數 Recent Comments Categories Ajax(1) &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://noelsaga.herokuapp.com/blog/2016/07/01/service-object-she-ji-jian-yi">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Noel Saga" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <aside class="sidebar">
+      
+        <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/07/01/service-object-she-ji-jian-yi/">Service Object 設計建議</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/25/rails-tan-fang-html-safe/">Rails 探訪html_safe</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/25/railswei-he-yao-shi-yong-escape-javascript/">Rails為何要使用escape_javascript?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/15/ruby-arguments-xiao-ji-qiao/">Ruby Arguments 小技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/07/22/ruby-lei-bie-bian-shu/">Ruby 類別變數</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Recent Comments</h1>
+  <div id="dsq-recentcomments" class="dsq-widget"><script type="text/javascript" src="http://disqus.com/forums/noelsaga/recent_comments_widget.js?hide_avatars=0&num_items=6"></script></div>
+</section>
+<section>
+<h1>Categories</h1>
+<span class='categories_tag'> <a href='/blog/categories/ajax' style='font-size: 110.0%'>Ajax(1)</a>  <a href='/blog/categories/encrypt' style='font-size: 110.0%'>Encrypt(1)</a>  <a href='/blog/categories/javascript' style='font-size: 140.0%'>Javascript(4)</a>  <a href='/blog/categories/jquery' style='font-size: 110.0%'>Jquery(1)</a>  <a href='/blog/categories/programming' style='font-size: 120.0%'>Programming(2)</a>  <a href='/blog/categories/rails' style='font-size: 130.0%'>Rails(3)</a>  <a href='/blog/categories/ruby' style='font-size: 160.0%'>Ruby(6)</a> </span>
+</section>
+
+<section>
+  <h1>Friends</h1>
+  <ul id="friends">
+      <li>
+        <a href="http://rubyist.marsz.tw/">黃金俠的blog</a>
+      </li>
+      <li>
+        <a href="http://ayamomiji.tumblr.com/">愛雅小舖</a>
+      </li>
+      <li>
+        <a href="http://about.me/jonatw">強納森林大火</a>
+      </li>
+      <li>
+        <a href="http://urpro.info/">文藝的blog</a>
+      </li>
+      <li>
+        <a href="http://ccaloha.herokuapp.com/">AlohaCC</a>
+      </li>
+  </ul>
+</section>
+
+
+
+
+
+      
+    </aside>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Service Object 設計建議</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2016-07-01T01:56:06+08:00" pubdate data-updated="true">Jul 1<sup>st</sup>, 2016</time>
+          | 
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rails/'>rails</a>
+  
+</span>
+
+ |
+          <span class="comments"><a href="/blog/2016/07/01/service-object-she-ji-jian-yi/#disqus_thread">comments</a></span>
+        </div>
+        <h2>前言</h2>
+
+<p>隨著大家<code>ServiceObject</code>越用越多，也產生了不同的設計習慣與使用方式，為了讓大家有一制的設計原則，方便後人使用或減少修改成本、遵行風格建立下去，我們可以來集思廣益、訂立一套良好的準則，希望大家可以遵守之，並且耳濡目染之下相互影響。當然，如果有發現不良的地方或更好的方式都歡迎提出討論。</p>
+
+<!--more-->
+
+
+<h2>命名方式</h2>
+
+<p>具體的動名詞或名詞 ＋ <code>Service</code>
+範例:</p>
+
+<ol>
+<li><code>FireFighterService</code></li>
+<li><code>SendMessageService</code></li>
+</ol>
+
+
+<p>一個Service最好只做一件事情以遵守<code>SRP</code>，所以如果彼此有共同的對象或元素可以增加<code>namespace</code>，並分拆：</p>
+
+<ol>
+<li><code>SMS::SendMessageService</code></li>
+<li><code>SMS::SendImageMessageService</code></li>
+</ol>
+
+
+<h2>越少的公開方法越好</h2>
+
+<p>為了遵守<code>SRP</code>的特性，公開的方法越少越好，甚至希望只有一個 公開的<code>execute</code>
+方法，這樣的目的較好測試（通常也僅需測試該方法）、也不會混淆使用者該<code>ServiceObject</code>的用途，如果有多個公開方法，則可以思考是不是該分拆別的<code>ServiceObject</code>出去或是該方法到底可以被誰或什麼情況呼叫；而其他的方法都該設為<code>private</code>，一來使用者不需要知道（想想餐廳點餐的故事）、二來此方法日後也有變動或拓展的可能所以無需給他人知道。</p>
+
+<blockquote><p>統一的公開介面：<code>execute</code>></p></blockquote>
+
+<h2>參數的設計</h2>
+
+<p>由於每個<code>ServiceObject</code>的使用目的與前後文都不盡相同，所以參數的設計應該盡可能的減少限制或是會變成過度設計的可能。但這裡提供幾個基本的建議：</p>
+
+<h3>參數的位置</h3>
+
+<p>理想的<code>ServiceObject</code>使用過程中只會經過<code>new</code>跟<code>execute</code>，所以參數位置也只會出現在這兩處：</p>
+
+<h4>宣告在<code>initialize</code></h4>
+
+<ol>
+<li>關於需要功能初始化的設定性質的參數、或是該參數內容變動的可能性極低時；如果初始化的參數日後變動需求很低時，也可以不需要當做參數，而直接定義</li>
+<li>如果有需要使用到其他的物件或類別時，可以當做參數傳入，以減少相依性問題；該物件或類別當然也可以不經參數傳入而直接考慮隔離成一個<code>preivate</code>方法，依日後需求變化而定，見仁見智。</li>
+</ol>
+
+
+<h4>宣告在<code>execute</code></h4>
+
+<ol>
+<li>關於資料處理範圍、特定處理對象</li>
+<li>關於操作範圍、額外功能參數</li>
+</ol>
+
+
+<h3>參數宣告</h3>
+
+<ol>
+<li>雖然每個人都有自己宣告參數的偏好，但個人認為<code>hash</code>是很好的選擇，有明確的key、value，在參數的數量、順序與使用彈性上的較佳，也最簡單。</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>def execute(args = {})
+</span><span class='line'>  args = args.symbolize_keys
+</span><span class='line'>  player_a = args.fetch(:player_a, 'default_player')
+</span><span class='line'>  player_b = args.fetch(:player_b, 'default_player')
+</span><span class='line'>  do_something
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>回傳物件設計</h2>
+
+<p>回傳的資訊若有一致的介面的話，日後與其他object互動也更有彈性、更易開發；而回傳的資訊又有幾項要點：
+1. 一個表示執行成功或失敗的布林值
+2. 當<code>ServiceObject</code>涉及到資料的處理或更新時，我們關心的是最後的回傳資料結果
+3. 若執行失敗或錯誤發生時，關於失敗的原因、或更進一步的資訊</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="no">SuccessfulResult</span> <span class="o">=</span> <span class="no">Struct</span><span class="o">.</span><span class="n">new</span> <span class="ss">:payload</span> <span class="k">do</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">payload</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>      <span class="nb">fail</span> <span class="s1">&#39;payload must have to respond_to method &quot;as_json&quot;.&#39;</span> <span class="k">unless</span> <span class="n">payload</span><span class="o">.</span><span class="n">respond_to?</span> <span class="ss">:as_json</span>
+</span><span class='line'>      <span class="kp">new</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">success?</span>
+</span><span class='line'>      <span class="kp">true</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">as_json</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>        <span class="ss">success</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>        <span class="ss">payload</span><span class="p">:</span> <span class="n">payload</span><span class="o">.</span><span class="n">as_json</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">error</span>
+</span><span class='line'>      <span class="kp">nil</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">FailedResult</span> <span class="o">=</span> <span class="no">Struct</span><span class="o">.</span><span class="n">new</span> <span class="ss">:error</span> <span class="k">do</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">error</span><span class="p">:</span> <span class="no">ServiceObjectError</span><span class="o">.</span><span class="n">new</span><span class="p">)</span>
+</span><span class='line'>      <span class="kp">new</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">success?</span>
+</span><span class='line'>      <span class="kp">false</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">as_json</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>        <span class="ss">success</span><span class="p">:</span> <span class="kp">false</span><span class="p">,</span>
+</span><span class='line'>        <span class="ss">error</span><span class="p">:</span> <span class="n">error</span><span class="o">.</span><span class="n">as_json</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">payload</span>
+</span><span class='line'>      <span class="kp">nil</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然後我們可以這樣用：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="n">args</span> <span class="o">=</span><span class="p">{})</span>
+</span><span class='line'>    <span class="n">do_something</span>
+</span><span class='line'>    <span class="no">SuccessfulResult</span><span class="o">.</span><span class="n">create</span> <span class="ss">payload</span><span class="p">:</span> <span class="n">data_to_return_or_not</span>
+</span><span class='line'>  <span class="k">rescue</span> <span class="no">ServiceObjectError</span> <span class="o">=&gt;</span> <span class="n">e</span>
+</span><span class='line'>    <span class="no">FailedResult</span><span class="o">.</span><span class="n">create</span> <span class="ss">error</span><span class="p">:</span> <span class="n">e</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣我們可以對結果這樣使用：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="no">SomeService</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">execute</span>
+</span><span class='line'><span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">success?</span>
+</span><span class='line'>  <span class="n">do_something_with</span> <span class="n">result</span><span class="o">.</span><span class="n">payload</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>  <span class="n">handle_with</span> <span class="n">result</span><span class="o">.</span><span class="n">error</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>回傳的rsult_object的介面</h3>
+
+<ol>
+<li><code>success?</code>  ＝> 判斷執行成功或失敗</li>
+<li><code>payload</code> => 當執行成功，且有資料結果需要回傳做使用時，會藉由此來取得</li>
+<li><code>error</code> => 當執行失敗的時候，可透過該方法來取得資訊，e.g.: <code>error.code</code>, <code>error.message</code>；error的介面會另外寫一個準則</li>
+<li><code>as_json</code> => 進一步的化成<code>JSON</code>型態回傳</li>
+</ol>
+
+
+<h2>當存在數個外部服務可提供相同服務的ServiceObject，可考慮使用 <code>Adapter Pattern</code></h2>
+
+<p>以寄信為例，同時會有多個第三方服務提供，而使用上的目的幾乎都是相同的，不外都是寄信、寄多筆信等，對使用者來說都是一樣的角色，簡訊發送商，為此我們不需寫成  <code>Goolge::SendMailService</code>, <code>Yahoo::SendMailService</code>，更好的方式應該是<code>SendMailService.new(provider: 'google').execute</code></p>
+
+<h3>簡易的範例：</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SendMailService</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">args</span> <span class="o">=</span> <span class="p">{})</span>
+</span><span class='line'>    <span class="n">provider</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">symbolize_keys</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:provider</span><span class="p">,</span> <span class="s1">&#39;google&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@mail_provider</span> <span class="o">=</span> <span class="no">MailProvider</span><span class="o">::</span><span class="no">Adapter</span><span class="o">.</span><span class="n">const_get</span><span class="p">(</span><span class="n">provider</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">capitalize</span><span class="p">)</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="n">args</span> <span class="o">=</span><span class="p">{})</span>
+</span><span class='line'>    <span class="n">mail_provider</span><span class="o">.</span><span class="n">send_mail</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">accessor_reader</span> <span class="ss">:mail_provider</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">module</span> <span class="nn">MailProvider</span>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">Adapter</span>
+</span><span class='line'>    <span class="k">class</span> <span class="nc">Google</span>
+</span><span class='line'>      <span class="c1"># 遵守一致寄信服務商的介面</span>
+</span><span class='line'>      <span class="kp">include</span> <span class="no">ActsAsSendMailProvider</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>        <span class="n">google_id</span>     <span class="o">=</span> <span class="s1">&#39;hooli.xyz&#39;</span>
+</span><span class='line'>        <span class="n">google_secret</span> <span class="o">=</span> <span class="s1">&#39;hooli.xyz&#39;</span>
+</span><span class='line'>        <span class="vi">@provider</span> <span class="o">=</span> <span class="no">Goolge</span><span class="o">.</span><span class="n">come_out_with</span><span class="p">(</span><span class="n">google_id</span><span class="p">,</span> <span class="n">google_secret</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">send_mail</span><span class="p">(</span><span class="n">args</span> <span class="o">=</span> <span class="p">{})</span>
+</span><span class='line'>        <span class="vi">@provider</span><span class="o">.</span><span class="n">do_something_by_google</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">module</span> <span class="nn">MailProvider</span>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">Adapter</span>
+</span><span class='line'>    <span class="k">class</span> <span class="nc">Yahoo</span>
+</span><span class='line'>      <span class="c1"># 遵守一致寄信服務商的介面</span>
+</span><span class='line'>      <span class="kp">include</span> <span class="no">ActsAsSendMailProvider</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>        <span class="n">yahoo_id</span>     <span class="o">=</span> <span class="s1">&#39;hooli.xyz&#39;</span>
+</span><span class='line'>        <span class="n">yahoo_secret</span> <span class="o">=</span> <span class="s1">&#39;hooli.xyz&#39;</span>
+</span><span class='line'>        <span class="vi">@provider</span> <span class="o">=</span> <span class="no">Yahoo</span><span class="o">.</span><span class="n">come_out_with</span><span class="p">(</span><span class="n">yahoo_id</span><span class="p">,</span> <span class="n">yahoo_secret</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">send_mail</span><span class="p">(</span><span class="n">args</span> <span class="o">=</span> <span class="p">{})</span>
+</span><span class='line'>        <span class="vi">@provider</span><span class="o">.</span><span class="n">do_something_by_yahoo</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<h2>實驗性範例，目前僅供參考<del>（如有問題，不負責任）</del></h2>
+
+<h3>建立一個<code>ActsAsServiceObject</code>module，當做該介面的角色</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">ActsAsServiceObject</span>
+</span><span class='line'>  <span class="no">SuccessfulResult</span> <span class="o">=</span> <span class="no">Struct</span><span class="o">.</span><span class="n">new</span> <span class="ss">:payload</span> <span class="k">do</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">payload</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>      <span class="nb">fail</span> <span class="s1">&#39;payload must have to respond_to method &quot;as_json&quot;.&#39;</span> <span class="k">unless</span> <span class="n">payload</span><span class="o">.</span><span class="n">respond_to?</span> <span class="ss">:as_json</span>
+</span><span class='line'>      <span class="kp">new</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">success?</span>
+</span><span class='line'>      <span class="kp">true</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">as_json</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>        <span class="ss">success</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>        <span class="ss">payload</span><span class="p">:</span> <span class="n">payload</span><span class="o">.</span><span class="n">as_json</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">error</span>
+</span><span class='line'>      <span class="kp">nil</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">FailedResult</span> <span class="o">=</span> <span class="no">Struct</span><span class="o">.</span><span class="n">new</span> <span class="ss">:error</span> <span class="k">do</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">error</span><span class="p">:</span> <span class="no">ServiceObjectError</span><span class="o">.</span><span class="n">new</span><span class="p">)</span>
+</span><span class='line'>      <span class="kp">new</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">success?</span>
+</span><span class='line'>      <span class="kp">false</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">as_json</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>        <span class="ss">success</span><span class="p">:</span> <span class="kp">false</span><span class="p">,</span>
+</span><span class='line'>        <span class="ss">error</span><span class="p">:</span> <span class="n">error</span><span class="o">.</span><span class="n">as_json</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">payload</span>
+</span><span class='line'>      <span class="kp">nil</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">ServiceObjectError</span> <span class="o">&lt;</span> <span class="no">StandardError</span>
+</span><span class='line'>    <span class="kp">attr_reader</span> <span class="ss">:caused_by</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">message</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">,</span> <span class="n">caused_by</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">super</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</span><span class='line'>      <span class="vi">@caused_by</span> <span class="o">=</span> <span class="n">caused_by</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">alias_method</span> <span class="ss">:original_message</span><span class="p">,</span> <span class="ss">:message</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">code</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">as_json</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span> <span class="ss">message</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span> <span class="ss">code</span><span class="p">:</span> <span class="n">code</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># 唯一的對外公開方法，統一都傳hash當做參數，基本上include該module不需特別覆寫此方法  </span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="n">args</span> <span class="o">=</span> <span class="p">{})</span>
+</span><span class='line'>    <span class="no">SuccessfulResult</span><span class="o">.</span><span class="n">create</span> <span class="ss">payload</span><span class="p">:</span> <span class="n">process</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">rescue</span> <span class="no">ServiceObjectError</span> <span class="o">=&gt;</span> <span class="n">e</span>
+</span><span class='line'>    <span class="no">FailedResult</span><span class="o">.</span><span class="n">create</span> <span class="ss">error</span><span class="p">:</span> <span class="n">e</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'> <span class="c1"># include該module的類別，唯一需要自己實作的方法，預設都需一個args型態為hash的參數</span>
+</span><span class='line'> <span class="c1"># 而此方法的最後回傳值會被當做SuccessfulResult物件的payload</span>
+</span><span class='line'> <span class="c1"># 而當方法裡有任何繼承ServiceObjectError的例外發生都會被捕捉成FailedObject</span>
+</span><span class='line'> <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">args</span> <span class="o">=</span> <span class="p">{})</span>
+</span><span class='line'>    <span class="nb">fail</span> <span class="s1">&#39;my son will take care of you&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>include <code>ActsAsServiceObject</code>並實作method <code>process</code></h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">MyTestServiceObject</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">ActsAsServiceObject</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">args</span> <span class="o">=</span> <span class="p">{})</span>
+</span><span class='line'>    <span class="n">args</span> <span class="o">=</span> <span class="n">default_process_args</span><span class="o">.</span><span class="n">merge</span> <span class="n">args</span><span class="o">.</span><span class="n">symbolize_keys</span>
+</span><span class='line'>    <span class="n">required_variable_a</span><span class="p">,</span> <span class="n">required_variable_b</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">values_at</span><span class="p">(</span><span class="ss">:required_variable_a</span><span class="p">,</span> <span class="ss">:required_variable_b</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">do_something</span>
+</span><span class='line'>    <span class="n">data_you_want_to_return_in_payload_or_not</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">default_process_args</span>
+</span><span class='line'>    <span class="p">{</span> <span class="n">required_variable_a</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">required_variable_b</span><span class="p">:</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">required_variable_c</span><span class="p">:</span> <span class="s1">&#39;C&#39;</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>說明：</h3>
+
+<p>照這種方式，只需實作<code>process</code>方法，而該方法的回傳值會是<code>SuccessfulResult</code>的payload；此外，不需自己實作<code>execute</code>，只需記得<code>execute</code>與<code>process</code>的參數都是接收一個<code>hash</code>，實際上<code>execute</code>就是在做<code>process</code>的工作，只是會多幫忙處理一致化回傳物件的工作，若要覆寫<code>execute</code>方法，就必須自己記得處理這一塊。</p>
+
+<p>而process裡若是有任何與預期不符的結果，引發一個繼承自<code>ServiceObjectError</code>的error的話就會自動被捕作並且回傳<code>FailedResult</code>物件。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">my_result</span> <span class="o">=</span> <span class="no">MyTestServiceObject</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="ss">foo</span><span class="p">:</span> <span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">my_result</span><span class="o">.</span><span class="n">success?</span>
+</span><span class='line'><span class="n">my_result</span><span class="o">.</span><span class="n">payload</span>
+</span><span class='line'><span class="n">my_result</span><span class="o">.</span><span class="n">error</span>
+</span><span class='line'><span class="n">my_result</span><span class="o">.</span><span class="n">as_json</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>有任何問題或更好的建議都歡迎提出指正，謝謝</h2>
+
+<h2>參考：</h2>
+
+<ol>
+<li><a href="https://www.sitepoint.com/ruby-error-handling-beyond-basics/">SERVICE OBJECT設計建議</a></li>
+<li><a href="https://www.netguru.co/blog/service-objects-in-rails-will-help">SERVICE_OBJECT設計建議2</a></li>
+<li><a href="https://www.sitepoint.com/using-and-testing-the-adapter-design-pattern/">調適者模式</a></li>
+</ol>
+
+
+
+        <hr class="divider-short"/>
+        
+        
+        <section>
+          <h1>Comments</h1>
+          <div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'noelsaga'; // Required - Replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </section>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/blog/2015/09/25/rails-tan-fang-html-safe/" title="Previous Post: Rails 探訪html_safe">&laquo; Previous: Rails 探訪html_safe</a>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+ .article{
+  position: relative;
+ }
+ .container{
+  padding-right: 100px;
+ }
+ .sidebar{
+    position: absolute;
+    right: -271px;
+    width: 310px;
+    padding-left: 40px;
+    background-color: rgba(75,79,87,0.5);
+
+  }
+</style>
+<script src="/javascripts/sidebar.js"></script>
+<script src="/javascripts/blockquote.js"></script>
+
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2">
+  <div class="social-icon-list">
+    
+    <a href="https://twitter.com/terrorer9999"><img src="/images/glyphicons_social_31_twitter.png"/></a>
+    
+
+    
+    <a href="https://github.com/noel9999"><img src="/images/glyphicons_social_21_github.png"/></a>
+    
+
+    
+    <a href="https://www.facebook.com/profile.php/?id=100001068144290"><img src="/images/glyphicons_390_facebook.png"/></a>
+    
+
+    
+
+    
+    <a href="mailto:terrorer9999@hotmail"><img src="/images/glyphicons_social_39_e-mail.png"/></a>
+    
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4>Powered by <a href="http://octopress.org/">Octopress</a>. Designed by <a href="http://AdrianArtiles.com">Adrian Artiles</a>.</h4>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | Noel Saga]]></title>
   <link href="http://noelsaga.herokuapp.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://noelsaga.herokuapp.com/"/>
-  <updated>2015-09-26T18:55:07+08:00</updated>
+  <updated>2016-07-01T02:07:20+08:00</updated>
   <id>http://noelsaga.herokuapp.com/</id>
   <author>
     <name><![CDATA[Noel]]></name>
@@ -26,105 +26,170 @@
 <h2>參數的定義使用</h2>
 
 <p>當如果參數是要使用hash的話，我們都知道可以這樣用
-{% codeblock lang:rb %}</p>
-
-<p>def hello (options = {})
-  first_name = options[:first_name]
-  last_name = options[:last_name]
-  %Q(Hello, #{first_name} #{last_name})
-end</p>
-
-<p>hello first_name: &lsquo;Wayne&rsquo;, last_name: &lsquo;Rooney&rsquo;
-// &ldquo;Hello, Wayne Rooney&rdquo;
-{% endcodeblock %}</p>
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;def hello (options = {})</span>
+</span><span class='line'><span class="sr">  first_name = options[:first_name]</span>
+</span><span class='line'><span class="sr">  last_name = options[:last_name]</span>
+</span><span class='line'><span class="sr">  %Q(Hello, </span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="sr"> </span><span class="si">#{</span><span class="n">last_name</span><span class="si">}</span><span class="sr">)</span>
+</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">hello</span> <span class="n">first_name</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="no">Wayne</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="n">last_name</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="no">Rooney</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'><span class="sr">//</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="no">Hello</span><span class="p">,</span> <span class="no">Wayne</span> <span class="no">Rooney</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h3>使用 <em>Keyword Arguments</em></h3>
 
 <p>但實際可以這樣用更快，少了從<code>options</code>取值的步驟，而且結果是一樣的</p>
 
-<p>{% codeblock lang:rb %}</p>
-
-<p>def hello (first_name:, last_name:)
-  %Q(Hello, #{first_name} #{last_name})
-end</p>
-
-<p>hello first_name: &lsquo;Wayne&rsquo;, last_name: &lsquo;Rooney&rsquo;
-// &ldquo;Hello, Wayne Rooney&rdquo;
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;def hello (first_name:, last_name:)</span>
+</span><span class='line'><span class="sr">  %Q(Hello, </span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="sr"> </span><span class="si">#{</span><span class="n">last_name</span><span class="si">}</span><span class="sr">)</span>
+</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">hello</span> <span class="n">first_name</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="no">Wayne</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="n">last_name</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="no">Rooney</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'><span class="sr">//</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="no">Hello</span><span class="p">,</span> <span class="no">Wayne</span> <span class="no">Rooney</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>直接丟一個<code>hash</code>給它也可以，<del>廢話</del></p>
 
-<p>{% codeblock lang:rb %}
-hello { first_name: &lsquo;Wayne&rsquo;, last_name: &lsquo;Rooney&rsquo; }
-// &ldquo;Hello, Wayne Rooney&rdquo;
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">hello</span> <span class="p">{</span> <span class="n">first_name</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="no">Wayne</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="n">last_name</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="no">Rooney</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="sr">//</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="no">Hello</span><span class="p">,</span> <span class="no">Wayne</span> <span class="no">Rooney</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>但這樣會失敗
-{% codeblock lang:rb %}
-hello first_name: &lsquo;Wayne&rsquo;, { last_name: &lsquo;Rooney&rsquo; }
-// SyntaxError: unexpected &lsquo;\n&rsquo;, expecting =>
-{% endcodeblock %}</p>
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">hello</span> <span class="n">first_name</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="no">Wayne</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="p">{</span> <span class="n">last_name</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="no">Rooney</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="sr">//</span> <span class="ss">SyntaxError</span><span class="p">:</span> <span class="n">unexpected</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;\</span><span class="n">n</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="n">expecting</span> <span class="o">=&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>必須先把<code>merge</code>成一個hash，或使採用<del>更潮</del>的<code>**</code>運算子
-{% codeblock lang:rb %}
-hello first_name: &lsquo;Wayne&rsquo;, **{ last_name: &lsquo;Rooney&rsquo; }
-&ldquo;Hello, Wayne Rooney&rdquo;
-{% endcodeblock %}</p>
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">hello</span> <span class="n">first_name</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="no">Wayne</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="o">**</span><span class="p">{</span> <span class="n">last_name</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="no">Rooney</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="no">Hello</span><span class="p">,</span> <span class="no">Wayne</span> <span class="no">Rooney</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>也可以與其他參數混用，但一般來說我們會把<code>hash</code>形式的參數擺在最後面
-{% codeblock lang:rb %}</p>
-
-<p> def man_united(manager, members, color:, name:)</p>
-
-<pre><code>%Q(Manager: #{manager}, members: #{members}, color: #{color}, name: #{name} )
-</code></pre>
-
-<p> end
- man_united &lsquo;+2&rsquo;, :rooney, color: :red, name: :red_devil
- // &ldquo;Manager: +2, members: rooney, color: red, name: red_devil &rdquo;
-{% endcodeblock %}</p>
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt; def man_united(manager, members, color:, name:)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="sx">%Q(Manager: </span><span class="si">#{</span><span class="n">manager</span><span class="si">}</span><span class="sx">, members: </span><span class="si">#{</span><span class="n">members</span><span class="si">}</span><span class="sx">, color: </span><span class="si">#{</span><span class="n">color</span><span class="si">}</span><span class="sx">, name: </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="sx"> )</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span> <span class="k">end</span>
+</span><span class='line'> <span class="n">man_united</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">+</span><span class="mi">2</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="ss">:rooney</span><span class="p">,</span> <span class="ss">color</span><span class="p">:</span> <span class="ss">:red</span><span class="p">,</span> <span class="nb">name</span><span class="p">:</span> <span class="ss">:red_devil</span>
+</span><span class='line'> <span class="sr">//</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="ss">Manager</span><span class="p">:</span> <span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="ss">members</span><span class="p">:</span> <span class="n">rooney</span><span class="p">,</span> <span class="ss">color</span><span class="p">:</span> <span class="n">red</span><span class="p">,</span> <span class="nb">name</span><span class="p">:</span> <span class="n">red_devil</span> <span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>我們也可以這樣用，讓不固定的參數可以區分成<code>array</code>與<code>hash</code>型態</p>
 
-<p>{% codeblock lang:rb %}</p>
-
-<p> def test(*array, **hash)</p>
-
-<pre><code>"#{array[0]} #{array[1]} #{hash[:name]}, #{hash[:age]}"
-</code></pre>
-
-<p> end</p>
-
-<p> test(1,2,name: :noel, age: 27, extra: :not_available)
- // &ldquo;1 2 noel, 27&rdquo;
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt; def test(*array, **hash)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">array</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">array</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="nb">hash</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span><span class="si">}</span><span class="s2">, </span><span class="si">#{</span><span class="nb">hash</span><span class="o">[</span><span class="ss">:age</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span> <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt; test(1,2,name: :noel, age: 27, extra: :not_available)</span>
+</span><span class='line'><span class="sr"> /</span><span class="o">/</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="mi">1</span> <span class="mi">2</span> <span class="n">noel</span><span class="p">,</span> <span class="mi">27</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h3>如果不在乎傳入什麼值的話，可以這樣定義方法</h3>
 
-<p>{% codeblock lang:rb %}</p>
-
-<p> def foo(*)</p>
-
-<pre><code>do_something
-</code></pre>
-
-<p> end</p>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt; def foo(*)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">do_something</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span> <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>這樣有什麼好處呢？假使今天我們想覆寫某個方法，在執行前先去增加某些邏輯，但又不影響到其他地方的使用。我們可以這樣寫：</p>
 
-<p>{% codeblock lang:rb %}</p>
-
-<p> def save(*)</p>
-
-<pre><code>do_something
-super
-</code></pre>
-
-<p> end</p>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt; def save(*)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">do_something</span>
+</span><span class='line'><span class="k">super</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span> <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>這樣同樣是呼叫<code>save</code>方法，但我已經在裡面塞入某些邏輯，但又不影響其他地方對<code>save</code>的使用，而<code>save</code>依然不需要擔心到底會接到哪些參數，反正都會原封不動的還給<code>super</code></p>
 
@@ -156,39 +221,70 @@ super
 
 <h3>1.<code>@@</code>可以給子類別繼承; <code>@</code>不可以</h3>
 
-<p>{% codeblock lang:rb 類別變數繼承 %}
-class Parent
-  @@blood = :b
-  @hobby = :car</p>
-
-<p>  def self.blood</p>
-
-<pre><code>@@blood
-</code></pre>
-
-<p>  end</p>
-
-<p>  def self.hobby</p>
-
-<pre><code>@hobby
-</code></pre>
-
-<p>  end
-end</p>
-
-<p>class Child &lt; Parent
-end</p>
-
-<p>Parent.hobby # car
-Child.hobby # nil
-Parent.blood # b
-Child.blodd # b</p>
-
-<p>Child.instance_eval do
-  @hobby = :coding
-end
-Child.hobby # coding
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>類別變數繼承 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">Parent</span>
+</span><span class='line'>  <span class="vc">@@blood</span> <span class="o">=</span> <span class="ss">:b</span>
+</span><span class='line'>  <span class="vi">@hobby</span> <span class="o">=</span> <span class="ss">:car</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def self.blood&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="vc">@@blood</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def self.hobby&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="vi">@hobby</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;class Child &amp;lt; Parent</span>
+</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">Parent</span><span class="o">.</span><span class="n">hobby</span> <span class="c1"># car</span>
+</span><span class='line'><span class="no">Child</span><span class="o">.</span><span class="n">hobby</span> <span class="c1"># nil</span>
+</span><span class='line'><span class="no">Parent</span><span class="o">.</span><span class="n">blood</span> <span class="c1"># b</span>
+</span><span class='line'><span class="no">Child</span><span class="o">.</span><span class="n">blodd</span> <span class="c1"># b&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">Child</span><span class="o">.</span><span class="n">instance_eval</span> <span class="k">do</span>
+</span><span class='line'>  <span class="vi">@hobby</span> <span class="o">=</span> <span class="ss">:coding</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="no">Child</span><span class="o">.</span><span class="n">hobby</span> <span class="c1"># coding</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <hr />
 
@@ -196,134 +292,240 @@ Child.hobby # coding
 
 <p>所以使用<code>@@</code>的時候請小心，一般來說較常使用<code>@</code>來當做類別變數</p>
 
-<p>{% codeblock lang:rb 類別變數共享問題 %}
-class Parent
-  @@blood = :b</p>
-
-<p>  def self.blood</p>
-
-<pre><code>@@blood
-</code></pre>
-
-<p>  end</p>
-
-<p>  def self.blood=(value)</p>
-
-<pre><code>@@blood = value
-</code></pre>
-
-<p>  end
-end</p>
-
-<p>class Child &lt; Parent
-end</p>
-
-<p>Parent.blood # b
-Child.blood # b
-Child.blood = :c
-Parent.blood # c
-Child.blood # c
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>類別變數共享問題 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">Parent</span>
+</span><span class='line'>  <span class="vc">@@blood</span> <span class="o">=</span> <span class="ss">:b</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def self.blood&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="vc">@@blood</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def self.blood=(value)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="vc">@@blood</span> <span class="o">=</span> <span class="n">value</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;class Child &amp;lt; Parent</span>
+</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">Parent</span><span class="o">.</span><span class="n">blood</span> <span class="c1"># b</span>
+</span><span class='line'><span class="no">Child</span><span class="o">.</span><span class="n">blood</span> <span class="c1"># b</span>
+</span><span class='line'><span class="no">Child</span><span class="o">.</span><span class="n">blood</span> <span class="o">=</span> <span class="ss">:c</span>
+</span><span class='line'><span class="no">Parent</span><span class="o">.</span><span class="n">blood</span> <span class="c1"># c</span>
+</span><span class='line'><span class="no">Child</span><span class="o">.</span><span class="n">blood</span> <span class="c1"># c</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <hr />
 
 <h3>3.<code>@@</code>可以給實體方法使用; <code>@</code>不可以</h3>
 
 <p>因為<code>@</code>對實體方法的角度來看，會當做實體變數去讀取而非類別實體變數
-{% codeblock lang:rb 實體方法使用類別變數 %}
-class Parent
-  @@blood = :b
-  @hobby = :car</p>
-
-<p>  def blood</p>
-
-<pre><code>@@blood
-</code></pre>
-
-<p>  end</p>
-
-<p>  def hobby</p>
-
-<pre><code>@hobby
-</code></pre>
-
-<p>  end
-end</p>
-
-<p>dad = Parent.new
-dad.blood # b
-dad.hobby # nil
-{% endcodeblock %}
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>實體方法使用類別變數 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">Parent</span>
+</span><span class='line'>  <span class="vc">@@blood</span> <span class="o">=</span> <span class="ss">:b</span>
+</span><span class='line'>  <span class="vi">@hobby</span> <span class="o">=</span> <span class="ss">:car</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def blood&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="vc">@@blood</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def hobby&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="vi">@hobby</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;dad = Parent.new</span>
+</span><span class='line'><span class="sr">dad.blood # b</span>
+</span><span class='line'><span class="sr">dad.hobby # nil</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 如果實體方法想使用類別實體變數，那就改讓實體方法去呼叫類別方法即可</p>
 
-<p>{% codeblock lang:rb %}
-Parent.class_eval do
-  def self.hobby</p>
-
-<pre><code>@hobby
-</code></pre>
-
-<p>  end</p>
-
-<p>  def get_hobby_by_class_method</p>
-
-<pre><code>Parent.hobby
-</code></pre>
-
-<p>  end
-end</p>
-
-<p>mom = Parent.new
-mom.hobby # nil
-mom.get_hobby_by_class_method # car
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="no">Parent</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">hobby</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;@hobby</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">get_hobby_by_class_method</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;Parent.hobby</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
+</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">mom</span> <span class="o">=</span> <span class="no">Parent</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">mom</span><span class="o">.</span><span class="n">hobby</span> <span class="c1"># nil</span>
+</span><span class='line'><span class="n">mom</span><span class="o">.</span><span class="n">get_hobby_by_class_method</span> <span class="c1"># car</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <hr />
 
 <h2>補充</h2>
 
 <p>換種類別方法定義的方式來看更複雜一點的例子
-{% codeblock lang:rb %}
-class Animal
-  class &lt;&lt; self</p>
-
-<pre><code>@@move = true
-@@breath = "Air"
-@food = %w(meat grass)
-def description
-  if @@move
-    puts "We Can beathe #{@@breath}"
-  end
-end
-
-def food
-  @food ||= []
-end
-
-def food_list
-  @food.each do |food|
-    puts "We like #{food}"
-  end if @food
-end
-</code></pre>
-
-<p>  end
-end</p>
-
-<p>Animal.description</p>
-
-<h1>We Can beathe Air</h1>
-
-<h1>nil</h1>
-
-<p>Animal.food_list</p>
-
-<h1>nil</h1>
-
-<p>Animal.food &lt;&lt; &ldquo;meat&rdquo;
-Animal.food_list</p>
-
-<h1>We like meat{% endcodeblock %}</h1>
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">Animal</span>
+</span><span class='line'>  <span class="k">class</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="nb">self</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;@@move = true</span>
+</span><span class='line'><span class="sr">@@breath = &quot;Air&quot;</span>
+</span><span class='line'><span class="sr">@food = %w(meat grass)</span>
+</span><span class='line'><span class="sr">def description</span>
+</span><span class='line'><span class="sr">  if @@move</span>
+</span><span class='line'><span class="sr">    puts &quot;We Can beathe </span><span class="si">#{</span><span class="vc">@@breath</span><span class="si">}</span><span class="sr">&quot;</span>
+</span><span class='line'><span class="sr">  end</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">def food</span>
+</span><span class='line'><span class="sr">  @food ||= []</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">def food_list</span>
+</span><span class='line'><span class="sr">  @food.each do |food|</span>
+</span><span class='line'><span class="sr">    puts &quot;We like </span><span class="si">#{</span><span class="n">food</span><span class="si">}</span><span class="sr">&quot;</span>
+</span><span class='line'><span class="sr">  end if @food</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
+</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">Animal</span><span class="o">.</span><span class="n">description</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;We Can beathe Air&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="kp">nil</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Animal.food_list&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="kp">nil</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Animal.food &amp;lt;&amp;lt; &amp;ldquo;meat&amp;rdquo;</span>
+</span><span class='line'><span class="sr">Animal.food_list&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">We</span> <span class="n">like</span> <span class="n">meat</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></h1>
 
 <p>看來我們無法在<code>class &lt;&lt; self</code>的裡面直接定義<code>@</code>的類別實體變數，若非要在該區塊內設定<code>@</code>的類別實體變數，得借用類別方法來完成！</p>
 
@@ -357,54 +559,95 @@ gem 'rubocop', require: false
 <h3>2.新增檔案 rails_project/.robocup.yml</h3>
 
 <p>這部份我都是手動新增的，裡面定義了一些基礎的客製化規範，照抄前輩挑選的，大家如果沒特定需求也可以照抄
-{% codeblock lang:yml %}
-AllCops:
-  RunRailsCops: true
-  Exclude:</p>
-
-<pre><code>- db/schema.rb
-</code></pre>
-
-<p>Metrics/LineLength:
-  Max: 120</p>
-
-<p>Metrics/MethodLength:
-  Max: 20</p>
-
-<p>Metrics/ClassLength:
-  Max: 250</p>
-
-<p>Style/AsciiComments:
-  Enabled: false</p>
-
-<p>Style/ClassAndModuleChildren:
-  EnforcedStyle: compact</p>
-
-<p>Style/Documentation:
-  Enabled: false</p>
-
-<p>Style/IfUnlessModifier:
-  Enabled: false
-{% endcodeblock %}</p>
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">AllCops</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">RunRailsCops</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">Exclude:&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;pre&gt;&lt;code&gt;- db/schema.rb</span>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;Metrics/LineLength</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">Max</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">120&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;Metrics/MethodLength</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">Max</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">20&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;Metrics/ClassLength</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">Max</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">250&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;Style/AsciiComments</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">Enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;Style/ClassAndModuleChildren</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">EnforcedStyle</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">compact&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;Style/Documentation</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">Enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;Style/IfUnlessModifier</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">Enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h3>3.新增檔案 config/pre_commit.yml</h3>
 
-<h2>{% codeblock lang:yml %}</h2>
-
-<p>:checks_remove: []
-:checks_add:
-&ndash; :tabs
-&ndash; :nb_space
-&ndash; :whitespace
-&ndash; :merge_conflict
-&ndash; :debugger
-&ndash; :pry
-&ndash; :local
-&ndash; :jshint
-&ndash; :console_log
-&ndash; :migration
-&ndash; :rubocop
-{% endcodeblock %}</p>
+<h2><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">&lt;/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;:checks_remove</span><span class="p-Indicator">:</span> <span class="p-Indicator">[]</span>
+</span><span class='line'><span class="l-Scalar-Plain">:checks_add</span><span class="p-Indicator">:</span>
+</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :tabs</span>
+</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :nb_space</span>
+</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :whitespace</span>
+</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :merge_conflict</span>
+</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :debugger</span>
+</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :pry</span>
+</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :local</span>
+</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :jshint</span>
+</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :console_log</span>
+</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :migration</span>
+</span><span class='line'><span class="nl">&amp;ndash</span><span class="l-Scalar-Plain">; :rubocop</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h3>4. 執行<code>pre-commit install</code></h3>
 
@@ -431,44 +674,78 @@ AllCops:
 <!--more-->
 
 
-<p>{% codeblock lang:rb each_with_object 範例一 %}</p>
-
-<pre><code>%w(red blue yello black).each_with_object({}) do |value, hash|
-    hash.store(value, value.capitalize + '!')
-end
-# =&gt; {"red"=&gt;"Red!", "blue"=&gt;"Blue!", "yello"=&gt;"Yello!", "black"=&gt;"Black!"}
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>each_with_object 範例一 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;%w(red blue yello black).each_with_object({}) do |value, hash|</span>
+</span><span class='line'><span class="sr">    hash.store(value, value.capitalize + &#39;!&#39;)</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'><span class="sr"># =&amp;gt; {&quot;red&quot;=&amp;gt;&quot;Red!&quot;, &quot;blue&quot;=&amp;gt;&quot;Blue!&quot;, &quot;yello&quot;=&amp;gt;&quot;Yello!&quot;, &quot;black&quot;=&amp;gt;&quot;Black!&quot;}</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h2>介紹</h2>
 
 <p>範例一其實就只是把一個陣列迭代做些處理後存入hash裡，然後依序下去直到迭代完成，是不是很熟悉呢？沒錯，類似的功能<code>reduct/inject</code>也做得到，甚至你單用each也是可以，但是<code>each_with_object</code>更方便簡單，<strong>你必須先指定一個參數</strong>當做一個容器的初始值，此例就是hash，然後每次迭代之後他會自動記住容器的狀態，並自動代入下次迭代，這裡與<code>reduce</code>不太一樣，寫法上是更簡當方便，剛剛的範例如果用<code>reduce</code>寫的話則是：</p>
 
-<p>{% codeblock lang:rb reduce 範例一 %}</p>
-
-<pre><code>%w(red blue yello black).reduce({}) do |result, value|
-    result.store(value, value.capitalize + '!')
-    result
-end
-# =&gt; {"red"=&gt;"Red!", "blue"=&gt;"Blue!", "yello"=&gt;"Yello!", "black"=&gt;"Black!"}
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>reduce 範例一 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;%w(red blue yello black).reduce({}) do |result, value|</span>
+</span><span class='line'><span class="sr">    result.store(value, value.capitalize + &#39;!&#39;)</span>
+</span><span class='line'><span class="sr">    result</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'><span class="sr"># =&amp;gt; {&quot;red&quot;=&amp;gt;&quot;Red!&quot;, &quot;blue&quot;=&amp;gt;&quot;Blue!&quot;, &quot;yello&quot;=&amp;gt;&quot;Yello!&quot;, &quot;black&quot;=&amp;gt;&quot;Black!&quot;}</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>最後輸出是一樣的，但<code>reduce</code>我們必須自己把結果擺在最後一行(<del>return</del>)，<code>reduce</code>才會把它當作下次繼續迭代的<strong><em>結果值</em></strong>，這點對某些人可能比較不是那麼地直覺。</p>
 
 <p>來看看另一個<code>each_with_object</code>的應用範例，讓我們來使用該函式做出類似select的效果</p>
 
-<p>{% codeblock lang:rb each_with_object 範例二：模仿select %}</p>
-
-<pre><code>(1..9).each_with_object([]) do |value, array|
-    array &lt;&lt; value unless (value % 2 == 0)
- end      
-# =&gt; [1, 3, 5, 7, 9]
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>each_with_object 範例二：模仿select </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;(1..9).each_with_object([]) do |value, array|</span>
+</span><span class='line'><span class="sr">    array &amp;lt;&amp;lt; value unless (value % 2 == 0)</span>
+</span><span class='line'><span class="sr"> end      </span>
+</span><span class='line'><span class="sr"># =&amp;gt; [1, 3, 5, 7, 9]</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>基本上你可以依需求或你傳入的參數類型來自由使用該方法進而達到任何可能的功能，而可傳入的參數可以是array、hash、甚至是openstruct，所以object或hashie當然應該也可以，有興趣的人可以自己玩玩看。</p>
 
@@ -485,15 +762,26 @@ end
 
 <p>第一與第三點應該非常直覺好懂，第二點則需要說明一下，因為each_with_object可以自己記住迭代回傳結果，而該結果也必須在使用該方法時就給定，如果此時你給他的參數是純值像是int、str、boolean等型態的物件，則會因為屬於純值而無法改變或操縱物件本身，所以永遠都會回傳自己，如以下範例:</p>
 
-<p>{% codeblock lang:rb each_with_object 範例三：參數給數字 %}</p>
-
-<pre><code>(1..5).each_with_object(1) do |value, array|
-    value * array
- end      
-# =&gt; 1 而非 120
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>each_with_object 範例三：參數給數字 </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;(1..5).each_with_object(1) do |value, array|</span>
+</span><span class='line'><span class="sr">    value * array</span>
+</span><span class='line'><span class="sr"> end      </span>
+</span><span class='line'><span class="sr"># =&amp;gt; 1 而非 120</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>以上就是該方法的介紹與分享，如果有問題或是發現小弟有哪邊有錯誤都請歡迎指教唷，感謝各位</p>
 ]]></content>
@@ -519,36 +807,61 @@ end
 
 <h3>ruby內建迭代函式寫法</h3>
 
-<p>{% codeblock lang:ruby %}
-[1,2,3,4,5,6,7,8,9].find_all do |n|
-  n%2 == 0
-end</p>
-
-<h1>結果 [2,4,6,8]</h1>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">find_all</span> <span class="k">do</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">n</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;結果 [2,4,6,8]&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h3>傳統迴圈寫法:</h3>
 
-<p>{% codeblock lang:ruby %}
-array = [1,2,3,4,5,6,7,8,9]
-result = []
-for n in array
-  result &lt;&lt; n if n%2 == 0
-end</p>
-
-<h1>result: [2,4,6,8]</h1>
-
-<p>result.clear # 洗白
-i = 0
-while(i&lt;array.length)
-  result &lt;&lt; array[i] if array[i]%2 == 0
-  i += 1
-end</p>
-
-<h1>result: [2,4,6,8]</h1>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">]</span>
+</span><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="k">for</span> <span class="n">n</span> <span class="k">in</span> <span class="n">array</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">n</span> <span class="k">if</span> <span class="n">n</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;result: [2,4,6,8]&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">result</span><span class="o">.</span><span class="n">clear</span> <span class="c1"># 洗白</span>
+</span><span class='line'><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'><span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">array</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">array</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="k">if</span> <span class="n">array</span><span class="o">[</span><span class="n">i</span><span class="o">]%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;result: [2,4,6,8]&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <br>
 
@@ -566,26 +879,43 @@ end</p>
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map函式與each最大的不同是他會回傳一個新的陣列，而陣列的結果則是根據我們在程式區塊(block)裡所定義的來對原陣列做修改，其實這用途非常常見，像是我們有16名學生的原始成績，想幫他們做開根號在除以10後得到的加權成績:</p>
 
-<p>{% codeblock lang:ruby %}
-scores = [68, 84, 92, 34, 79, 82, 80, 85, 80, 31, 25, 45, 46, 30, 42, 34]
-new_scores = scores.map do |n|
-  (Math.sqrt(n)*10).round(2)
-end</p>
-
-<h1>scores: [68, 84, 92, 34, 79, 82, 80, 85, 80, 31, 25, 45, 46, 30, 42, 34]</h1>
-
-<h1>new_scores: [82.46, 91.65, 95.92, 58.31, 88.88, 90.55, 89.44, 92.2, 89.44, 55.68, 50.0, 67.08, 67.82, 54.77, 64.81, 58.31]</h1>
-
-<p>array = [[1,2],[3,4],[5,6],[7,8]]
-array.map do |n|
-  n.lasy # 只要最後一個元素
-end</p>
-
-<h1>[2,4,6,8]</h1>
-
-<p>t = Topic.scoped.map(&amp;:name)
-t = Topic.scoped.pluck(:name)
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">scores</span> <span class="o">=</span> <span class="o">[</span><span class="mi">68</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">79</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">34</span><span class="o">]</span>
+</span><span class='line'><span class="n">new_scores</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span>
+</span><span class='line'>  <span class="p">(</span><span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;scores: [68, 84, 92, 34, 79, 82, 80, 85, 80, 31, 25, 45, 46, 30, 42, 34]&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">new_scores</span><span class="p">:</span> <span class="o">[</span><span class="mi">82</span><span class="o">.</span><span class="mi">46</span><span class="p">,</span> <span class="mi">91</span><span class="o">.</span><span class="mi">65</span><span class="p">,</span> <span class="mi">95</span><span class="o">.</span><span class="mi">92</span><span class="p">,</span> <span class="mi">58</span><span class="o">.</span><span class="mi">31</span><span class="p">,</span> <span class="mi">88</span><span class="o">.</span><span class="mi">88</span><span class="p">,</span> <span class="mi">90</span><span class="o">.</span><span class="mi">55</span><span class="p">,</span> <span class="mi">89</span><span class="o">.</span><span class="mi">44</span><span class="p">,</span> <span class="mi">92</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span> <span class="mi">89</span><span class="o">.</span><span class="mi">44</span><span class="p">,</span> <span class="mi">55</span><span class="o">.</span><span class="mi">68</span><span class="p">,</span> <span class="mi">50</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">67</span><span class="o">.</span><span class="mi">08</span><span class="p">,</span> <span class="mi">67</span><span class="o">.</span><span class="mi">82</span><span class="p">,</span> <span class="mi">54</span><span class="o">.</span><span class="mi">77</span><span class="p">,</span> <span class="mi">64</span><span class="o">.</span><span class="mi">81</span><span class="p">,</span> <span class="mi">58</span><span class="o">.</span><span class="mi">31</span><span class="o">]&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;array = [[1,2],[3,4],[5,6],[7,8]]</span>
+</span><span class='line'><span class="sr">array.map do |n|</span>
+</span><span class='line'><span class="sr">  n.lasy # 只要最後一個元素</span>
+</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="o">]&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;t = Topic.scoped.map(&amp;amp;:name)</span>
+</span><span class='line'><span class="sr">t = Topic.scoped.pluck(:name)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <br>
 
@@ -604,14 +934,21 @@ t = Topic.scoped.pluck(:name)
 <br>
 
 
-<p>{% codeblock lang:ruby %}
-[1,2,3,4,5,6,7,8,9].reduce do |sum,value|
-   sum += value
-end</p>
-
-<h1>45</h1>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">reduce</span> <span class="k">do</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span><span class="n">value</span><span class="o">|</span>
+</span><span class='line'>   <span class="n">sum</span> <span class="o">+=</span> <span class="n">value</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;45&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <br>
 
@@ -621,12 +958,15 @@ end</p>
 <br>
 
 
-<p>{% codeblock lang:ruby %}
-[1,2,3,4,5,6,7,8,9].reduce(50) do |sum,value|
-   sum += value
- end
- # 95
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">reduce</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span><span class="n">value</span><span class="o">|</span>
+</span><span class='line'>   <span class="n">sum</span> <span class="o">+=</span> <span class="n">value</span>
+</span><span class='line'> <span class="k">end</span>
+</span><span class='line'> <span class="c1"># 95</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <br> 
 
@@ -636,50 +976,77 @@ end</p>
 <br>
 
 
-<p>{% codeblock lang:ruby %}
-sum = 0
-[1,2,3,4,5,6,7,8,9].each do |n|
-  sum += n
-end</p>
-
-<h1>sum: 45</h1>
-
-<h1>也可以這樣使用</h1>
-
-<p>[1,2,3,4,5,6,7,8,9].reduce(:+)</p>
-
-<h1>45</h1>
-
-<p>[1,2,3,4,5,6,7,8,9].reduce(10,:+)</p>
-
-<h1>55</h1>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">sum</span> <span class="o">+=</span> <span class="n">n</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;sum: 45&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="err">也可以這樣使用</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;[1,2,3,4,5,6,7,8,9].reduce(:+)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="mi">45</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;[1,2,3,4,5,6,7,8,9].reduce(10,:+)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="mi">55</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h3>模仿select功能</h3>
 
 <br>
 
 
-<p>{% codeblock lang:ruby%}
-[1,2,3,4,5,6,7,8,9].reduce([]) do |result, value|
-  result &lt;&lt; value if value%2 == 0
-  result  # 注意，這行如果不寫他會回傳nil，因為當1迭代進去時，不符合規則所以會回傳nil，這樣result下一次就會變成nil了而非[]
-end</p>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">reduce</span><span class="p">(</span><span class="o">[]</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">result</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">value</span> <span class="k">if</span> <span class="n">value</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="n">result</span>  <span class="c1"># 注意，這行如果不寫他會回傳nil，因為當1迭代進去時，不符合規則所以會回傳nil，這樣result下一次就會變成nil了而非[]</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h3>模仿map功能</h3>
 
 <br>
 
 
-<p>{% codeblock lang:ruby%}
-[1,2,3,4,5,6,7,8,9].reduce() do |result, value|
-  result &lt;&lt; Math.sqrt(value)/10
-  result<br/>
-end
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="o">].</span><span class="n">reduce</span><span class="p">()</span> <span class="k">do</span> <span class="o">|</span><span class="n">result</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span>
+</span><span class='line'>  <span class="n">result</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   
